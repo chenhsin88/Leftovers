@@ -1,0 +1,105 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+/* ────────────────────────────────
+=======
+
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}/* ────────────────────────────────
+   ① 先放所有 @use / @forward
+   ──────────────────────────────── */
+
+
+/* ────────────────────────────────
+   ② 載入 Tailwind 與 DaisyUI
+   ──────────────────────────────── */
+@use '@angular/material' as mat;
+
+@import 'tailwindcss';
+
+@plugin 'daisyui' {
+  themes: all;
+}
+
+/* ────────────────────────────────
+   ④ 其他全域樣式 (Material Theme 等)
+   ──────────────────────────────── */
+html {
+  @include mat.theme((color: (theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.cdk-overlay-pane {
+
+  // 並且，只有當這個浮動層裡面有我們的 .custom-snackbar-container 時才套用
+  &:has(.custom-snackbar-container) {
+    // 強制重設這個最高層級容器的背景和邊距，讓它完全透明且不佔空間
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+// 這個 class 透過 panelClass 選項，精準地指向我們的 snackbar 容器
+.custom-snackbar-container {
+  // 再次確保 Material 預設容器的背景、陰影和邊距都被移除
+  background: transparent !important;
+  box-shadow: none !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+
+  // 找到 snackbar 內部的標籤容器，這是我們元件的直接父層
+  .mat-mdc-snack-bar-label {
+    // 進行更徹底的重設，確保它不佔用任何多餘空間
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* 全域公用樣式：隱藏滾動軸 */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

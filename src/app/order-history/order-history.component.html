@@ -1,0 +1,164 @@
+<!-- 頁面標題區域 (保持不變) -->
+<div class="header-section">
+  <div class="header-content">
+    <h1 class="header-title">歷史訂單</h1>
+  </div>
+</div>
+
+<div class="main-card">
+  <div class="main-content">
+    <!-- ===== 1. 概覽視圖 ===== -->
+    @if (view() === 'overview') {
+    <!-- 全域搜尋區域 -->
+    <div class="search-filter-card">
+      <div class="search-filter-content">
+        <div class="search-filter-row">
+          <!-- 搜尋框 -->
+          <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="搜尋年份、月份、訂單編號、下單用戶" [ngModel]="searchTerm()"
+              (ngModelChange)="onSearchChange($event)" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 內容區域 -->
+    <div class="content-wrapper">
+      <!-- A. 搜尋結果視圖 -->
+      @if (searchTerm()) {
+      <div class="search-results-section">
+        <h2 class="section-title">搜尋結果</h2>
+        <div class="orders-container">
+          @for (order of globalSearchResults(); track order.orderNumber) {
+          <!-- 複用訂單卡片 -->
+          <div class="order-card" [routerLink]="['/merchants', storeId(), 'orderDetail', order.orderNumber]"
+            [queryParams]="{ returnUrl: '/merchants/' + storeId() + '/orderHistory' }">
+            <div class="order-content">
+              <div class="order-header"><span class="order-number">{{ order.orderNumber }}</span></div>
+              <div class="order-info">
+                <div class="info-item">
+                  <p class="label">下單用戶</p>
+                  <p>{{ order.userName }}</p>
+                </div>
+                <div class="info-item">
+                  <p class="label">金額</p>
+                  <p class="value">NT$ {{ order.totalAmount | number }}</p>
+                </div>
+                <div class="info-item">
+                  <p class="label">下單時間</p>
+                  <p class="value">{{ order.orderDate | date:'yyyy/MM/dd HH:mm' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="arrow-icon">›</div>
+          </div>
+          } @empty {
+          <div class="empty-state">
+            <div class="empty-icon">🧐</div>
+            <h3 class="empty-title">找不到符合的訂單</h3>
+            <p class="empty-message">請嘗試更換關鍵字</p>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- B. 預設可收合列表 -->
+      @if (!searchTerm()) {
+      <div class="overview-section">
+        <!-- 今年訂單 -->
+        <div class="collapsible-group">
+          <button class="collapsible-header" (click)="toggleThisYear()"><span>今年訂單 ({{ thisYear }})</span><span
+              class="chevron" [class.rotated]="isThisYearExpanded()">⬇️</span></button>
+          @if (isThisYearExpanded()) {
+          <div class="collapsible-content">
+            <div class="simple-grid month-grid">
+              @for (month of currentYearMonths(); track month) {
+              <!-- 這個按鈕現在會導航到訂單列表 -->
+              <button class="grid-button month-button" (click)="navigateToOrders(thisYear, month)">
+                {{ getMonthName(month) }}
+              </button>
+              } @empty { <p class="no-data-message">今年尚無訂單</p> }
+            </div>
+          </div>
+          }
+        </div>
+        <!-- 歷年訂單 -->
+        <div class="collapsible-group">
+          <button class="collapsible-header" (click)="togglePastYears()"><span>歷年訂單</span><span class="chevron"
+              [class.rotated]="isPastYearsExpanded()">⬇️</span></button>
+          @if (isPastYearsExpanded()) {
+          <div class="collapsible-content">
+            <div class="simple-grid year-grid">
+              @for (year of pastYears(); track year) {
+              <!-- (修正) 這個按鈕現在會導航到該年份的月份列表 -->
+              <button class="grid-button year-button" (click)="navigateToMonthsForYear(year)">{{ year }} 年</button>
+              } @empty { <p class="no-data-message">沒有更早的歷史訂單</p> }
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+    <!-- ===== 2. 月份列表 (用於歷年) ===== -->
+    @if (view() === 'months') {
+    <div class="drilldown-view-section">
+      <button class="back-button" (click)="goBack()">← 返回列表</button>
+      <h2 class="section-title">{{ currentYear() }}年 訂單月份</h2>
+      <div class="simple-grid month-grid">
+        @for (month of monthsForSelectedYear(); track month) {
+        <button class="grid-button month-button" (click)="navigateToOrders(currentYear()!, month)">
+          {{ getMonthName(month) }}
+        </button>
+        } @empty {
+        <p class="no-data-message">該年度沒有訂單</p>
+        }
+      </div>
+    </div>
+    }
+    <!-- ===== 3. 訂單列表 (共用) ===== -->
+    @if (view() === 'orders') {
+    <div class="drilldown-view-section">
+      <button class="back-button" (click)="goBack()">
+        ← 返回列表
+      </button>
+      <h2 class="section-title">{{ currentYear() }}年 {{ getMonthName(currentMonth()!) }} 訂單列表</h2>
+      <div class="orders-container">
+        @for (order of ordersForSelectedMonth(); track order.orderNumber) {
+        <!-- 再次複用訂單卡片 -->
+        <div class="order-card" [routerLink]="['/merchants', storeId(), 'orderDetail', order.orderNumber]"
+          [queryParams]="{ returnUrl: '/merchants/' + storeId() + '/orderHistory' }">
+          <div class="order-content">
+            <div class="order-header"><span class="order-number">{{ order.orderNumber }}</span></div>
+            <div class="order-info">
+              <div class="info-item">
+                <p class="label">下單用戶</p>
+                <p class="value">{{ order.userName }}</p>
+              </div>
+              <div class="info-item">
+                <p class="label">金額</p>
+                <p class="value">NT$ {{ order.totalAmount | number }}</p>
+              </div>
+              <div class="info-item">
+                <p class="label">下單時間</p>
+                <p class="value">{{ order.orderDate | date:'yyyy/MM/dd HH:mm' }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="arrow-icon">›</div>
+        </div>
+        } @empty {
+        <div class="empty-state">
+          <div class="empty-icon">📂</div>
+          <h3 class="empty-title">這個月沒有訂單</h3>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+  </div>
+</div>

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap'); // 英文字體
+
+
+/* 您自訂的樣式 */
+.top-title h1 {
+  font-family: 'Stick', cursive, sans-serif;
+}
+
+
+.login-text-dark {
+  color: black !important; /* 使用 !important 強制覆蓋 */
+}
+
+// 這個 class 專門用來修正 input 輸入框的樣式
+.login-input {
+  // 這條規則的選擇器 .input.login-input 比單純的 .login-input 更具體，
+  // 因此優先級更高，更容易覆蓋 DaisyUI 的預設樣式。
+  &.input {
+    color: black !important; // 強制設定輸入的文字為黑色
+  }
+
+  // 使用 ::placeholder 偽元素單獨設定 placeholder 的顏色
+  &::placeholder {
+    color: gray;
+    opacity: 1; // 確保 placeholder 在所有瀏覽器中都完全可見
+  }
+}

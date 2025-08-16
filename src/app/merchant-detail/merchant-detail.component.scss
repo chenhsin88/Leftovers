@@ -1,0 +1,52 @@
+// in: src/app/merchant-detail/merchant-detail.component.scss
+
+// --- Modal 彈出視窗樣式 ---
+
+// 遮罩層：覆蓋整個畫面，並將內容置中
+.modal-overlay {
+  position: fixed; // 固定在瀏覽器視窗上
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); // 半透明黑色背景
+  z-index: 1000; // 確保在最上層
+
+  // 使用 Flexbox 將卡片置中
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 內容卡片
+.floating-card {
+  background-color: #fafbfc;
+  border-radius: 1rem; // 圓角
+  max-width: 500px;    // 最大寬度
+  width: 90%;          // 在小螢幕上的寬度
+  max-height: 90vh;    // 最大高度，避免超出視窗
+  overflow-y: auto;    // 內容過多時可滾動
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  padding: 1.5rem 2rem;
+}
+
+// 關閉按鈕
+.close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 9999px; // 圓形
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}

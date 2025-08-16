@@ -1,0 +1,222 @@
+<div class="relative z-10">
+
+  <div class="bg-[#263238] w-screen min-h-screen  flex items-center justify-center p-4">
+    <div class="top-title absolute left-14/30 top-5/30">
+      <h1 class="text-3xl text-white font-bold">Leftovers</h1>
+    </div>
+    <div class="mockup-window border border-base-300 w-full max-w-2xl h-[70vh] flex flex-col">
+      <div #messageContainer class="flex-grow overflow-y-auto p-4 space-y-4">
+
+        @for (msg of messages; track msg.timestamp) {
+        @if(msg.sender === 'bot') {
+        <div class="chat chat-start">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="頭像" src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+            </div>
+          </div>
+          <div class="chat-header text-white">
+            Leftovers
+          </div>
+          <div class="chat-bubble">
+            @if(msg.showTimer) {
+            <div class="grid auto-cols-max grid-flow-col gap-5 text-center">
+              <div class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
+                <span class="countdown font-mono text-5xl">
+                  <span [style.--value]="countdownMinutes" aria-live="polite"></span>
+                </span>
+                分
+              </div>
+              <div class="bg-neutral rounded-box text-neutral-content flex flex-col p-2">
+                <span class="countdown font-mono text-5xl">
+                  <span [style.--value]="countdownSeconds" aria-live="polite"></span>
+                </span>
+                秒
+              </div>
+            </div>
+            }
+            @if(msg.type === 'avatar') {
+            <div class="flex justify-center my-4">
+              <div class="avatar">
+                <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <img [src]="avatarPreviewUrl" alt="頭像預覽" />
+                </div>
+              </div>
+            </div>
+            }
+            @if(msg.isLoading) {
+            <span class="loading loading-dots loading-md"></span>
+            } @else {
+            <span [innerHTML]="msg.text"></span>
+            }
+          </div>
+        </div>
+        }@else {
+        <div class="chat chat-end">
+          <div class="chat-image avatar">
+            <div class="w-10 rounded-full">
+              <img alt="頭像" src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+            </div>
+          </div>
+          <div class="chat-header text-white">
+            我
+          </div>
+          <div class="chat-bubble">
+            <span [innerHTML]="msg.text"></span>
+          </div>
+        </div>
+        }
+        }
+
+      </div>
+
+      <form (ngSubmit)="sendMessage()" class="border-t border-base-300 p-2 flex items-center gap-2">
+        @if(currentQuestionId == 1 && emailinputshow|| newconter == 2 && emailinputshow){
+        <label class="input input-bordered flex items-center gap-2 grow"
+          [class.input-error]="A.invalid && (A.dirty || A.touched)">
+          <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </g>
+          </svg>
+
+          <input name="userInput" [(ngModel)]="userInput" type="email" placeholder="請輸入您的電子信箱" class="grow login-input"
+            required email #A="ngModel" />
+        </label>
+
+        <button type="submit" class="btn btn-primary" [disabled]="A.invalid || !IsokToType">
+          傳送
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send"
+            viewBox="0 0 16 16">
+            <path
+              d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+          </svg>
+        </button>
+
+        @if(A.invalid && (A.dirty || A.touched)) {
+        <div class="validator-hint absolute -bottom-6 left-2 text-error text-xs">
+          @if(A.errors?.['required']){
+          <span>信箱為必填項目。</span>
+          }
+          @if(A.errors?.['email']){
+          <span>信箱格式錯誤！請重新輸入</span>
+          }
+        </div>
+        }
+
+        }@else if(currentQuestionId == 3 && passwordinputshow || newconter == 3 && passwordinputshow) {
+        <label class="input input-bordered flex items-center gap-2 grow"
+          [class.input-error]="B.invalid && (B.dirty || B.touched)">
+          <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+              <path
+                d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z">
+              </path>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+            </g>
+          </svg>
+
+          <!--
+      密碼輸入框
+      - type 屬性會根據 hide() signal 的值在 'password' 和 'text' 之間切換
+      - 加上 #B="ngModel" 來獲取這個輸入框的狀態
+    -->
+          <input [type]="hide() ? 'password' : 'text'" class="grow login-input" required placeholder="請輸入密碼"
+            [(ngModel)]="userInput" name="password" minlength="6" maxlength="16"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,16}$" #B="ngModel" />
+
+          <!-- 密碼可見/隱藏切換按鈕 -->
+          <button type="button" class="btn btn-ghost btn-sm btn-circle" (click)="clickEvent($event)">
+            <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </label>
+
+        <!-- 傳送按鈕 -->
+        <!-- [disabled]="B.invalid" 會在密碼格式不符時禁用按鈕 -->
+        <button type="submit" class="btn btn-primary" [disabled]="B.invalid">
+          傳送
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send"
+            viewBox="0 0 16 16">
+            <path
+              d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+          </svg>
+        </button>
+
+        <!--
+    密碼錯誤訊息提示
+    - 根據不同的錯誤類型顯示不同的提示文字
+  -->
+        @if(B.invalid && (B.dirty || B.touched)) {
+        <div class="validator-hint absolute -bottom-8 left-2 text-error text-xs">
+          @if(B.errors?.['required']){
+          <span>密碼為必填項目。</span>
+          }
+          @if(B.errors?.['minlength'] || B.errors?.['maxlength'] || B.errors?.['pattern']){
+          <span>密碼格式錯誤 (6-16位, 需含大小寫英文和數字)</span>
+          }
+        </div>
+        }
+        }@else if(currentQuestionId != 7&&newconter != 6) {
+        <input type="text" placeholder="輸入訊息..." class="input input-bordered grow" [(ngModel)]="userInput"
+          name="userInput" autocomplete="off" />
+        <button type="submit" class="btn btn-primary" [disabled]="!userInput || !IsokToType">
+          傳送
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send"
+            viewBox="0 0 16 16">
+            <path
+              d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+          </svg>
+        </button>
+        }
+        @if(photoopen) {
+        @if (!showAvatarUploadUI) {
+        <div class="flex justify-center items-center gap-4 w-full">
+          <button type="button" class="btn btn-primary grow" (click)="displayAvatarUpload()" [disabled]="!IsokToType">
+            選擇頭像
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+              <path
+                d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5" />
+              <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+            </svg>
+          </button>
+          <button type="button" class="btn btn-accent grow" (click)="skipAvatarUpload()" [disabled]="!IsokToType">
+            不選擇頭像 (使用預設)
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2"
+              viewBox="0 0 16 16">
+              <path
+                d="M13.854.146a.5.5 0 0 1 .11.54l-8 16a.75.75 0 0 1-1.329.124l-4-6a.75.75 0 0 1 .124-1.03l8-6a.5.5 0 0 1 .695.07zM6.636 10.07l2.761 4.338L14.13 2.576z" />
+            </svg>
+          </button>
+        </div>
+        } @else {
+        <fieldset class="fieldset w-full">
+          <legend class="fieldset-legend" style="color: white;">選擇一個頭像檔案</legend>
+
+          @if(avatarPreviewUrl) {
+          <div class="flex justify-center my-4">
+            <div class="avatar">
+              <div class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                <img [src]="avatarPreviewUrl" alt="頭像預覽" />
+              </div>
+            </div>
+          </div>
+          }
+
+          <input type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+            accept="image/png, image/jpeg" />
+          <div class="label">
+            <span class="label-text-alt" style="color: white;">最大檔案大小 2MB</span>
+          </div>
+          <div class="flex justify-end gap-2 mt-2">
+            <button type="button" class="btn btn-sm btn-error" (click)="cancelAvatarUpload()">取消</button>
+            <button type="button" class="btn btn-sm btn-success" (click)="confirmAvatarUpload()">確認</button>
+          </div>
+        </fieldset>
+        }
+        }
+      </form>
+    </div>
+  </div>
+</div>

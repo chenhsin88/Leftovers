@@ -1,0 +1,209 @@
+// 免責聲明樣式
+.disclaimer-content {
+  /* Webkit-based browsers (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 捲動條軌道顏色 */
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #a8a8a8; /* 捲動條本身顏色 */
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 滑鼠懸停時的顏色 */
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #a8a8a8 #f1f1f1;
+}
+
+::ng-deep .custom-snackbar {
+  background-color: #323232;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px;
+}
+
+/* Category Dock 按鈕 active 狀態 */
+.category-dock button.active {
+  @apply bg-blue-50 text-blue-700 border-blue-300;
+}
+
+/* 產品推播滑動容器的箭頭定位和樣式 */
+.navigation-arrows {
+
+  /* 這些樣式已經在 HTML 中作為 Tailwind 類別定義，但如果您想在 CSS 中微調，可以在這裡寫 */
+  /* 例如 */
+  &:hover {
+    @apply bg-white shadow-lg;
+    /* 覆寫或補充 HTML 中的 hover 樣式 */
+  }
+}
+
+/* 產品推播卡片微調 */
+.product-card {
+
+  /* 這裡的樣式基本已在 HTML 中定義，但可以進行微調 */
+  /* 例如，如果圖片邊框想要更明顯 */
+  .product-image-container {
+    @apply border border-gray-200;
+    /* 確保圓形圖片有邊框 */
+  }
+}
+
+/* 搜尋結果列表的商品卡片 (原始的水平排列樣式，如果需要保留，用於其他地方) */
+.product-card-search {
+  @apply shadow-md;
+
+  &:hover {
+    @apply scale-[1.01] shadow-lg;
+    /* 懸停時略微放大和更明顯的陰影 */
+  }
+}
+
+/* 針對「依店家/食物篩選」的垂直排列商品卡片樣式 */
+.product-card-vertical {
+  @apply bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer transition-transform duration-200 ease-in-out hover:scale-[1.01] hover:shadow-lg;
+
+  /* 保持 flex 佈局，讓內容垂直排列 */
+  display: flex;
+  flex-direction: column;
+
+  /* 【步驟 1】重新設定一個固定的總高度，讓所有卡片都一樣高 */
+  /* 您可以自由調整這個數值，例如 22rem (352px) */
+  height: 22rem;
+
+  figure {
+    width: 100%;
+    flex-shrink: 0;
+    background-color: #f8f9fa;
+    /* 圖片若非方形，會顯示底色 */
+
+    /* 【步驟 2】將 aspect-ratio 換回您想要的固定 height */
+    /* 這樣圖片區塊的大小就不會隨視窗寬度改變 */
+    height: 12rem;
+    /* 例如 192px，您可以自由調整此數值 */
+  }
+
+  /* 針對卡片內的資訊容器 .p-4 */
+  >.p-4 {
+    /* 【步驟 3】移除固定高度，讓它使用 flex-grow 自動填滿卡片剩下的空間 */
+    /* height: ...; */
+
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* 這行非常關鍵，它會讓資訊區自動填滿卡片剩下的高度 */
+    justify-content: space-between;
+    padding: 1rem;
+    /* p-4 的意思，補回 padding */
+  }
+}
+
+
+/* 店家卡片在水平滾動佈局下的樣式 */
+.merchants-slider {
+  /* 確保滑塊行為 */
+  @apply flex overflow-x-auto gap-4 py-5 scroll-smooth scrollbar-hide;
+
+  .card {
+    /* 每個店家卡片的固定寬度和彈性 */
+    flex-shrink: 0;
+    /* 防止卡片縮小 */
+    width: 300px;
+    /* 固定寬度，與商品推播卡片類似 */
+    @apply bg-base-100 shadow-xl;
+
+    /* 保持原有的陰影 */
+    /* 可以添加一些響應式調整 */
+    @media (max-width: 640px) {
+      width: 280px;
+      /* 小螢幕下稍窄一些 */
+    }
+  }
+}
+
+
+/* Modal Overlay 和 Floating Card 的動畫 */
+/* 這些 @keyframes 已經是 CSS 原生語法，可以直接放入 SCSS */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-overlay {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.floating-card {
+  animation: slideUp 0.3s ease-out;
+
+  /* 捲軸樣式調整 */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f3f4;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c8cd;
+    border-radius: 2px;
+  }
+}
+
+/* 調整 Angular Material Slider 的顏色 */
+mat-slider {
+  --mdc-slider-handle-color: #22d3ee;
+  --mdc-slider-label-container-color: #22d3ee;
+  --mdc-slider-active-track-color: #22d3ee;
+  --mat-slider-active-track-color: #22d3ee;
+  --mdc-slider-inactive-track-color: #e5e7eb;
+  /* Changed from #4b5563 for lighter look */
+  --mdc-slider-handle-shadow-color: #22d3ee;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .product-card {
+    width: 280px;
+    /* 在小螢幕下可以稍微縮小卡片寬度 */
+  }
+
+  .navigation-arrows {
+    display: none;
+    /* 在小螢幕下隱藏導航箭頭，讓使用者手動滑動 */
+  }
+}
+
+/* 為了讓頂部導航列和主內容區塊之間有區隔 */
+.w-full.p-6 {
+  /* 移除此處的 p-6 */
+  padding: 0;
+  /* 讓內容緊貼頂部導航列，padding 由內部的區塊自己控制 */
+}

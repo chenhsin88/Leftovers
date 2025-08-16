@@ -1,0 +1,253 @@
+@if (isLoading) {
+<div class="loading-container">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">載入訂單資料中...</p>
+  </div>
+</div>
+}
+
+@if (!isLoading && !orderData) {
+<div class="error-container">
+  <div class="error-content">
+    <div class="error-icon">📋</div>
+    <h3 class="error-title">找不到訂單</h3>
+    <p class="error-description">請檢查訂單編號是否正確</p>
+    <button class="btn-back" (click)="goBack()">返回訂單列表</button>
+  </div>
+</div>
+}
+
+@if (!isLoading && orderData) {
+<div class="page-container">
+
+  <div class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="back-button" (click)="goBack()">
+          <span class="back-icon">←</span>
+        </button>
+        <div class="title-section">
+          <h1 class="page-title">訂單詳情</h1>
+        </div>
+      </div>
+
+      <span [class]="getStatusClass(orderData!.status)">
+        {{ getStatusText(orderData!.status) }}
+      </span>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="content-grid">
+
+      <div class="left-column">
+
+        <div class="card">
+          <!-- <div class="card-header">
+            <h3 class="card-title">
+              <span>訂單資訊</span>
+            </h3>
+          </div> -->
+          <div class="card-content">
+            <div class="info-grid">
+              <div class="info-item">
+                <label class="info-label">訂單編號</label>
+                <p class="info-value order-id">{{ originalOrderNumber }}</p>
+              </div>
+
+              <div class="info-item">
+                <label class="info-label">下單用戶</label>
+                <p class="info-value user-name">
+                  <span>{{ orderData.customerName }}</span>
+                </p>
+              </div>
+
+              <div class="info-item">
+                <label class="info-label">實付總金額</label>
+                <p class="info-value total-amount">NT$ {{ orderData.totalAmount }}</p>
+              </div>
+
+              <div class="info-item">
+                <label class="info-label">付款方式</label>
+                <p class="info-value payment-method">
+                  <span>{{ getPaymentMethodText(orderData.paymentMethod) }}</span>
+                </p>
+              </div>
+              <div class="info-item">
+                <label class="info-label">取餐碼</label>
+                <p class="pickup-code">{{ orderData!.pickupCode }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">餐點詳情</h3>
+          </div>
+          <div class="card-content">
+            <div class="table-container">
+              <table class="items-table">
+                <thead>
+                  <tr>
+                    <th>餐點編號</th>
+                    <th>餐點名稱</th>
+                    <th class="text-center">數量</th>
+                    <th class="text-right">單價</th>
+                    <th class="text-right">小計</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of orderData.orderFoodItemList; track trackByItem($index, item)) {
+
+                  <tr>
+                    <td class="item-id">{{ item.foodId }}</td>
+                    <td class="item-name">
+                      <p class="name">{{ item.foodName }}</p>
+                    </td>
+                    <td class="text-center">{{ item.quantity }}</td>
+                    <td class="text-right food-price">NT$ {{ item.foodPrice }}</td>
+                    <td class="text-right subtotal">NT$ {{ calculateSubtotal(item.foodPrice, item.quantity) }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="total-section">
+              <div class="total-row">
+                <span class="total-label">總計：</span>
+                <span class="total-value">NT$ {{ orderData!.totalAmount }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-column">
+
+        @if (orderData.customerNote) {
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <span>用戶備註</span>
+            </h3>
+          </div>
+          <div class="card-content">
+            <p class="customer-note">{{ orderData.customerNote }}</p>
+          </div>
+        </div>
+        }
+
+        @if (orderData.cancellationReason || shouldShowBackendRejectReason()) {
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title cancel-title">
+              <label class="info-label2">用戶取消原因：</label>
+            </h3>
+          </div>
+          <div class="card-content">
+            @if (orderData.cancellationReason) {
+            <p class="cancel-reason">{{ orderData.cancellationReason }}</p>
+            }
+
+            @if(shouldShowMerchantRejectInput()){
+            <div class="form-group">
+              <textarea id="rejectReason" class="reject-reason-input" [(ngModel)]="merchantRejectReason"
+                [disabled]="hasSubmittedRejection" placeholder="欲拒絕取消訂單，請輸入原因，一旦提交無法做修改。" rows="3"></textarea>
+            </div>
+            }
+
+            @if (shouldShowBackendRejectReason() && !shouldShowMerchantRejectInput()) {
+            <!-- <div class="form-group"> -->
+            <h3 class="card-title cancel-title">
+              <label class="info-label3">商家拒絕原因：</label>
+            </h3>
+            <p class="reject-reason">{{ orderData.rejectReason }}</p>
+            <!-- </div> -->
+            }
+
+            @if (hasSubmittedRejection && !isHistoryOrder) {
+            <p class="rejection-submitted-message">已提交拒絕訊息</p>
+            }
+            @if (hasApprovedCancellation && !isHistoryOrder) {
+            <p class="approval-submitted-message">已同意取消</p>
+            }
+
+
+            @if (!isHistoryOrder && orderData.status === 'cancelled_by_user'){
+            <div class="action-buttons">
+              <button class="btn-cancelled" [disabled]="shouldDisableCancelApproval()" (click)="markOrderCanceled()">
+                同意取消
+              </button>
+
+              <button class="btn-reject" [disabled]="!isRejectReasonValid() || hasSubmittedRejection"
+                (click)="rejectOrderCancellation(merchantRejectReason)">
+                拒絕取消
+              </button>
+            </div>
+            }
+          </div>
+        </div>
+        }
+
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <span>時間軸</span>
+            </h3>
+          </div>
+          <div class="card-content">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot blue"></div>
+                <div class="timeline-content">
+                  <p class="timeline-title">訂單建立</p>
+                  <p class="timeline-time">{{ orderData!.orderTime }}</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot yellow"></div>
+                <div class="timeline-content">
+                  <p class="timeline-title">最後更新</p>
+                  <p class="timeline-time">{{ orderData!.updatedAt }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        @if(!isHistoryOrder){
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <span>訂單設定</span>
+            </h3>
+          </div>
+          <div class="card-content">
+            <button class="btn-complete" [disabled]="
+                orderData.status === 'completed' ||
+                orderData.status === 'cancelled_by_user' ||
+                orderData.status === 'cancelled_by_merchant' ||
+                orderData.status === 'not_token'" (click)="markOrderComplete()">訂單完成</button>
+
+            <button class="btn-not-taken"
+              [disabled]="orderData.status === 'completed' ||
+              orderData.status === 'cancelled_by_user' ||
+              orderData.status === 'cancelled_by_merchant' ||
+              orderData.status === 'not_token'" (click)="markAsNotTaken()">
+              未取餐
+            </button>
+          </div>
+
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}

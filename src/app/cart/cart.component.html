@@ -1,0 +1,172 @@
+<div class="container">
+  <div class="main-content">
+    @if (cartItems.length === 0) {
+    <div class="empty-cart">
+      <div class="cart-icon">🛒</div>
+      <p>您的購物車是空的</p>
+    </div>
+    } @else {
+    @for (store of storesForDisplay; track store.name) {
+    <div class="store-container">
+      <div class="store-header">
+        <h2 class="store-title">{{ store.name }}</h2>
+      </div>
+      <div class="product-header">
+        <div>
+          <input type="checkbox" [id]="'selectAll-' + store.name" [checked]="store.isAllSelected"
+            [indeterminate]="store.isIndeterminate" (change)="toggleSelectAllForStore(store)" />
+        </div>
+        <div class="header-price">商品</div>
+        <div class="header-price">單價</div>
+        <div class="header-quantity">數量</div>
+        <div class="header-subtotal">小計</div>
+        <div class="header-delete">刪除</div>
+      </div>
+
+      <div id="productList-{{store.name}}">
+        @for (product of store.products; track product.id) {
+        <div class="product-item">
+          <div class="checkbox-col">
+            <input type="checkbox" class="product-checkbox" [(ngModel)]="product.selected"
+              (ngModelChange)="toggleItemSelection(product)" title="選擇商品" />
+          </div>
+          <div class="product-info-col">
+            <img [src]="product.image" [alt]="product.productName" class="product-image" />
+            <div class="product-details">
+              <div class="product-name" title="商品">{{ product.productName }}</div>
+            </div>
+          </div>
+          <div class="product-price" title="單價">
+            {{ product.price | currency:'NT$':'symbol':'1.0-0' }}
+          </div>
+          <div class="quantity-control" title="數量">
+            <button class="qty-btn" (click)="updateQuantity(product.id, -1)">-</button>
+            <input type="number" class="qty-input" [value]="product.quantity" min="1"
+              (change)="updateQuantity(product.id, $event)" />
+            <button class="qty-btn" (click)="updateQuantity(product.id, 1)">+</button>
+          </div>
+          <div class="subtotal" title="小計">
+            {{ (product.price * product.quantity) | currency:'NT$':'symbol':'1.0-0' }}
+          </div>
+          <div class="delete-col">
+            <button class="delete-btn" (click)="removeItem(product.id)" title="刪除商品">×</button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    }
+  </div>
+
+  <div class="sidebar">
+    <div class="checkout-section">
+      <div class="checkout-summary" style="margin-bottom: 20px;">
+        <div>
+          <strong>結帳總金額：</strong>
+          <span class="selected-total">{{ calculateSelectedTotal() | currency:'NT$':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+
+      <div class="checkout-form">
+        <div class="form-group full-width">
+          <div class="payment-row">
+            <label class="form-label">付款方式 <span class="required">*</span></label>
+            <div class="payment-options">
+              <div class="payment-option">
+                <input type="radio" id="creditCard" name="payment" value="CREDIT_CARD"
+                  [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()">
+                <label for="creditCard">信用卡 (限單一店家)</label>
+              </div>
+              <div class="payment-option">
+                <input type="radio" id="cash" name="payment" value="CASH" [(ngModel)]="selectedPaymentMethod"
+                  (change)="onPaymentMethodChange()">
+                <label for="cash">現金 (可多家)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-secondary" (click)="continueShopping()">繼續購物</button>
+        <button class="btn btn-primary" (click)="submitOrder()" [disabled]="getSelectedItems().length === 0">
+          立即訂購 ({{ getSelectedItems().length }})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showConfirmationModal) {
+<div class="modal-overlay" (click)="cancelConfirmation()">
+  <div class="modal-content confirmation-modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3>請確認您的訂單</h3>
+      <button class="close-btn" (click)="cancelConfirmation()">×</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="summary-section">
+        <h4>訂購資訊</h4>
+        <div class="summary-item">
+          <span class="summary-label">訂購人姓名:</span>
+          <span class="summary-value">{{ userName }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Email:</span>
+          <span class="summary-value">{{ userEmail }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">付款方式:</span>
+          <span class="summary-value">{{ selectedPaymentMethod === 'CASH' ? '現金' : '信用卡' }}</span>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <h4>備註資訊</h4>
+        <div class="per-store-notes-section">
+          <p class="notes-instruction">您可以在此為本次訂購的店家留下備註：</p>
+          @for (store of getStoresForConfirmation(); track store.merchantId) {
+          <div class="form-group">
+            <label class="form-label store-note-label">{{ store.name }}</label>
+            <textarea class="form-input store-note-input" rows="2" placeholder="給「{{ store.name }}」的備註"
+              [(ngModel)]="store.notes"></textarea>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <h4>商品明細</h4>
+        <div class="product-list">
+          @for(item of getSelectedItems(); track item.id) {
+          <div class="product-item-summary">
+            <span class="summary-product-name">{{ item.productName }}</span>
+            <span class="summary-product-details left-align">
+              {{ item.price | currency:'NT$':'symbol':'1.0-0' }} x {{ item.quantity }}
+            </span>
+            <span class="summary-product-subtotal left-align">
+              {{ (item.price * item.quantity) | currency:'NT$':'symbol':'1.0-0' }}
+            </span>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div class="summary-total">
+        <span class="summary-label">訂單總金額:</span>
+        <span class="summary-value total-amount">{{ calculateSelectedTotal() | currency:'NT$':'symbol':'1.0-0' }}</span>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cancelConfirmation()">返回修改</button>
+      <button class="btn btn-primary" (click)="handleFinalConfirmation()">確認下單</button>
+    </div>
+
+  </div>
+</div>
+}

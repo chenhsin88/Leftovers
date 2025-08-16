@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap'); // 英文字體
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 頁首樣式 (使用 CSS Grid) */
+.navbar {
+  display: grid;
+  /* 定義三欄佈局：
+      - 第 1 欄 (Logo): 最小寬度由內容決定，最大不超過 1 等份空間。
+      - 第 2 欄 (搜尋): 佔用 2 等份空間，是主要的伸展區域。
+      - 第 3 欄 (圖示): 最小寬度由內容決定，最大不超過 1 等份空間。
+      這可以確保中間的搜尋列有足夠寬度且大致保持居中。
+    */
+  grid-template-columns: minmax(auto, 1fr) 2fr minmax(auto, 1fr);
+  align-items: center;
+  /* 垂直居中所有項目 */
+  gap: 1.5rem;
+  /* 欄位之間的間距 */
+  width: 100%;
+}
+
+footer {
+  position: relative;
+}
+
+/* 左側區塊 (Logo) */
+.navbar>.flex-1 {
+  justify-self: start;
+  /* 內容靠左對齊 */
+}
+
+/* 中間區塊 (搜尋列) */
+.navbar>.flex-grow {
+  justify-self: center;
+  /* 內容置中對齊 */
+  width: 100%;
+}
+
+/* 右側區塊 (功能圖示) */
+.navbar>.flex-none {
+  justify-self: end;
+  /* 內容靠右對齊 */
+}
+
+/* 其他既有樣式保持不變 */
+mat-icon {
+  display: inline-block;
+  /* Or as appropriate for your setup */
+}
+
+@font-face {
+  font-family: 'Edu NSW ACT Cursive';
+  src: url('../../public/fonts/EduNSWACTCursive-VariableFont_wght.ttf') format('truetype'); // 確保有此粗體字型檔
+  font-weight: bold; // 對應 700
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Iansui'; // 或者 'YujiMai Regular'，但通常只用基礎字型家族名
+  src: url('../../public/fonts/Iansui-Regular.ttf') format('truetype');
+  font-weight: normal; // 'Regular' 通常對應 normal 或 400
+  font-style: normal; // 'Regular' 通常是 normal 樣式
+  font-display: swap; // 推薦，改善載入體驗
+}
+
+@font-face {
+  font-family: 'YujiMai'; // 或者 'YujiMai Regular'，但通常只用基礎字型家族名
+  src: url('../../public/fonts/YujiMai-Regular.ttf') format('truetype');
+  font-weight: normal; // 'Regular' 通常對應 normal 或 400
+  font-style: normal; // 'Regular' 通常是 normal 樣式
+  font-display: swap; // 推薦，改善載入體驗
+}
+
+.top-title h1 {
+  font-family: 'Stick', cursive, sans-serif;
+}
+
+.changefonts {
+  font-family: 'Iansui', cursive, sans-serif;
+  font-size: 1.5rem;
+}
+
+.cursive-title {
+  font-family: 'Stick', cursive, sans-serif;
+  display: inline-block;
+  vertical-align: middle;
+  color: inherit;
+}
+
+/*「回到頂部」按鈕樣式*/
+.scroll-to-top-btn {
+  position: fixed;
+  z-index: 1000;
+  background-color: #747474;
+  color: white;
+  bottom: 90px;
+  right: 25.5px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #307ef2;
+  }
+}

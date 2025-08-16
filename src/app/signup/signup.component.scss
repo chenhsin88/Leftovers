@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap'); // 英文字體
+
+@font-face {
+  font-family: 'Edu NSW ACT Cursive';
+  src: url('../../../public/fonts/EduNSWACTCursive-VariableFont_wght.ttf') format('truetype'); // 確保有此粗體字型檔
+  font-weight: bold;   // 對應 700
+  font-style: normal;
+  font-display: swap;
+}
+
+.top-title h1 {
+  font-family: 'Stick', cursive, sans-serif;
+}

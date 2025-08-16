@@ -1,0 +1,767 @@
+/* Base Layout & Utility Classes (Tailwind-like, but plain CSS) */
+body {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* A common modern font stack */
+  background-color: #f8fafc; /* Light background */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1280px; /* Equivalent to max-w-7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem; /* Equivalent to p-6 */
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.sm\:flex-row {
+  /* Media query for small screens and up */
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+    align-items: center; /* Explicitly set for all */
+}
+
+.sm\:items-center {
+  @media (min-width: 640px) {
+    align-items: center;
+  }
+}
+
+.gap-2 {
+  gap: 0.5rem; /* Equivalent to gap-2 */
+}
+
+.gap-4 {
+  gap: 1rem; /* Equivalent to gap-4 */
+}
+
+.gap-6 {
+  gap: 1.5rem; /* Equivalent to gap-6 */
+}
+
+/* 調整字體大小類別的基準值 */
+.text-3xl {
+  font-size: 2rem; /* 原 1.875rem (30px) -> 約 32px */
+  line-height: 2.5rem; /* 配合調整行高 */
+}
+
+.text-lg {
+  font-size: 1.25rem; /* 原 1.125rem (18px) -> 約 20px */
+  line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.95rem; /* 原 0.875rem (14px) -> 約 15.2px */
+  line-height: 1.5rem;
+}
+
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-muted-foreground {
+  color: #6b7280; /* A shade of gray */
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.md\:grid-cols-2 {
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+// Removed md:grid-cols-4 as we are using flexbox for card groups now
+
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.space-y-0 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Icon colors */
+.text-green-600 { /* For general green icons */
+  color: #16a34a;
+}
+.text-green-700 { /* For stronger green icon (e.g., Completed on white card) */
+    color: #047857;
+}
+.text-yellow-600 {
+  color: #eab308;
+}
+.text-red-600 { /* For general red icons */
+  color: #dc2626;
+}
+.text-red-800 { /* For badge text */
+  color: #991b1b;
+}
+.text-blue-600 {
+  color: #2563eb;
+}
+.text-blue-700 { /* For stronger blue icon (e.g., Ready for Pickup on white card) */
+    color: #1d4ed8;
+}
+.text-blue-800 { /* For highlighting pickup code */
+    color: #1e40af;
+}
+.text-orange-600 { /* For cancellation requested icon */
+    color: #ea580c;
+}
+
+/* NEW: Primary dark text color for total spending */
+.text-primary-dark {
+    color: #1a202c; /* A dark gray/almost black for strong emphasis */
+}
+
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+/* top-2.5 is used in HTML for icons, matching original ShadCN/Tailwind style */
+/* left-2.5 is used in HTML for icons, matching original ShadCN/Tailwind style */
+
+
+.pl-8 {
+  padding-left: 2rem; /* 32px */
+}
+
+.w-full {
+  width: 100%;
+}
+
+.sm\:w-\[180px\] {
+  @media (min-width: 640px) {
+    width: 180px;
+  }
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.rounded-md {
+  border-radius: 0.375rem; /* 6px */
+}
+
+.text-right {
+  text-align: right;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+.h-4 {
+  height: 1rem; /* 16px */
+}
+
+.w-4 {
+  width: 1rem; /* 16px */
+}
+.h-6 {
+    height: 1.5rem; /* 24px */
+}
+.w-6 {
+    width: 1.5rem; /* 24px */
+}
+
+.h-8 {
+  height: 2rem; /* 32px */
+}
+
+.w-8 {
+  width: 2rem; /* 32px */
+}
+
+.p-3 {
+  padding: 0.75rem; /* 12px */
+}
+
+.rounded-lg {
+  border-radius: 0.5rem; /* 8px */
+}
+
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.5rem; /* 8px */
+}
+
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem; /* 24px */
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem; /* 12px */
+}
+.mb-2 {
+  margin-bottom: 0.5rem; /* 8px */
+}
+
+.pt-4 {
+  padding-top: 1rem; /* 16px */
+}
+.mt-1 {
+    margin-top: 0.25rem; /* 4px */
+}
+.mt-2 {
+    margin-top: 0.5rem; /* 8px */
+}
+.mt-4 {
+    margin-top: 1rem; /* 16px */
+}
+
+
+/* Custom Component Styles */
+
+/* Card Styles */
+.card {
+  background-color: #fff;
+  border: 1px solid #e2e8f0; /* border */
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* shadow-sm */
+  padding: 1rem; /* Default padding for card */
+}
+
+.card-header {
+  padding: 1rem 1rem 0.5rem;
+}
+
+.card-title {
+  font-size: 1.2rem; /* 原 1.125rem (18px) -> 約 19.2px，略微增大 */
+  font-weight: 600; /* font-semibold */
+}
+
+.card-description {
+  color: #6b7280; /* text-muted-foreground */
+  font-size: 0.95rem; /* 原 0.875rem (14px) -> 約 15.2px，增大 */
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+/* Specific Card Backgrounds for Stats Cards */
+.card-white-bg { /* For '今日已下單' (if it were a card) and general neutral cards */
+    background-color: #fff;
+    border-color: #e2e8f0;
+}
+.card-green-bg { /* For '已完成' */
+    background-color: #d1fae5; /* green-100 */
+    border-color: #a7f3d0; /* green-200 */
+}
+.card-red-bg { /* For '已取消' */
+    background-color: #fee2e2; /* red-100 */
+    border-color: #fca5a5; /* red-200 */
+}
+.card-blue-bg { /* For '今日待取貨' card - matches image's light blue */
+    background-color: #e0f2fe; /* light blue */
+    border-color: #bfdbfe; /* blue-200 */
+}
+.card-yellow-bg { /* For '今日申請取消' card - matches image's yellow */
+    background-color: #fef9c3; /* yellow-100 */
+    border-color: #fde68a; /* yellow-200 */
+}
+
+
+/* Button Styles */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 0.95rem; /* 原 0.875rem (14px) -> 約 15.2px，增大 */
+  font-weight: 500; /* font-medium */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+  background-color: #f3f4f6; /* Default background for secondary/outline */
+  color: #374151; /* Default text color */
+}
+
+.button:hover {
+  background-color: #e5e7eb; /* Darker on hover */
+}
+
+.button-outline {
+  background-color: transparent;
+  border-color: #d1d5db; /* A lighter gray border */
+}
+
+.button-outline:hover {
+  background-color: #f3f4f6;
+}
+
+.button-icon {
+  width: 2rem; /* h-8 w-8 */
+  height: 2rem;
+  padding: 0; /* p-0 */
+  min-width: 0; /* min-w-0 */
+}
+
+.button-primary {
+    background-color: #3b82f6; /* A shade of blue */
+    color: #ffffff;
+    border-color: #3b82f6;
+}
+.button-primary:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+}
+
+/* NEW: Danger button for cancellation */
+.button-danger {
+  background-color: #dc2626; /* red-600 */
+  color: #ffffff;
+  border-color: #dc2626;
+}
+.button-danger:hover {
+  background-color: #b91c1c; /* red-700 */
+}
+
+
+/* Input and Select Styles */
+.input,
+.select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db; /* border */
+  border-radius: 0.375rem; /* rounded-md */
+  background-color: #fff;
+  font-size: 1rem; /* 保持 16px */
+  line-height: 1.5rem;
+  color: #111827; /* text-gray-900 */
+  /* Remove default arrow from select for custom arrow positioning */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Specific styles for date input type to ensure consistent appearance */
+input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff; /* Ensure white background */
+  padding: 0.5rem 0.75rem; /* Match other inputs */
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #111827;
+}
+
+/* Optional: Add a custom calendar icon for date input if desired,
+    similar to how select arrow is handled. */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: #6b7280; /* Adjust calendar icon color */
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+
+.input:focus,
+.select:focus,
+input[type="date"]:focus,
+textarea.input:focus { /* Add textarea to focus styles */
+  outline: none;
+  border-color: #6366f1; /* focus ring color */
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); /* focus ring shadow */
+}
+
+/* Badge Styles (Multi-color, as agreed) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px; /* Equivalent to full rounded */
+  font-size: 0.875rem; /* 原 0.75rem (12px) -> 14px，增大 */
+  font-weight: 500; /* font-medium */
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.badge-green { /* for 'completed' */
+  background-color: #d1fae5; /* green-100 */
+  color: #065f46; /* green-800 */
+}
+
+.badge-blue { /* for 'ready_for_pickup' */
+  background-color: #e0f2fe; /* light blue */
+  color: #2563eb; /* strong blue */
+}
+
+.badge-yellow { /* (kept for other uses if needed, but 'ordered' is now pale-blue) */
+  background-color: #fef9c3; /* yellow-100 */
+  color: #92400e; /* yellow-800 */
+}
+
+.badge-red { /* for 'cancelled' */
+  background-color: #fee2e2; /* red-100 */
+  color: #991b1b; /* red-800 */
+}
+
+.badge-orange { /* for 'cancellation_requested' */
+    background-color: #ffedd5; /* orange-100 */
+    color: #c2410c; /* orange-800 */
+}
+
+.badge-pale-blue { /* NEW: for 'ordered' */
+    background-color: #eff8ff; /* A very pale, slightly grayish blue */
+    color: #4b6cb7; /* A medium dark blue for text */
+    border: 1px solid #cceeff; /* A slightly darker pale blue border */
+}
+
+
+/* Table Styles */
+.table-container {
+  border: 1px solid #e2e8f0; /* rounded-md border */
+  border-radius: 0.375rem;
+  overflow: hidden; /* Ensures rounded corners apply to content */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Remove default table borders */
+}
+
+th,
+td {
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0; /* light gray border */
+  font-size: 0.95rem; /* 原本可能是 1rem (16px)，但為與其他文字協調，統一設為 15.2px */
+}
+
+th {
+  background-color: #f9fafb; /* light gray header background */
+  font-weight: 600; /* font-semibold */
+  color: #4b5563; /* text-gray-700 */
+  white-space: nowrap; /* Prevent wrapping in headers */
+}
+
+tbody tr:last-child td {
+  border-bottom: none; /* No border on the last row */
+}
+
+/* REMOVED: is-today-order class from table rows, unifying table background */
+tbody tr:hover {
+  background-color: #f3f4f6; /* light hover effect */
+}
+
+/* Table Specific Alignment for Action Column */
+.action-col-align {
+  text-align: center; /* 讓文字和 flex 容器在 td/th 內水平居中 */
+
+  /* 針對 td 內的 flex 容器，確保其內容水平居中 */
+  .flex {
+    justify-content: center;
+    width: 100%; /* 確保 flex 容器填滿 td 寬度 */
+    height: 100%; /* 確保 flex 容器填滿 td 高度 */
+    align-items: center; /* 確保內容垂直居中 */
+  }
+}
+
+
+/* Product Item in Detail Modal */
+.product-item {
+  padding: 0.75rem; /* p-3 */
+  background-color: #f8fafc; /* bg-muted/50 */
+  border-radius: 0.5rem; /* rounded-lg */
+  border: 1px solid #f1f5f9; /* subtle border */
+}
+.product-item p {
+    font-size: 0.95rem; /* 模態框內商品清單文字，增大 */
+}
+.product-item p.text-sm {
+    font-size: 0.875rem; /* 保持次要資訊略小於主要文字 */
+}
+
+
+/* Divider */
+.border-t {
+  border-top: 1px solid #e2e8f0; /* border-t */
+}
+
+/* New: Pickup Info Section Styles (Generic container for various statuses) */
+.pickup-info-section {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem; /* Space below this section */
+  text-align: left; /* Center content */
+  // 基礎樣式，具體顏色由下面的類別覆蓋
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+}
+
+.pickup-info-section .info-item {
+  display: flex;
+  justify-content: flex-start; /* Center labels and values */
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  font-size: 1rem; /* 原 0.95rem (15.2px) -> 16px，增大 */
+}
+
+.pickup-info-section .info-item span:first-child {
+  min-width: 80px; /* Align labels */
+  margin-right: 0.5rem;
+  text-align: right;
+  font-weight: bold; /* 讓標籤更突出 */
+  color: #4a4a4a;
+}
+.pickup-info-section .info-item span:last-child {
+  color: #333;
+}
+
+
+.pickup-info-section .highlight-code {
+  font-size: 1.6rem; /* 原 1.5rem (24px) -> 約 25.6px，略微增大 */
+  font-weight: bold;
+  padding: 0.5rem 0;
+  color: #1e40af; /* Deeper blue for code */
+  display: block; /* Make it a block element for full width centering */
+  margin-top: 0.75rem; /* Space above */
+  margin-bottom: 0.75rem; /* Space below */
+}
+.pickup-info-section .highlight-code .text-3xl {
+  font-size: 2.2rem; /* 讓取貨碼更大 */
+  font-family: 'Courier New', Courier, monospace; /* 為取貨碼設定等寬字體 */
+  letter-spacing: 1px;
+}
+
+
+/* Specific background and text color for each info section status */
+.pickup-info-section.ready-for-pickup-info {
+  background-color: #dbeafe; /* Lighter blue, similar to bg-blue-100 */
+  border-color: #93c5fd; /* A bit darker blue border */
+}
+
+/* NEW: Ordered Info Section (Yellow Background) */
+.pickup-info-section.ordered-info { /* 使用這個新的類別 for ordered status */
+    background-color: #fffbeb; /* Very light yellow, as requested */
+    border-color: #fcd34d; /* Yellow border */
+}
+
+.pickup-info-section.cancellation-requested-info {
+    background-color: #fff7ed; /* Very light orange for cancellation requested */
+    border-color: #fed7aa; /* Orange border */
+    text-align: center;
+}
+
+.pickup-info-section.completed-info {
+    background-color: #d1fae5; /* Light green, similar to badge-green */
+    border-color: #a7f3d0; /* Green border */
+    text-align: center;
+}
+
+.pickup-info-section.cancelled-info {
+    background-color: #fee2e2; /* Light red, similar to badge-red */
+    border-color: #fca5a5; /* Red border */
+    text-align: center;
+}
+
+/* Cancellation input section specific styles - 讓它直接在 .ordered-info 內部，無額外邊框/背景 */
+.cancellation-input-content {
+  padding-top: 1rem; // 與上方按鈕拉開距離
+  margin-top: 1rem; // 與上方按鈕拉開距離
+  // 不需要額外背景、邊框、陰影，讓它融入父級的 .ordered-info
+  // text-align 已經由 .pickup-info-section 繼承
+}
+
+.cancellation-input-content textarea.input {
+  min-height: 80px; /* 確保 textarea 預設高度可見 */
+  resize: vertical; /* 允許垂直拖動調整大小 */
+}
+
+.cancellation-reason {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-size: 0.95rem;
+  color: #4b5563; /* text-gray-700 */
+}
+.cancellation-reason span:first-child {
+  min-width: 80px;
+  margin-right: 0.5rem;
+  text-align: right;
+  font-weight: bold;
+}
+
+
+/* Modal Overlay and Content Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+  padding: 20px; /* Add some padding for smaller screens */
+  box-shadow: none; /* Remove card shadow from overlay */
+  border: none; /* Remove card border from overlay */
+  cursor: pointer; /* Clickable to close */
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow for modal */
+  width: 90%; /* Max width for content */
+  max-width: 600px; /* Max width for content */
+  max-height: 90vh; /* Max height to allow scrolling */
+  overflow-y: auto; /* Enable scrolling for long content */
+  position: relative; /* For z-index stacking */
+  cursor: default; /* Reset cursor inside modal */
+}
+
+/* New Flexbox Layout for Card Groups */
+.card-group-flex-4 { /* For Today's 4-column layout */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* 新增：讓卡片在行尾對齊 */
+    gap: 1rem; /* gap-4 equivalent */
+
+    .card {
+        flex: 1 1 calc(25% - 0.75rem); /* For 4 columns: 25% minus (3/4 * gap) */
+        min-width: 160px; /* Prevent cards from getting too small on wrap */
+
+        @media (max-width: 991px) { /* Adjust for medium screens (e.g., Bootstrap MD, custom breakpoint) */
+            flex: 1 1 calc(50% - 0.5rem); /* 2 per row on smaller tablets */
+        }
+        @media (max-width: 575px) { /* Adjust for very small screens (e.g., Bootstrap SM) */
+            flex: 1 1 100%; /* 1 per row on phones */
+        }
+    }
+}
+
+.card-group-flex-2 { /* For History's 2-column layout */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* gap-4 equivalent */
+
+    .card {
+        flex: 1 1 calc(50% - 0.5rem); /* For 2 columns: 50% minus (1/2 * gap) */
+        min-width: 250px; /* Prevent cards from getting too small */
+
+        @media (max-width: 575px) { /* Adjust for very small screens */
+            flex: 1 1 100%; /* 1 per row on phones */
+        }
+    }
+}
+
+
+/* Filters Section - Proportion Adjustment */
+/* 調整 input 和 select 的內置圖標位置 */
+.input.pl-8 {
+  padding-left: 2.5rem; /* 40px, for h-5 w-5 icon + padding */
+}
+.select.pl-8 {
+  padding-left: 2.5rem; /* 40px, for h-5 w-5 icon + padding */
+}
+
+/* 確保 SVG 圖標在新的 HTML 結構中對齊 */
+.card-content .flex .relative svg {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 0.75rem; /* 12px */
+    transform: translateY(-50%);
+    z-index: 1; /* 確保圖標在輸入框上方 */
+    pointer-events: none; /* 讓點擊穿透到輸入框 */
+    color: #4b5563; /* Icon color from image */
+}
+
+/* Specific styling for select arrow in Filter section */
+.select {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%234b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center; /* Position arrow on the right, 12px from edge */
+    background-size: 16px; /* Size of the arrow */
+    padding-right: 2.5rem; /* Add padding for the arrow */
+}
+
+/* Table Header Flex and Total Spending Alignment */
+.table-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* Align items at their text baseline */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.total-spending-align {
+    white-space: nowrap; /* Prevent total spending from wrapping */
+    min-width: fit-content; /* Ensure it doesn't shrink too much */
+}
+// // 顯示用的星星 (非按鈕)
+// .star-display {
+//   color: #e5e7eb; // 未選中的星星顏色
+//   &.rated {
+//     color: #f59e0b; // 選中的星星顏色
+//   }
+// }
+
+// 顯示評論文字的區塊
+.review-comment-display {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #f9fafb; // 淺灰色背景
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  min-height: 80px;
+  white-space: pre-wrap; // 讓換行符號可以正常顯示
+}
+.rating {
+  input.mask {
+    // 您可以自由調整這個數值
+    width: 42px !important;  // 48px 大約是 Tailwind 的 h-12 / w-12
+    height: 42px !important;
+  }
+}

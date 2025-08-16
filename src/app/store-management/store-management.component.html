@@ -1,0 +1,361 @@
+<div class="main-layout">
+  @if (viewMode === 'edit') {
+  <div class="edit-container">
+    <div class="header-section">
+      <div class="header-content">
+        <h1 class="header-title">建立商家</h1>
+      </div>
+    </div>
+
+    <div class="main-card">
+      <section class="info-section">
+        <h2 class="section-title">基本資訊與聯絡資訊</h2>
+        <div class="info-grid">
+          <div class="basic-info">
+            <div class="form-group">
+              <label for="businessName" class="form-label">商家名稱<span class="required">*</span></label>
+              <label class="input input-bordered flex items-center gap-2 validator w-full h-12">
+                <input id="businessName" type="text" class="grow" placeholder="請輸入商家名稱" [(ngModel)]="businessData.name"
+                  name="businessName" required #businessName="ngModel"></label>
+              @if (businessName.invalid && (businessName.dirty || businessName.touched)) {
+              <div class="text-red-500 mt-1 text-sm">
+                @if (businessName.errors?.['required']) {
+                <div>商家名稱為必填欄位</div>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="businessDescription" class="form-label">商家介紹<span class="required">*</span></label>
+              <textarea id="businessDescription" class="form-textarea" rows="5" placeholder="請輸入商家介紹"
+                [(ngModel)]="businessData.description" name="businessDescription" required minlength="10"
+                #businessDescription="ngModel"></textarea>
+              @if (businessDescription.invalid && (businessDescription.dirty || businessDescription.touched)) {
+              <div class="text-red-500 mt-1 text-sm">
+                @if (businessDescription.errors?.['required']) {
+                <div>商家介紹為必填欄位</div>
+                }
+                @if (businessDescription.errors?.['minlength']) {
+                <div>商家介紹至少需要10個字</div>
+                }
+              </div>
+              }
+            </div>
+
+          </div>
+          <div class="contact-info">
+
+            <div class="form-group">
+              <label for="businessAddress" class="form-label">地址<span class="required">*</span></label>
+              <label class="input input-bordered flex items-center gap-2 validator w-full h-12">
+                <input id="businessAddress" type="text" class="grow" placeholder="請輸入商家地址"
+                  [(ngModel)]="businessData.address" name="businessAddress" required #businessAddress="ngModel"></label>
+              @if (businessAddress.invalid && (businessAddress.dirty || businessAddress.touched)) {
+              <div class="text-red-500 mt-1 text-sm">
+                @if (businessAddress.errors?.['required']) {
+                <div>地址為必填欄位</div>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="businessGoogleMapUrl" class="form-label">Google Map 網址 (非必填)</label>
+              <input id="businessGoogleMapUrl" type="text" class="form-input" placeholder="請輸入商家地址之Google Map 網址"
+                [(ngModel)]="businessData.googleMapUrl" name="businessGoogleMapUrl">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">電話<span class="required">*</span></label>
+              <div class="phone-type-selector">
+                <label>
+                  <input type="radio" name="phoneType" value="mobile" [(ngModel)]="phoneType">
+                  <span>手機</span>
+                </label>
+                <label>
+                  <input type="radio" name="phoneType" value="landline" [(ngModel)]="phoneType">
+                  <span>市話</span>
+                </label>
+              </div>
+
+              @if (phoneType === 'mobile') {
+              <div class="phone-input-container mobile-view">
+                <label class="input input-bordered flex items-center gap-2 validator w-full h-12">
+                  <input type="tel" class="grow" placeholder="請輸入手機號碼，例如：0912345678" [(ngModel)]="phone_mobile"
+                    name="phone_mobile" required pattern="09\d{8}" maxlength="10" #phoneMobile="ngModel">
+                </label>
+              </div>
+              @if (phoneMobile.invalid && (phoneMobile.dirty || phoneMobile.touched)) {
+              <div class="text-red-500 mt-1 text-sm">
+                @if (phoneMobile.errors?.['required']) { <div>手機號碼為必填</div> }
+                @if (phoneMobile.errors?.['pattern']) { <div>手機號碼格式不正確</div> }
+              </div>
+              }
+              }
+
+              @if (phoneType === 'landline') {
+              <div class="phone-input-container landline-view">
+                <label class="input input-bordered flex items-center gap-2 validator w-20 h-12">
+                  <input type="tel" class="grow area-code ml-2" placeholder="區碼" [(ngModel)]="phone_landline_area"
+                    name="phone_landline_area" required pattern="0\d{1,2}" #areaCode="ngModel" maxlength="3">
+                </label>
+                <span class="hyphen">-</span>
+                <label class="input input-bordered flex items-center gap-2 validator h-12">
+                  <input type="tel" class="grow main-number" placeholder="XXXX" [(ngModel)]="phone_landline_part1"
+                    name="phone_landline_part1" required #part1="ngModel" maxlength="4">
+                </label>
+                <span class="hyphen">-</span>
+                <label class="input input-bordered flex items-center gap-2 validator h-12">
+                  <input type="tel" class="grow main-number" placeholder="XXXX" [(ngModel)]="phone_landline_part2"
+                    name="phone_landline_part2" required #part2="ngModel" maxlength="4">
+                </label>
+              </div>
+              @if ( (areaCode.invalid && (areaCode.dirty || areaCode.touched)) || (part1.invalid && (part1.dirty ||
+              part1.touched)) || (part2.invalid && (part2.dirty || part2.touched)) )
+              {
+              <div class="text-red-500 mt-1 text-sm">
+                <div>區碼與號碼皆為必填，請確認格式</div>
+              </div>
+              }
+              <div class="form-hint">提示：請將市話號碼分段輸入。</div>
+              }
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="businessEmail">信箱<span class="required">*</span></label>
+              <label class="input input-bordered flex items-center gap-2 validator w-full h-12">
+                <input id="businessEmail" type="email" class="grow" placeholder="請輸入Email"
+                  [(ngModel)]="businessData.email" name="businessEmail" required email #businessEmail="ngModel" />
+              </label>
+              @if (businessEmail.invalid && (businessEmail.dirty || businessEmail.touched)) {
+              <div class="text-red-500 mt-1 text-sm">
+                @if (businessEmail.errors?.['required']) {
+                <div>信箱為必填欄位</div>
+                }
+                @if (businessEmail.errors?.['email']) {
+                <div>信箱格式錯誤!</div>
+                }
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="image-section">
+        <h2 class="section-title">圖片管理</h2>
+        <div class="image-grid">
+          <div class="image-item">
+            <h3 class="subsection-title">商家Logo<span class="required">*</span></h3>
+            <div class="image-upload-area">
+              <div class="image-display">
+                @if (images.logo) {
+                <img [src]="images.logo" alt="商家Logo" class="uploaded-logo">
+                } @else {
+                <div class="empty-state">
+                  <div class="empty-icon">📷</div>
+                  <p class="empty-text">尚未上傳Logo</p>
+                </div>
+                }
+              </div>
+              <div class="image-button-area">
+                <button type="button" class="upload-btn" (click)="handleImageUpload('logo')">
+                  {{ images.logo ? '更換Logo' : '上傳Logo' }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="image-item">
+            <h3 class="subsection-title">商家地圖<span class="required">*</span></h3>
+            <div class="image-upload-area">
+              <div class="image-display">
+                @if (images.map) {
+                <img [src]="images.map" alt="商家地圖" class="uploaded-map">
+                } @else {
+                <div class="empty-state">
+                  <div class="empty-icon">📷</div>
+                  <p class="empty-text">尚未上傳地圖</p>
+                </div>
+                }
+              </div>
+              <div class="image-button-area">
+                <button type="button" class="upload-btn" (click)="handleImageUpload('map')">
+                  {{ images.map ? '更換地圖' : '上傳地圖' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="banner-section">
+        <h2 class="section-title">商家橫幅<span class="required">*</span></h2>
+        <div class="banner-upload-area">
+          @if (images.banner) {
+          <div class="banner-content">
+            <img [src]="images.banner" alt="商家橫幅" class="uploaded-banner">
+          </div>
+          } @else {
+          <div class="banner-empty">
+            <div class="empty-icon">📷</div>
+            <p class="empty-text">尚未上傳橫幅圖片</p>
+          </div>
+          }
+        </div>
+        <button type="button" class="upload-btn" (click)="handleImageUpload('banner')">
+          {{ images.banner ? '更換橫幅圖片' : '上傳橫幅圖片' }}
+        </button>
+      </section>
+
+      <section class="pickup-section">
+        <h2 class="section-title">取餐資訊</h2>
+        <div class="pickup-content">
+          <div class="pickup-method">
+            <label class="form-label">取餐方式：</label>
+            <span class="pickup-badge">{{ businessData.pickupMethod }}</span>
+          </div>
+          <div class="form-group">
+            <label for="pickupInstructions" class="form-label">取餐說明<span class="required">*</span></label>
+            <textarea id="pickupInstructions" class="form-textarea" rows="5" placeholder="請描述顧客如何取餐"
+              [(ngModel)]="businessData.pickupInstructions" name="pickupInstructions" required
+              #pickupInstructions="ngModel"></textarea>
+            @if (pickupInstructions.invalid && (pickupInstructions.dirty || pickupInstructions.touched)) {
+            <div class="text-red-500 mt-1 text-sm">
+              @if (pickupInstructions.errors?.['required']) {
+              <div>取餐說明為必填欄位</div>
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="hours-section">
+        <h2 class="section-title">營業時間<span class="required">*</span></h2>
+        <div class="hours-list">
+          @for (dayEntry of dayEntries; track dayEntry[0]) {
+          <div class="hours-item">
+            <span class="day-name">{{ dayEntry[1] }}</span>
+            <div class="hours-controls">
+              <div class="rest-toggle">
+                <input type="checkbox" class="rest-checkbox" [id]="'rest-' + dayEntry[0]"
+                  [checked]="!businessHours[dayEntry[0]].isOpen" (change)="toggleBusinessDay(dayEntry[0])">
+                <label [for]="'rest-' + dayEntry[0]" class="rest-label">休息</label>
+              </div>
+              @if (businessHours[dayEntry[0]].isOpen) {
+              <div class="time-inputs">
+                <select class="time-select" [(ngModel)]="businessHours[dayEntry[0]].openTime"
+                  [name]="'openTime-' + dayEntry[0]">
+                  <option value="">開始時間</option>
+                  @for (time of timeOptions; track time) {
+                  <option [value]="time">{{ time }}</option>
+                  }
+                </select>
+                <span class="time-separator">至</span>
+                <select class="time-select" [(ngModel)]="businessHours[dayEntry[0]].closeTime"
+                  [name]="'closeTime-' + dayEntry[0]">
+                  <option value="">結束時間</option>
+                  @for (time of timeOptions; track time) {
+                  <option [value]="time"
+                    [disabled]="isEndTimeOptionDisabled(time, businessHours[dayEntry[0]].openTime)">
+                    {{ time }}
+                  </option>
+                  }
+                </select>
+              </div>
+              } @else {
+              <div class="rest-display">
+                <span class="rest-badge">休息</span>
+              </div>
+              }
+            </div>
+          </div>
+          }
+        </div>
+
+        <button (click)="handleSave()" [disabled]="isSaving" class="save-btn" type="button">
+          <span>更新</span>
+        </button>
+      </section>
+    </div>
+  </div>
+  }
+
+  <!-- 預覽模式 -->
+  @if (viewMode === 'preview') {
+  <div class="preview-container">
+    <div class="business-display">
+      <div class="display-banner">
+        <img class="banner-image" [src]="images.banner">
+        <div class="banner-overlay">
+          <div class="banner-info">
+            <img class="banner-logo" [src]="images.logo">
+          </div>
+        </div>
+      </div>
+
+      <div class="display-content">
+        <div class="display-section">
+          <h2 class="business-name">{{ businessData.name }}</h2>
+          <p class="business-description">{{ businessData.description }}</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="display-grid">
+          <div class="contact-display">
+            <h3 class="display-section-title">聯絡資訊</h3>
+            <div class="contact-list">
+              <div class="contact-item">📍 {{ businessData.address }}</div>
+              <div class="contact-item">📞 {{ businessData.phone }}</div>
+              <div class="contact-item">📭 {{ businessData.email }}</div>
+              <div class="contact-item">🛍️ 取餐方式：{{ businessData.pickupMethod }}</div>
+            </div>
+          </div>
+
+          <div class="hours-display">
+            <h3 class="display-section-title">營業時間</h3>
+            <div class="hours-display-list">
+              @for (dayEntry of dayEntries; track dayEntry[0]) {
+              <div class="hours-display-item">
+                <span>{{ dayEntry[1] }}</span>
+                @if (businessHours[dayEntry[0]].isOpen) {
+                <span>
+                  {{ businessHours[dayEntry[0]].openTime }} - {{ businessHours[dayEntry[0]].closeTime }}
+                </span>
+                } @else {
+                <span>休息</span>
+                }
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        @if (businessData.pickupInstructions) {
+        <div class="display-section">
+          <h3 class="display-section-title">取餐說明</h3>
+          <div class="pickup-instructions">
+            <p>{{ businessData.pickupInstructions }}</p>
+          </div>
+        </div>
+        <hr class="section-divider">
+        }
+
+        <div class="display-section">
+          <h3 class="display-section-title">位置地圖</h3>
+          <a [href]="businessData.googleMapUrl" target="_blank" rel="noopener noreferrer">
+            <img class="map-image" [src]="images.map" alt="商家地圖" />
+          </a>
+        </div>
+      </div>
+      <div class="back-button-container">
+        <button class="back-btn" (click)="backToEdit()">編輯</button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

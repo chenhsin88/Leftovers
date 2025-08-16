@@ -1,0 +1,149 @@
+/* 引入 Google Fonts 的網路字體，提供更佳的中英文顯示效果 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+/* 定義顏色變數，方便統一管理 */
+:root {
+  --policy-bg-color: #f4f7f9;
+  --policy-card-bg: #ffffff;
+  --policy-text-primary: #333;
+  --policy-text-secondary: #555;
+  --policy-title-color: #1a2c4e;
+  --policy-accent-color: #007bff;
+  --policy-border-color: #e9ecef;
+  --policy-warning-color: #d93025; /* 新增警告顏色 */
+}
+
+/* 頁面最外層的背景 */
+.policy-background {
+  background-color: var(--policy-bg-color);
+  padding: 2rem 1rem; /* 在上下和左右留出邊距 */
+  font-family: 'Noto Sans TC', sans-serif; /* 套用網路字體 */
+  line-height: 1.7; /* 設定舒適的行高 */
+}
+
+/* 主內容容器，卡片式設計 */
+.policy-container {
+  max-width: 800px;
+  margin: 0 auto; /* 水平置中 */
+  background-color: var(--policy-card-bg);
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid white;
+}
+
+/* 頁面頂部標頭 */
+.policy-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--policy-border-color);
+
+  .title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--policy-title-color);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .last-updated {
+    font-size: 0.9rem;
+    color: #888;
+    margin: 0;
+  }
+}
+
+/* 每個政策章節的通用樣式 */
+.policy-section {
+  margin-bottom: 2.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  p {
+    color: var(--policy-text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  strong {
+    color: var(--policy-text-primary);
+    font-weight: 500;
+  }
+}
+
+/* 章節標題樣式 */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--policy-title-color);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 圖示和文字的間距 */
+
+  mat-icon {
+    color: var(--policy-accent-color);
+    font-size: 1.8rem;
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+
+/* 列表樣式 */
+.policy-list {
+  padding-left: 1.5rem;
+  list-style: none; /* 移除預設的圓點 */
+
+  li {
+    position: relative;
+    padding-left: 1.25rem; /* 為自定義的圖示留出空間 */
+    margin-bottom: 0.75rem;
+    color: var(--policy-text-secondary);
+
+    &::before {
+      content: '✔'; /* 自定義的列表符號 */
+      position: absolute;
+      left: 0;
+      top: 2px;
+      color: var(--policy-accent-color);
+      font-weight: bold;
+    }
+  }
+
+  /* --- ✅ 新增：針對警告條款的特殊樣式 --- */
+  .list-item-warning {
+    color: var(--policy-warning-color);
+    font-weight: 500;
+
+    &::before {
+      content: '❗'; /* 使用驚嘆號作為符號 */
+      color: var(--policy-warning-color);
+    }
+  }
+}
+
+/* 響應式設計：當螢幕寬度小於 768px 時套用 */
+@media (max-width: 768px) {
+  .policy-background {
+    padding: 1rem 0.5rem;
+  }
+
+  .policy-container {
+    padding: 1.5rem;
+  }
+
+  .policy-header .title {
+    font-size: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+
+    mat-icon {
+      font-size: 1.6rem;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+}

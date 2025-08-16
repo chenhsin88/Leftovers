@@ -1,0 +1,193 @@
+<!-- confirm -->
+@if (confirmationService.isVisible()) {
+<div class="confirmation-overlay">
+  <div class="confirmation-modal">
+    <div class="confirmation-header">
+      <h3>⚠︎ 請確認操作</h3>
+    </div>
+    <div class="confirmation-body">
+      <p>{{ confirmationService.message() }}</p>
+    </div>
+    <div class="confirmation-actions">
+      <button class="btn btn-secondary" (click)="confirmationService.cancel()">取消</button>
+      <button class="btn btn-primary" (click)="confirmationService.confirm()">確定</button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 頁面標題和新增按鈕 -->
+<div class="header-section">
+  <div class="header-content">
+    <h1 class="header-title">商品庫存管理</h1>
+  </div>
+  <button class="add-btn" (click)="openModal()">
+    新增商品
+  </button>
+</div>
+
+<div class="main-card">
+  <!-- 商品列表 -->
+  <div class="items-grid">
+    @for (item of items; track $index) {
+    <div class="item-card">
+      <div class="status-badge" [class.inactive]="!item.active">
+        {{ item.active ? '已上架' : '已下架' }}
+      </div>
+      <div class="item-image">
+        <img [src]="getImageUrl(item.imageUrl, item.name)" [alt]="item.name" />
+      </div>
+      <div class="item-info">
+        <div class="item-header">
+          <h3 class="item-name">{{ item.name }}</h3>
+        </div>
+        <p class="item-description">{{ item.description }}</p>
+        <div class="price-info">
+          <span class="original-price">原價 NT${{ item.originalPrice }}</span>
+          <span class="discount-price">特價 NT${{ item.discountedPrice }}</span>
+          <span class="discount-badge">{{ calculateDiscount(item.originalPrice, item.discountedPrice) }}% OFF</span>
+        </div>
+        <div class="item-details">
+          <div class="detail-row">
+            <span class="label">數量：</span>
+            <span class="value">{{ item.quantityAvailable }} 份</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">分類：</span>
+            <span class="value category-tag">{{ item.category }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="label">取貨時間：</span>
+            <span class="value">{{ item.pickupStartTime }} - {{ item.pickupEndTime }}</span>
+          </div>
+        </div>
+        <div class="item-actions">
+          <div>
+            <button class="btn btn-secondary" (click)="openModal(item)">編輯</button>
+            <button class="btn btn-deactivate" (click)="removeItem($index)">下架</button>
+          </div>
+          <button class="btn btn-delete" (click)="deleteFoodItem(item, $index)">刪除</button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- 空狀態 -->
+  @if (activeItems.length === 0) {
+  <div class="empty-state">
+    <p>目前沒有上架的商品</p>
+    <button class="btn btn-primary" (click)="openModal()">+ 新增第一個商品</button>
+  </div>
+  }
+
+  <!-- 新增/編輯表單彈窗 -->
+  <div class="modal-overlay" [class.show]="isModalOpen"
+    [ngClass]="{ 'dark-theme': isChecked, 'light-theme': !isChecked }" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>@if (editingItem) { 編輯剩食商品 } @else { 新增剩食商品 }</h2>
+        <button class="btn-close" (click)="closeModal()">×</button>
+      </div>
+      <form class="item-form" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label for="name">剩食名稱 <span class="required">*</span></label>
+          <input class="placeholder" type="text" id="name" formControlName="name" placeholder="請輸入剩食名稱">
+        </div>
+
+        <div class="form-group">
+          <label for="description">食物內容描述 <span class="required">*</span></label>
+          <textarea class="placeholder" id="description" formControlName="description" rows="3"
+            placeholder="請描述食物內容"></textarea>
+        </div>
+
+        <section class="productImg-section">
+          <h2 class="section-title">商品圖片 <span class="required">*</span></h2>
+
+          <div class="productImg-upload-area">
+            @if (image) {
+            <div class="productImg-content">
+              <img [src]="image" alt="商品圖片" class="uploaded-productImg" />
+            </div>
+            } @else {
+            <div class="productImg-empty">
+              <div class="empty-icon">📷</div>
+              <p class="empty-text">尚未上傳圖片</p>
+            </div>
+            }
+          </div>
+
+          <button class="upload-btn" type="button" (click)="triggerImageUpload()">
+            @if (image) { 更換圖片 } @else { 上傳圖片 }
+          </button>
+
+          <input type="file" id="foodImageUpload" (change)="handleImageUpload($event)" accept="image/*" hidden />
+        </section>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quantityAvailable">數量 <span class="required">*</span></label>
+            <input type="number" id="quantityAvailable" formControlName="quantityAvailable" min="1">
+          </div>
+          <div class="form-group">
+            <label for="category">分類標籤 <span class="required">*</span></label>
+            <!-- <option value="" disabled selected>請選擇一個類別</option> -->
+            <select id="category" formControlName="category">
+              @for (category of categories; track category) {
+              <option [value]="category">{{ category }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="originalPrice">原價 <span class="required">*</span></label>
+            <input class="placeholder" type="number" id="originalPrice" formControlName="originalPrice" min="0"
+              placeholder="請輸入原價">
+          </div>
+          <div class="form-group">
+            <label for="discountedPrice">折扣後價格 <span class="required">*</span></label>
+            <input class="placeholder" type="number" id="discountedPrice" formControlName="discountedPrice" min="0"
+              placeholder="請輸入折扣價">
+            @if (itemForm.hasError('discountAboveOriginal') && itemForm.get('discountedPrice')?.touched) {
+            <div class="error-message">
+              折扣後價格不能大於原價！
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pickupStartTime">取貨開始時間 <span class="required">*</span></label>
+            <select id="pickupStartTime" formControlName="pickupStartTime">
+              @for (time of timeSlots; track time) {
+              <option [value]="time">{{ time }}</option>
+              }
+            </select>
+          </div>
+        <div class="form-group">
+  <label for="pickupEndTime">取貨截止時間 <span class="required">*</span></label>
+  <select id="pickupEndTime" formControlName="pickupEndTime">
+    @for (time of timeSlots; track time) {
+      <option [value]="time" [disabled]="time < itemForm.value.pickupStartTime">
+        {{ time }}
+        @if (time < itemForm.value.pickupStartTime) {
+          <span>(不可選)</span>
+        }
+      </option>
+    }
+  </select>
+</div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">取消</button>
+          <button type="submit" class="btn btn-primary">@if (editingItem) { 更新商品 } @else { 新增商品 }</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

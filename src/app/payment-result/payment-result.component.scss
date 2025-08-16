@@ -1,0 +1,198 @@
+// 重置所有元素樣式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// 頁面主容器
+.page-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f8f9fa; // 淺灰色背景
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative; // 為彩紙動畫定位
+
+  // ✅ 新增此行以隱藏滾動條
+  overflow: hidden; // 隱藏任何超出此容器的內容 (例如彩紙動畫)
+}
+
+// 成功訊息卡片容器
+.success-container {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  overflow: hidden; // 這個 overflow:hidden 是為了讓裝飾線不超出卡片圓角
+
+  // 頂部綠色裝飾線
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: #007bff;
+  }
+}
+
+// 成功圖示圓圈
+.success-icon {
+  width: 100px;
+  height: 100px;
+  background: #007bff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  animation: successPulse 2s ease-in-out infinite; // 脈動動畫
+}
+
+// 勾選符號
+.checkmark {
+  width: 40px;
+  height: 20px;
+  border: 4px solid white;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+  margin-top: -8px;
+}
+
+// 成功圖示脈動動畫
+@keyframes successPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+// 主標題
+.success-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 15px;
+}
+
+// 訊息文字
+.success-message {
+  font-size: 1.1rem;
+  color: #718096;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+// 繼續購物按鈕
+.continue-shopping {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 20px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+
+  // 懸停效果
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+  }
+
+  // 點擊效果
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// 彩紙動畫
+// ✅ 彩紙動畫樣式
+.confetti {
+  position: absolute;
+  opacity: 0; // 初始為透明
+  animation-name: confetti-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  // 使用 :nth-child 來循環設定多種顏色、形狀和動畫時間
+  // HTML中的 @for 迴圈會產生多個 .confetti div，這些選擇器會依次應用到它們上面
+  &:nth-child(5n + 0) {
+    background-color: #f1c40f; // 鮮黃色
+    width: 7px;
+    height: 15px;
+    animation-duration: 4s;
+  }
+
+  &:nth-child(5n + 1) {
+    background-color: #3498db; // 藍色
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation-duration: 4.5s;
+  }
+
+  &:nth-child(5n + 2) {
+    background-color: #e74c3c; // 紅色
+    width: 10px;
+    height: 10px;
+    animation-duration: 3.5s;
+  }
+
+  &:nth-child(5n + 3) {
+    background-color: #2ecc71; // 綠色
+    width: 10px;
+    height: 10px;
+    animation-duration: 5s;
+  }
+
+  &:nth-child(5n + 4) {
+    background-color: #9b59b6; // 紫色
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation-duration: 3s;
+  }
+}
+
+// ✅ 彩紙掉落動畫，增加 3D 旋轉效果
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-20vh) rotate(0deg) rotateY(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    /* 【關鍵修正】將 120vh 改為 100vh */
+    transform: translateY(100vh) rotate(720deg) rotateY(360deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .success-container {
+    padding: 40px 20px;
+  }
+
+  .success-title {
+    font-size: 2rem;
+  }
+}

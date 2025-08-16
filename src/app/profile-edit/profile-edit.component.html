@@ -1,0 +1,137 @@
+@if (currentUser) {
+<div class="min-h-screen bg-base-200/50 p-4 sm:p-6 md:p-8 flex items-center justify-center">
+  <div class="w-full max-w-3xl bg-base-100 rounded-2xl shadow-xl overflow-hidden">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="p-6 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-base-content text-center">編輯個人資料</h1>
+        <p class="text-center text-base-content/70 mt-2">更新您的個人資訊與設定</p>
+        <div class="divider my-6"></div>
+        <div class="flex flex-col sm:flex-row items-center gap-6">
+          <div class="avatar">
+            <div class="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <img [src]="avatarPreview || 'assets/images/default-avatar.svg'" alt="使用者大頭貼" />
+            </div>
+          </div>
+          <div class="flex-grow text-center sm:text-left">
+            <h3 class="text-lg font-semibold text-base-content">大頭貼</h3>
+            <p class="text-sm text-base-content/60 mt-1">接受 .jpg, .png, .webp 格式，檔案大小不超過 5MB。</p>
+            <div class="mt-4 flex items-center justify-center sm:justify-start gap-3">
+              <label for="avatarUpload" class="btn btn-sm btn-primary btn-outline">
+                上傳新頭像
+                <input id="avatarUpload" type="file" class="hidden" (change)="onFileSelected($event)" accept=".jpg,.png,.webp">
+              </label>
+              <button type="button" (click)="removeAvatar()" class="btn btn-sm btn-ghost text-error">移除</button>
+            </div>
+          </div>
+        </div>
+        <div class="divider my-8"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-semibold">姓名</span></label>
+            <input type="text" formControlName="name" class="input input-bordered w-full" [class.input-error]="f['name'].invalid && f['name'].touched" />
+            @if (f['name'].invalid && f['name'].touched) {
+              <div class="label"><span class="label-text-alt text-error">請輸入您的姓名。</span></div>
+            }
+          </div>
+          <div class="form-control w-full">
+            <label class="label"><span class="label-text font-semibold">電話號碼</span></label>
+            <input type="tel" formControlName="phoneNumber" class="input input-bordered w-full" [class.input-error]="f['phoneNumber'].invalid && f['phoneNumber'].touched" />
+            @if (f['phoneNumber'].invalid && f['phoneNumber'].touched) {
+              <div class="label"><span class="label-text-alt text-error">請輸入有效的 10 位手機號碼。</span></div>
+            }
+          </div>
+          <div class="form-control w-full md:col-span-2">
+            <label class="label"><span class="label-text font-semibold">電子郵件</span></label>
+            <div class="tooltip w-full" data-tip="電子郵件作為您的登入帳號，無法更改。">
+              <input type="email" formControlName="email" class="input input-bordered w-full bg-base-200/50 cursor-not-allowed" />
+            </div>
+          </div>
+        </div>
+
+        @if (!currentUser.regularRegistration) {
+          <div class="collapse collapse-arrow bg-base-200/50 border border-base-300/50 mt-8">
+            <input type="checkbox" />
+            <div class="collapse-title text-md font-semibold">修改密碼</div>
+            <div class="collapse-content">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 pt-4">
+
+                <div class="form-control w-full">
+                  <label class="label"><span class="label-text font-medium">目前密碼</span></label>
+                  <div class="relative w-full">
+                    <input [type]="passwordVisibility.current ? 'text' : 'password'" formControlName="currentPassword" class="input input-bordered w-full pr-12" [class.input-error]="f['currentPassword'].invalid && f['currentPassword'].touched"/>
+                    <button type="button" class="absolute top-1/2 right-2 -translate-y-1/2 z-10 rounded-full p-1.5 hover:bg-base-content/10" (click)="togglePasswordVisibility('current')">
+                      <mat-icon>{{ passwordVisibility.current ? 'visibility' : 'visibility_off' }}</mat-icon>
+                    </button>
+                  </div>
+                  @if (f['currentPassword'].invalid && f['currentPassword'].touched) {
+                    <div class="label"><span class="label-text-alt text-error">若要變更密碼，此欄位為必填。</span></div>
+                  }
+                </div>
+
+                <div></div>
+
+                <div class="form-control w-full">
+                  <label class="label"><span class="label-text font-medium">新密碼</span></label>
+                  <div class="relative w-full">
+                    <input [type]="passwordVisibility.new ? 'text' : 'password'" formControlName="newPassword" class="input input-bordered w-full pr-12" [class.input-error]="f['newPassword'].invalid && f['newPassword'].touched" />
+                    <button type="button" class="absolute top-1/2 right-2 -translate-y-1/2 z-10 rounded-full p-1.5 hover:bg-base-content/10" (click)="togglePasswordVisibility('new')">
+                      <mat-icon>{{ passwordVisibility.new ? 'visibility' : 'visibility_off' }}</mat-icon>
+                    </button>
+                  </div>
+                  @if (f['newPassword'].invalid && f['newPassword'].touched) {
+                    <div class="label"><span class="label-text-alt text-error">需6-16碼，含大小寫英文及數字。</span></div>
+                  }
+                </div>
+
+                <div class="form-control w-full">
+                  <label class="label"><span class="label-text font-medium">確認新密碼</span></label>
+                  <div class="relative w-full">
+                    <input [type]="passwordVisibility.confirm ? 'text' : 'password'" formControlName="confirmPassword" class="input input-bordered w-full pr-12" [class.input-error]="f['confirmPassword'].errors?.['passwordMismatch'] && f['confirmPassword'].touched" />
+                    <button type="button" class="absolute top-1/2 right-2 -translate-y-1/2 z-10 rounded-full p-1.5 hover:bg-base-content/10" (click)="togglePasswordVisibility('confirm')">
+                      <mat-icon>{{ passwordVisibility.confirm ? 'visibility' : 'visibility_off' }}</mat-icon>
+                    </button>
+                  </div>
+                  @if (f['confirmPassword'].errors?.['passwordMismatch'] && f['confirmPassword'].touched) {
+                    <div class="label"><span class="label-text-alt text-error">兩次輸入的密碼不相符。</span></div>
+                  }
+                </div>
+
+              </div>
+            </div>
+          </div>
+        }
+        @if (currentUser.regularRegistration) {
+          <div class="alert alert-info mt-8">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>您目前使用 Google 帳號登入，密碼由 Google 管理，無法在此修改</span>
+          </div>
+        }
+      </div>
+      <div class="bg-base-200/30 px-6 py-4 flex justify-end items-center gap-4 border-t border-base-300/50">
+        <button type="button" (click)="onCancel()" class="btn btn-ghost">取消</button>
+        <button
+          type="submit"
+          class="btn btn-primary w-32"
+          [disabled]="isSaveDisabled">
+          @if (isSaving) {
+            <span class="loading loading-spinner"></span>
+            <span>儲存中...</span>
+          } @else {
+            <span>儲存變更</span>
+          }
+        </button>
+      </div>
+      <div class="p-6 md:p-8">
+        <p class="text-sm text-base-content/70 text-center">修改個人資料後，請重新登入以套用變更</p>
+      </div>
+    </form>
+  </div>
+</div>
+} @else {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-base-100/80 backdrop-blur-sm">
+    <div class="flex flex-col items-center gap-4">
+      <span class="loading loading-spinner text-primary w-24 h-24"></span>
+      <span class="text-primary text-lg font-bold">正在載入您的資料...</span>
+    </div>
+  </div>
+}

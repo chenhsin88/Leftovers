@@ -1,0 +1,10 @@
+<div #mapContainer class="map-container"></div>
+
+@if (tooltip) {
+  <div
+    class="tooltip"
+    [style.left.px]="tooltip.x + 15"
+    [style.top.px]="tooltip.y + 15">
+    {{ tooltip.content }}
+  </div>
+}

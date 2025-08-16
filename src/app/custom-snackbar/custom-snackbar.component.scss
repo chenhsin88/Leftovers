@@ -1,0 +1,68 @@
+// :host 會選中 <app-custom-snackbar> 這個元件本身
+// 我們把主要的背景、邊距、陰影等樣式都定義在這裡
+:host {
+  // --- 主要容器樣式 ---
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  font-size: 18px;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  line-height: 1.6;
+
+  // --- Flexbox 佈局 ---
+  // 讓元件本身成為 flex 容器，來排列內部的 content 和 close-btn
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
+
+// --- 以下是元件內部的樣式 ---
+
+.snackbar-content {
+  flex-grow: 1;
+}
+
+.snackbar-title {
+  font-weight: bold;
+  color: #f39c12; // 醒目的標題顏色
+  margin-bottom: 10px;
+  display: block;
+}
+
+.item-list .item {
+  display: flex;
+  justify-content: space-between; // 實現左右對齊的關鍵
+  padding: 4px 0;
+  border-bottom: 1px solid #34495e;
+}
+
+.item-list .item:last-child {
+  border-bottom: none; // 最後一項不需要底線
+}
+
+.item-price {
+  font-weight: 500;
+  color: #2ecc71; // 清新的價格顏色
+  padding-left: 15px;
+  white-space: nowrap;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #7f8c8d;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+  &:hover {
+    color: #ecf0f1; // 滑鼠懸停時變亮
+    transform: scale(1.2); // 稍微放大提供回饋
+  }
+}

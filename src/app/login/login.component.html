@@ -1,0 +1,220 @@
+<div class="relative z-10">
+ <div class="bg-[#263238] w-screen min-h-screen text-white overflow-x-hidden flex flex-col items-center pt-14">
+  <div class="flex items-center justify-center gap-8 mb-8">
+   <div class="mask w-18">
+    <img src="/forfront/leftoverGIF.gif" />
+   </div>
+   <div class="top-title">
+    <h1 class="text-4xl font-bold">Leftovers</h1>
+   </div>
+
+  </div>
+
+  <div class="login-form-container w-full max-w-sm mx-auto">
+   <form #loginForm="ngForm">
+    <div class="card bg-base-100 shadow-xl">
+     <div class="card-body">
+      <h2 class="card-title justify-center text-3xl font-bold login-text-dark">
+       @if(forget){
+        忘記密碼
+       }@else if(!forget){
+        登入
+       }@else{
+        驗證碼確認
+       }
+      </h2>
+
+      @if(!ckcode){
+      <div class="form-control">
+       <label class="label">
+        <span class="label-text login-text-dark">電子郵件</span>
+       </label>
+       <label class="input validator input-bordered w-full login-input">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+         <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+          <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+         </g>
+        </svg>
+        <input [(ngModel)]="loginEmail"
+               type="email"
+               placeholder="mail@site.com"
+               class=" login-input"
+               required
+               name="email"
+               [ngModelOptions]="{updateOn: 'change'}"
+               email />
+       </label>
+       <div class="validator-hint">信箱格式錯誤!</div>
+      </div>
+      @if(!forget){
+      <div class="form-control mt-4">
+       <label class="label">
+        <span class="label-text login-text-dark">密碼</span>
+        <a class="label-text-alt link link-hover link-secondary" (click)="forgetpassword()">忘記密碼?</a>
+       </label>
+       <label class="input validator input-bordered w-full login-input">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+         <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+          <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
+          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+         </g>
+        </svg>
+        <input
+         type="password"
+         class="login-input"
+         required
+         placeholder="Password"
+         [(ngModel)]="loginPassword"
+         minlength="6"
+         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,16}$"
+         title="整體長度限制為 6 到 16 個字元，且只能包含英文字母（大小寫）與數字。不允許特殊符號（如 !@#$% 等）"
+         matInput [type]="hide() ? 'password' : 'text'"
+         name="password"
+         [ngModelOptions]="{updateOn: 'change'}"
+        />
+        <button type="button" class="btn btn-ghost btn-sm btn-circle" (click)="clickEvent($event)">
+         <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+       </label>
+       <p class="validator-hint hidden">
+        整體長度限制為 6 到 16 個字元
+        <br />至少包含一個英文字母（大小寫）與數字 <br />不允許特殊符號（如 !&#64;#$% 等） <br />
+       </p>
+      </div>
+
+      <div class="form-control mt-6">
+       <button class="btn btn-primary w-full" (click)="LoginCheck()" [disabled]="loginForm.form.invalid || isLoading">
+        @if (isLoading) {
+        <span class="loading loading-spinner loading-md"></span>
+        登入中...
+        } @else {
+        登入
+        }
+       </button>
+      </div>
+
+      <div class="divider login-text-dark before:bg-gray-400 after:bg-gray-400">或</div>
+      <div class="h-3 w-30 text-color-black gap-4 mb-3">
+    <a class="label-text-alt link link-hover link-secondary " (click)="testlogin()">
+      測試登入
+    </a>
+  </div>
+      <asl-google-signin-button
+       type="standard"
+       size="large"
+       theme="outline"
+       shape="rectangular"
+      ></asl-google-signin-button>
+
+      <p class="text-center text-sm login-text-dark">
+       還沒有帳號?
+       <a class="link link-primary" (click)="signup()">立即註冊</a>
+      </p>
+       }@else{
+        <div class="flex justify-center items-center gap-4 w-full">
+         <button type="button" class="btn btn-error grow" (click)="BackToLogin() "  [disabled]="ifsend">
+          返回登入
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+
+         </button>
+         <button type="button" class="btn btn-accent grow" (click)="sendCode()" [disabled]="loginForm.form.invalid || ifsend" >
+          發送驗證信
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+          </svg>
+
+         </button>
+        </div>
+       }
+       }@else{
+        <div class="form-control">
+       <label class="label">
+        <span class="label-text login-text-dark">驗證碼</span>
+       </label>
+       <label class="input validator input-bordered w-full text-black">
+        <input
+            class="w-full placeholder:text-gray-500"
+            type="text"
+            inputmode="numeric"
+            pattern="\d{6}"
+            maxlength="6"
+            name="inputcode"
+            [(ngModel)]="inputcode"
+            minlength="6"
+            required
+            placeholder="請輸入6位數字" />
+       </label>
+       <div class="validator-hint hidden">驗證碼格式錯誤!</div>
+      </div>
+
+      <div class="form-control mt-4">
+       <label class="label">
+        <span class="label-text login-text-dark">新密碼</span>
+       </label>
+       <label class="input validator input-bordered w-full login-input">
+        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+         <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+          <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"></path>
+          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+         </g>
+        </svg>
+        <input
+         type="password"
+         class="login-input"
+         required
+         placeholder="Password"
+         name="newPassword"
+         [(ngModel)]="newPassword"
+         minlength="6"
+         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,16}$"
+         title="整體長度限制為 6 到 16 個字元，且只能包含英文字母（大小寫）與數字。不允許特殊符號（如 !@#$% 等）"
+         matInput [type]="hide() ? 'password' : 'text'"
+         name="password"
+         [ngModelOptions]="{updateOn: 'change'}"
+        />
+        <button type="button" class="btn btn-ghost btn-sm btn-circle" (click)="clickEvent($event)">
+         <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+       </label>
+       <p class="validator-hint hidden">
+        整體長度限制為 6 到 16 個字元
+        <br />至少包含一個英文字母（大小寫）與數字 <br />不允許特殊符號（如 !&#64;#$% 等） <br />
+       </p>
+      </div>
+
+      <div class="flex justify-center items-center gap-4 w-full">
+         <button type="button" class="btn btn-error grow btn-outline" (click)="BackToLogin()">
+          返回登入
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+
+         </button>
+         <button type="button" class="btn btn-accent grow btn-outline" (click)="sendcodeagain()" [disabled]="countdown > 0 ">
+          {{ countdown > 0 ? countdown + ' 秒後可再發送' : '重新發送驗證信' }}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+          </svg>
+
+         </button>
+
+        </div>
+        <div class="form-control mt-4">
+      <button type="button" class="btn btn-success w-full btn-outline" (click)="submitCode()" >
+        確認
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </svg>
+      </button>
+    </div>
+       }
+     </div>
+    </div>
+   </form>
+  </div>
+
+ </div>
+</div>

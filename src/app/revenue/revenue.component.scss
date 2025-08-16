@@ -1,0 +1,262 @@
+/* 標題區域樣式 */
+.header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  // background: white;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.9rem 1.5rem;
+}
+
+.header-title {
+  font-size: 2.25rem;
+  font-weight: bold;
+  // color: #111827;
+  margin: 0;
+}
+
+// 主容器
+.main-card {
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.dashboard-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// 指標卡片網格
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+// 指標卡片
+.metric-card {
+  // background: white;
+  border: solid 1px #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      // color: #6b7280;
+    }
+  }
+
+  .card-content {
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      // color: #111827;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-change {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+
+      &.positive {
+        color: #059669;
+      }
+    }
+
+    .metric-subtitle {
+      font-size: 1rem;
+      // color: #6b7280;
+    }
+  }
+}
+
+// 圖表卡片
+.chart-card {
+  // background: white;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  padding: 1.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  .chart-header {
+    margin-bottom: 1rem;
+
+    .chart-title {
+      font-size: 1.7rem;
+      font-weight: 600;
+      // color: #111827;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .chart-description {
+      font-size: 1.1rem;
+      // color: #6b7280;
+      margin: 0;
+    }
+  }
+
+  .chart-content {
+    position: relative;
+    height: 300px;
+    width: 100%;
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
+
+// 摘要卡片
+.summary-card {
+  // background: white;
+  border: solid 1px #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  .summary-header {
+    margin-bottom: 1.5rem;
+
+    .summary-title {
+      font-size: 1.7rem;
+      font-weight: 600;
+      // color: #111827;
+      margin: 0 0 0.25rem 0;
+    }
+  }
+
+  .summary-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .summary-section {
+    .section-title {
+      font-size: 18px;
+      font-weight: 500;
+      // color: #111827;
+      margin: 0 0 1rem 0;
+    }
+
+    .data-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f3f4f6;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .data-label {
+        // color: #6b7280;
+      }
+
+      .data-value {
+        font-weight: 500;
+        // color: #111827;
+      }
+    }
+  }
+}
+
+// 響應式設計
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-content {
+    gap: 1.5rem;
+  }
+
+  .header-section .main-title {
+    font-size: 1.5rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.placeholder-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  border-radius: 0.5rem;
+  border: 1px dashed #d1d5db; // 使用虛線邊框，感覺更像是一個佔位符
+  text-align: center;
+  min-height: 50vh; // 確保它有足夠的高度
+}
+
+.no-data-icon {
+  width: 5rem;
+  height: 5rem;
+  color: #9ca3af; // 使用柔和的灰色
+  margin-bottom: 1.5rem;
+}
+
+.placeholder-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.placeholder-text {
+  font-size: 1rem;
+  color: #6b7280;
+  max-width: 400px;
+}
+
+// 簡易的載入中動畫
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6; // 主題藍色
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,28 @@
+// :host 選擇器代表元件本身
+:host {
+  display: block; // 讓元件表現得像一個區塊元素
+  width: 100%;
+  height: 70vh; // 設定地圖的高度，您可以根據需要調整
+  position: relative; // 讓提示框的絕對定位有參考點
+}
+
+// 地圖容器的樣式
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+// 提示框的樣式
+.tooltip {
+  position: absolute; // 絕對定位，根據滑鼠位置顯示
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none; // 讓滑鼠可以穿透提示框，點擊到下方的地圖
+  white-space: nowrap; // 避免文字換行
+  z-index: 10; // 確保在最上層顯示
+  transition: opacity 0.2s;
+  white-space: pre-wrap;
+}

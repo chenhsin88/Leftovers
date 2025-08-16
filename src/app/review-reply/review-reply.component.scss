@@ -1,0 +1,545 @@
+  /* confirm確認對話框樣式 */
+  .confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9998;
+    /* z-index 要夠高，但比 alert 稍低 */
+  }
+
+  .confirmation-modal {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .confirmation-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .confirmation-body {
+    margin: 20px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .confirmation-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* 這裡可以共用您專案中已有的按鈕樣式 */
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #2563eb;
+    color: white;
+
+    &:hover {
+      background: #1d4ed8;
+    }
+  }
+
+  .btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+
+    &:hover {
+      background: #e5e7eb;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* 標題區域樣式 */
+  .header-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    // background: white;
+    border-radius: 0.5rem;
+    border: solid 1px #e5e7eb;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.9rem 1.5rem;
+  }
+
+  .header-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    // color: #111827;
+    margin: 0;
+  }
+
+  .main-card {
+    border-radius: 0.5rem;
+    border: solid 1px #e5e7eb;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+  }
+
+  /* 評論列表容器 */
+  .reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* 單個評論卡片 */
+  .review-card {
+    //  background: white;
+    border-radius: 10px;
+    border: solid 1px #e5e7eb;
+    padding: 24px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 用戶評論區域 */
+  .user-review {
+    display: flex;
+    gap: 16px;
+  }
+
+  /* 用戶頭像 */
+  .avatar {
+    position: relative;
+    width: 50px;
+    height: 50px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .avatar-fallback {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      //  background: #e5e7eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      //  color: #374151;
+    }
+  }
+
+  /* 評論內容區域 */
+  .review-content {
+    flex: 1;
+  }
+
+  /* 評論標題區域 */
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  /* 用戶資訊 */
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    /* 改為垂直排列 */
+    align-items: flex-start;
+    /* 向左對齊 */
+    gap: 4px;
+    /* 在行之間增加小間距 */
+
+    .user-info-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  .order-id {
+    font-size: 14px;
+    color: #6b7280;
+    /* 使用一個較柔和的顏色 */
+    font-weight: 500;
+  }
+
+  /* 星級評分 */
+  .stars {
+    display: flex;
+    gap: 2px;
+
+    .star {
+      color: #d1d5db;
+      font-size: 20px;
+
+      &.filled {
+        color: #fbbf24;
+      }
+    }
+  }
+
+  /* 日期顯示 */
+  .date {
+    font-size: 16px;
+    //  color: #6b7280;
+  }
+
+  /* 評論文字 */
+  .comment {
+    //  color: #374151;
+    line-height: 1.6;
+    margin: 16px 0;
+    font-size: 18px;
+  }
+
+  /* 店家回覆區域 */
+  .store-reply {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  /* 回覆標題 */
+  .reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  /* 店家資訊 */
+  .store-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* 店家標誌 */
+  .store-badge {
+    width: 35px;
+    height: 35px;
+    background: #3b82f6;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  /* 店家名稱 */
+  .store-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d4ed8;
+  }
+
+  /* 回覆日期 */
+  .reply-date {
+    font-size: 16px;
+    color: #6b7280;
+  }
+
+  /* 回覆文字 */
+  .reply-text {
+    width: 85%;
+    color: #374151;
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    /* 加上這些屬性來讓文字自動斷行 */
+    white-space: normal;
+    /* 允許正常換行 */
+    word-break: break-word;
+    /* 在單字過長時強制斷行 */
+    overflow-wrap: break-word;
+    /* 與上面搭配使用，增強兼容性 */
+  }
+
+  /* 回覆功能區域 */
+  .reply-section {
+    margin-top: 16px;
+  }
+
+  /* 回覆按鈕 */
+  .reply-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #1d4ed8;
+    }
+  }
+
+  /* 編輯、刪除按鈕 */
+  .edit-btn {
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #2ab771;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.75rem;
+    margin-left: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #259b60;
+    }
+  }
+
+  /* 刪除按鈕 */
+  .delete-btn {
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #ea3737;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.75rem;
+    margin-left: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #bc2e2e;
+    }
+  }
+
+  .edit-delete-div {
+    margin-left: 85%;
+  }
+
+  .reply-textarea {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .reply-textarea::placeholder {
+    color: #999;
+    font-size: 1.2rem;
+    font-style: italic;
+    opacity: 1;
+    /* 確保在所有瀏覽器中顏色都清晰可見 */
+  }
+
+  .save-btn {
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #2ab771;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.75rem;
+    margin-left: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #259b60;
+    }
+  }
+
+  .cancel-btn {
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #9b9b9b;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.75rem;
+    margin-left: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #8f8f8f;
+    }
+  }
+
+  /* 回覆表單 */
+  .reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* 回覆文字輸入框 */
+  .reply-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    resize: vertical;
+    font-family: inherit;
+    color: #000000;
+    font-size: 20px;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  /* 表單按鈕區域 */
+  .form-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* 提交按鈕 */
+  .submit-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    &:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+  }
+
+  /* 響應式設計 */
+  @media (max-width: 768px) {
+    .container {
+      padding: 16px;
+    }
+
+    .review-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .user-review {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .avatar {
+      align-self: flex-start;
+    }
+  }
+
+  /* --- 無資料與載入中提示畫面的樣式 --- */
+  .placeholder-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    border-radius: 0.5rem;
+    border: 1px dashed #d1d5db;
+    text-align: center;
+    min-height: 50vh; // 確保它有足夠的高度
+    flex-grow: 1;
+    /* 讓提示框填滿可用空間 */
+  }
+
+  .no-data-icon {
+    width: 5rem;
+    height: 5rem;
+    color: #9ca3af;
+    margin-bottom: 1.5rem;
+  }
+
+  .placeholder-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .placeholder-text {
+    font-size: 1rem;
+    color: #6b7280;
+    max-width: 400px;
+  }
+
+  .spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.5rem;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }

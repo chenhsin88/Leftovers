@@ -1,0 +1,583 @@
+// ===== 基本變數定義 =====
+$primary-color: #3b82f6; // 主要藍色
+$success-color: #10b981; // 成功綠色
+$danger-color: #ef4444; // 危險紅色
+$warning-color: #f59e0b; // 警告黃色
+$cancel-color: #8400ff; // 待取消紫色
+$gray-50: #f9fafb; // 淺灰背景
+$gray-100: #f3f4f6; // 卡片背景
+$gray-200: #e5e7eb; // 邊框顏色
+$gray-300: #c0c1c3;
+$gray-500: #6b7280; // 次要文字
+$gray-600: #757575;
+$gray-700: #374151; // 主要文字
+$gray-900: #111827; // 標題文字
+
+// ===== 頁面整體佈局 =====
+.page-container {
+  min-height: 100vh;
+  // background-color: $gray-50;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// ===== 頁面標題區域 =====
+.header {
+  // background-color: white;
+  border-bottom: 1px solid $gray-200;
+
+  .header-content {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: none;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $gray-100;
+    }
+
+    .back-icon {
+      font-size: 2rem;
+      // color: $gray-700;
+    }
+  }
+
+  .title-section {
+    .page-title {
+      font-size: 30px;
+      font-weight: 600;
+      // color: $gray-900;
+      margin: 0;
+    }
+
+    .order-number {
+      font-size: 18px;
+      color: $gray-500;
+      margin: 0;
+    }
+  }
+}
+
+// ===== 狀態標籤樣式 =====
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 1.1rem;
+  font-weight: 400;
+  border: 1px solid;
+
+  // 待付款狀態
+  &.pending {
+    background-color: rgba($warning-color, 0.2);
+    color: darken($warning-color, 10%);
+    border-color: rgba($warning-color, 0.3);
+  }
+
+  // 待取餐狀態
+  &.picked-up {
+    background-color: rgba($primary-color, 0.2);
+    color: darken($primary-color, 10%);
+    border-color: rgba($primary-color, 0.3);
+  }
+
+  // 已完成狀態
+  &.completed {
+    background-color: rgba($success-color, 0.2);
+    color: darken($success-color, 10%);
+    border-color: rgba($success-color, 0.3);
+  }
+
+  // 買家取消訂單
+  &.cancelled-by-user {
+    background-color: rgba($cancel-color, 0.2);
+    color: darken($cancel-color, 0.5%);
+    border-color: rgba($cancel-color, 0.3);
+  }
+
+  // 已取消(商家同意取消訂單)
+  &.cancelled-by-merchant {
+    background-color: rgba($danger-color, 0.2);
+    color: darken($danger-color, 10%);
+    border-color: rgba($danger-color, 0.3);
+  }
+
+  // 未取餐狀態
+  &.not-token {
+    background-color: rgba($danger-color, 0.2);
+    color: darken($danger-color, 10%);
+    border-color: rgba($danger-color, 0.3);
+  }
+
+}
+
+// ===== 主要內容區域 =====
+.main-content {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  // 大螢幕時分成左右兩欄
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ===== 卡片樣式 =====
+.card {
+  // background-color: white;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  .card-header {
+    padding: 1.5rem 1.5rem 0 1.5rem;
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      // color: $gray-900;
+      margin: 0;
+
+      // 取消原因標題特殊樣式
+      &.cancel-title {
+        color: $danger-color;
+      }
+    }
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+}
+
+// ===== 資訊項目樣式 =====
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  // 中等螢幕時分成兩欄
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.info-item {
+  .info-label {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    // color: $gray-500;
+    margin-bottom: 0.25rem;
+  }
+
+  .info-value {
+    margin: 0;
+    font-size: 1.2rem;
+    // color: $gray-900;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.info-label2 {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  // color: $gray-500;
+}
+
+.info-label3 {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1.3rem;
+  // color: $gray-500;
+}
+
+.info-value2 {
+  margin: 0;
+  font-size: 1.2rem;
+  // color: $gray-900;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+// ===== 特殊樣式元素 =====
+// 訂單編號
+.order-id {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+// 總金額
+.total-amount {
+  font-size: 2rem !important;
+  font-weight: 700;
+  color: $success-color !important;
+}
+
+// 取餐碼
+.pickup-code {
+  font-size: 28px !important;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: $primary-color;
+  background-color: rgba($primary-color, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin: 0;
+}
+
+// ===== 表格樣式 =====
+.table-container {
+  overflow-x: auto; // 手機版時可以橫向滾動
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid $gray-200;
+  }
+
+  th {
+    // background-color: $gray-50;
+    font-size: 1.3rem;
+    font-weight: 700;
+    // color: $gray-700;
+  }
+
+  // 文字對齊
+  .text-center {
+    text-align: center;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  // 餐點編號
+  .item-id {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    font-weight: 550;
+    // color: $gray-600;
+  }
+
+  // 餐點名稱
+  .item-name .name {
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  // 實際價格
+  .food-price {
+    font-weight: 500;
+    font-size: 1.2rem;
+  }
+
+  // 小計
+  .subtotal {
+    font-weight: 700;
+    font-size: 1.2rem;
+    // color: $success-color;
+  }
+}
+
+// 分隔線
+.separator {
+  height: 1px;
+  // background-color: $gray-200;
+  margin: 1rem 0;
+  border: none;
+}
+
+// 總計區域
+.total-section {
+  display: flex;
+  justify-content: flex-end;
+
+  .total-row {
+    text-align: right;
+
+    .total-label {
+      // color: $gray-500;
+      font-size: 1.2rem;
+    }
+
+    .total-value {
+      // color: $success-color;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+// ===== 備註和取消原因 =====
+.customer-note {
+  background-color: $gray-50;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin: 0;
+  color: $gray-700;
+  line-height: 1.5;
+}
+
+.cancel-reason {
+  background-color: rgba($danger-color, 0.3);
+  border: 1px solid rgba($danger-color, 0.2);
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 20px;
+  // color: $gray-700;
+  line-height: 1.5;
+}
+
+.reject-reason {
+  background-color: rgba($warning-color, 0.3);
+  border: 1px solid rgba($danger-color, 0.2);
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 20px;
+  // color: $gray-700;
+  line-height: 1.5;
+}
+
+.reject-reason-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid $gray-300;
+  border-radius: 4px;
+  resize: vertical;
+  margin-bottom: 1rem;
+  // color: gray;
+}
+
+.reject-reason-input::placeholder {
+  color: #999;
+  font-size: 1.2rem;
+  font-style: italic;
+  opacity: 1;
+  /* 確保在所有瀏覽器中顏色都清晰可見 */
+}
+
+.rejection-submitted-message {
+  color: green;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.approval-submitted-message {
+  color: green;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+
+
+
+// ===== 時間軸樣式 =====
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .timeline-item {
+    display: flex;
+    gap: 0.75rem;
+
+    .timeline-dot {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      margin-top: 0.25rem;
+      flex-shrink: 0;
+
+      &.blue {
+        background-color: $primary-color;
+      }
+
+      &.yellow {
+        background-color: $warning-color;
+      }
+    }
+
+    .timeline-content {
+      .timeline-title {
+        font-weight: 500;
+        font-size: 1.1rem;
+        // color: $gray-900;
+        margin: 0;
+      }
+
+      .timeline-time {
+        font-size: 1.1rem;
+        // color: $gray-500;
+        margin: 0.25rem 0 0 0;
+      }
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  // justify-content: space-between; // 改為 flex-start 或 center，依您的喜好
+  justify-content: flex-start;
+
+  // ... (您已有的 .btn-cancelled, .btn-reject) ...
+}
+
+// 未取餐按鈕樣式
+.btn-not-taken {
+  background-color: $danger-color; // 使用已定義的警告橘色
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: darken($danger-color, 10%);
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// ===== 響應式設計 =====
+@media (min-width: 640px) {
+  .main-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    padding: 2rem 2rem;
+  }
+}
+
+.btn-complete {
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &:hover {
+    background-color: #218838;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.btn-reject {
+  background-color: #f59e0b;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &:hover {
+    background-color: #cb850a;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.btn-cancelled {
+  background-color: #ef4444;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &:hover {
+    background-color: #c93939;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

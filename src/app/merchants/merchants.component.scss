@@ -1,0 +1,459 @@
+/* 整體容器樣式 */
+/* 默認顏色 */
+.dashboard-container {
+  background-color: #ffffff;
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &.dark-theme {
+    background-color: #444;
+    background: #2f2f2f;
+    color: #ffffff;
+  }
+
+  &.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+
+/* 頂部導航欄樣式 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #e5e7eb; // 底部邊框
+  padding: 3px 1.5rem;
+  z-index: 888; // 確保在最上層
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.theme-logout {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center; // 確保 icon 垂直對齊
+}
+
+// 設定在明亮模式下，所有指定 icon 的預設顏色為黑色
+.bell-icon,
+.homeIcon {
+  color: #111827;
+  transition: color 0.3s ease; // 增加顏色變換的過渡動畫
+}
+
+
+// 計數徽章的樣式
+.notification-count-badge {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  background-color: #ef4444; // 紅色
+  color: white;
+  border-radius: 9999px; // 圓形
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.5;
+  border: 2px solid white; // 白邊，在深色模式下更明顯
+  min-width: 20px;
+  text-align: center;
+  pointer-events: none; // 讓點擊事件可以穿透到鈴鐺本身
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between; // 讓標題和按鈕左右對齊
+  align-items: center; // 垂直置中
+}
+
+// 清除按鈕樣式
+.btn-clear-notifications {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+  }
+}
+
+// 下拉列表容器
+.dropdown-content {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .divider {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  // 通知列表
+  .notification-list {
+    .notification-item {
+      padding: 0.75rem;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f7f7f7;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.3;
+      }
+    }
+  }
+}
+
+/* 明暗模式鈕 */
+label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+// ✅ [新增] 設定月亮圖示的初始狀態為隱藏
+#Moon {
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* 頁首、頁尾顏色 */
+.dark-theme {
+
+  .header,
+  .footer {
+    background-color: #2f2f2f;
+    color: white;
+  }
+
+  .sidebar {
+    background-color: #2f2f2f;
+    color: white;
+  }
+
+  .bell-icon {
+    color: #f9fafb;
+  }
+
+  .homeIcon {
+    color: #f9fafb;
+  }
+
+  #selficon .dropdown-content {
+
+    li a {
+      color: black;
+    }
+
+    li a mat-icon {
+      color: black;
+    }
+  }
+}
+
+.light-theme {
+
+  .header,
+  .footer {
+    background-color: #ffffff;
+    /* 淺色背景 */
+    color: black;
+  }
+}
+
+.card-title {
+  color: black;
+}
+
+/* theme-toggle*/
+input[type="checkbox"] {
+  display: inline-block;
+}
+
+input[type="checkbox"]:checked+svg {
+  /* 當選擇框被勾選時，顯示第二個 SVG */
+  opacity: 1;
+}
+
+svg {
+  transition: opacity 0.3s ease;
+}
+
+/* 隱藏原生 checkbox */
+.theme-controller {
+  display: none;
+}
+
+/* 這是自定義的開關外觀 */
+.toggle {
+  position: relative;
+  width: 45px;
+  /* 控制開關寬度 */
+  height: 24px;
+  /* 控制開關高度 */
+  background-color: #ccc;
+  /* 默認背景顏色 (光明模式) */
+  border-radius: 12px;
+  /* 圓角 */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  /* 背景顏色過渡效果 */
+}
+
+/* 當開關處於選中狀態時，改變背景顏色 */
+.toggle:checked {
+  background-color: rgb(49, 49, 49);
+  /* 當選中時顯示為暗黑模式 */
+}
+
+/* 開關內的圓形塊 */
+.toggle::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  /* 圓形塊顏色 */
+  border-radius: 50%;
+  /* 圓形 */
+  transition: left 0.3s ease;
+  /* 控制圓形塊的滑動過渡效果 */
+}
+
+/* 當開關被選中時，圓形塊移動到右側 */
+.toggle:checked::before {
+  left: 20px;
+  /* 使圓形塊移動 */
+}
+
+/* Logo 樣式 */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .logo-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    // background-color: #059669; // 綠色背景
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    .material-icons {
+      font-size: 2.5rem;
+    }
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.top-title h1 {
+  font-family: 'Stick', cursive, sans-serif;
+}
+
+/* 回首頁按鈕樣式 */
+.storeList-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  /* 与登出按钮相同的内边距 */
+  border-radius: 0.5rem;
+  /* 与登出按钮保持一致的圆角 */
+  background-color: #fff;
+  color: #374151;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 统一按钮的阴影 */
+
+  .material-icons {
+    font-size: 1.2rem;
+    /* 与登出按钮一致的图标大小 */
+  }
+
+  /* 默認的 hover 效果 */
+  &:hover {
+    background-color: #f3f4f6;
+    border-color: #e5e7eb;
+    transform: translateY(-2px);
+    /* 和登出按钮一样的悬浮效果 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 針對深色模式 */
+  .dark-theme & {
+    background-color: #2f2f2f;
+    color: #e5e7eb;
+    border: 1px solid #4b5563;
+
+    &:hover {
+      background-color: #444;
+      border-color: #6b7280;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  /* 針對亮色模式 */
+  .light-theme & {
+    background-color: #fff;
+    color: #374151;
+    border: 1px solid #d1d5db;
+
+    &:hover {
+      background-color: #f9fafb;
+      border-color: #e5e7eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+
+/* 主要佈局 */
+.main-layout {
+  display: flex;
+  padding-top: 3.5rem; // 為頂部導航欄留出空間
+  flex-grow: 1; // 讓主要內容區域自動伸展
+}
+
+/* 側邊欄樣式 */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 4rem; // 從導航欄下方開始
+  height: calc(100vh - 3rem);
+  width: 14rem;
+  background-color: white;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto; // 內容過多時可滾動
+
+  .sidebar-content {
+    padding: 0.7rem;
+  }
+}
+
+/* 選單項目樣式 */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+
+  .nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0.75rem;
+    border-radius: 0.5rem;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 20px;
+
+    &:hover {
+      background-color: #989898;
+    }
+
+    // 選中狀態樣式
+    &.active {
+      background-color: #ecfdf5; // 淺綠色背景
+      color: #047857; // 深綠色文字
+      border: 1px solid #a7f3d0; // 綠色邊框
+    }
+
+    .material-icons {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+/* 主要內容區域樣式 */
+.main-content {
+  flex: 1;
+  margin-left: 15rem; // 與側邊欄寬度相同
+  padding: 1.5rem;
+  /* ⭐ 核心修正 ③: 讓右側內容區也跟著伸展 */
+  display: flex;
+  flex-direction: column;
+
+  .content-placeholder {
+    height: 24rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    // background-color: white;
+
+    .placeholder-text {
+      text-align: center;
+      // color: #6b7280;
+
+      .placeholder-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+/* 回到頂部按鈕樣式 */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background-color: #747474;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: #307ef2;
+  }
+}

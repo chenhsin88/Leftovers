@@ -1,0 +1,262 @@
+@if (isLoading) {
+<div class="flex justify-center items-center h-screen">
+  <span class="loading loading-spinner w-16 h-16"></span>
+</div>
+} @else if (merchant) {
+<div class="p-4 sm:p-8 max-w-7xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <a [routerLink]="backUrlPath" [queryParams]="backUrlParams" class="btn btn-ghost">
+      <mat-icon>arrow_back</mat-icon>
+      返回商品列表
+    </a>
+    <button class="btn btn-outline btn-primary" (click)="shareMerchant()">
+      <mat-icon>share</mat-icon>
+      分享
+    </button>
+  </div>
+
+  <div class="flex flex-col sm:flex-row items-center mb-8 border-b pb-6 gap-6 bg-base-100 p-6 rounded-lg shadow">
+    <img [src]="merchant.logoUrl"
+      class="w-24 h-24 rounded-full object-cover ring ring-primary ring-offset-base-100 ring-offset-2"
+      [alt]="merchant.name" />
+    <div class="text-center sm:text-left flex-grow">
+      <h1 class="text-4xl font-bold">{{ merchant.name }}</h1>
+      @if(merchant.reviewCount && merchant.reviewCount > 0){
+      <div class="flex items-center justify-center sm:justify-start gap-3 mt-3 text-gray-600">
+        <div class="flex items-center gap-1">
+          <span class="font-bold text-lg text-amber-500">{{ merchant.averageRating?.toFixed(1) }}</span>
+          <div class="flex items-center">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+            <mat-icon class="!text-yellow-400 !w-6 !h-5">
+              {{ (merchant.averageRating || 0) >= star ? 'star' : ((merchant.averageRating || 0) >= star - 0.5 ?
+              'star_half' : 'star_border') }}
+            </mat-icon>
+            }
+          </div>
+        </div>
+        <span class="text-sm">({{ merchant.reviewCount }} 則評論)</span>
+      </div>
+      }
+      <div class="flex items-start mt-2">
+      <a [href]="googleMapsUrl" target="_blank" rel="noopener noreferrer">
+        <mat-icon fontIcon="location_on" class="inline-block align-middle text-lg"></mat-icon>
+        <span class="ml-1">{{ merchant.addressText }}</span>
+      </a>
+      </div>
+      <div class="flex items-start mt-2">
+      <a [href]="telLink" class="flex items-center link link-hover">
+        <mat-icon fontIcon="phone" class="inline-block align-middle text-lg"></mat-icon>
+        <span class="ml-1">{{ merchant.phoneNumber }}</span>
+      </a>
+      </div>
+
+      <div class="flex items-start mt-2">
+        <mat-icon fontIcon="schedule" class="inline-block align-middle text-lg mr-2 mt-1 flex-shrink-0"></mat-icon>
+        <div>
+          @if(formattedOpeningHours.length > 0){
+          @for(line of formattedOpeningHours; track line){
+          <p class="m-0 leading-relaxed">{{ line }}</p>
+          }
+          } @else {
+          <p class="m-0 leading-relaxed">未提供營業時間</p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if(merchant.description){
+  <div class="mb-8 p-4">
+    <h2 class="text-2xl font-semibold mb-3 border-l-4 border-primary pl-4">店家介紹</h2>
+    <p class="text-gray-700 leading-relaxed bg-base-100 p-4 rounded-md whitespace-pre-wrap">{{ merchant.description }}
+    </p>
+  </div>
+  }
+  @if(merchant.mapScreenshotUrl || merchant.mapGoogleUrl){
+  <div class="mb-8 p-4">
+    <h2 class="text-2xl font-semibold mb-3 border-l-4 border-primary pl-4">店家位置</h2>
+    <div class="card bg-base-100 shadow-xl">
+      @if(merchant.mapScreenshotUrl){
+      <figure>
+        <a [href]="googleMapsUrl" target="_blank" rel="noopener noreferrer">
+          <img [src]="merchant.mapScreenshotUrl" alt="{{merchant.name}} 的地圖位置"
+            class=" w-180 h-120  map-screenshot transition-opacity hover:opacity-80" />
+        </a>
+      </figure>
+      }
+    </div>
+  </div>
+  }
+  <h2 class="text-2xl font-semibold mb-4 border-l-4 border-primary pl-4">所有商品</h2>
+  @if(merchant.foodList && merchant.foodList.length > 0){
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @for (item of merchant.foodList; track item.id) {
+    <div
+      class="card bg-base-100 shadow-xl flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+      <figure class="relative">
+        <img [src]="item.imageUrl" [alt]="item.name" class="h-48 w-full object-cover" />
+        @if(item.quantityAvailable <= 5) { <div class="badge badge-error absolute top-2 right-2 font-bold text-white">僅剩
+          {{ item.quantityAvailable }}
+    </div>
+    }
+    </figure>
+    <div class="card-body p-4 flex-grow">
+      <h3 class="card-title text-lg">{{ item.name }}</h3>
+      @if (item.category === '盲包') {<div class="badge badge-secondary">盲包</div>}
+      <p class="text-xs text-gray-500 mt-1">
+        <mat-icon fontIcon="schedule" class="inline-block align-middle text-sm"></mat-icon>
+        取貨: {{ item.pickupStartTime | date:'HH:mm' }} - {{ item.pickupEndTime | date:'HH:mm' }}
+      </p>
+    </div>
+    <div class="card-actions justify-between items-center p-4 pt-0">
+      <span class="text-primary font-bold text-xl">{{ item.discountedPrice | currency:'TWD':'symbol':'1.0-0' }}</span>
+      <button class="btn btn-outline btn-primary btn-sm" (click)="openFoodItemDetails(item)">看詳情</button>
+    </div>
+  </div>
+  }
+</div>
+} @else {
+<p class="text-center text-gray-500 p-8">店家目前沒有可購買的商品喔！</p>
+}
+
+<div class="mt-12">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+    <h2 class="text-2xl font-semibold border-l-4 border-primary pl-4">使用者評論</h2>
+    <div class="join">
+      <button class="join-item btn btn-sm " [class.btn-active]="currentSortOrder === 'recent'"
+        (click)="sortReviews('recent')">最新</button>
+      <button class="join-item btn btn-sm" [class.btn-active]="currentSortOrder === 'highest'"
+        (click)="sortReviews('highest')">好評優先</button>
+      <button class="join-item btn btn-sm" [class.btn-active]="currentSortOrder === 'lowest'"
+        (click)="sortReviews('lowest')">負評優先</button>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    @if (displayedReviews && displayedReviews.length > 0) {
+    @for (review of displayedReviews; track review.createdAt + review.userName) {
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <div class="flex items-start mb-2">
+          <div class="avatar placeholder mr-3">
+            <div class="w-10 rounded-full bg-neutral-focus text-neutral-content">
+              @if(review.profilePictureUrl){
+              <img [src]="review.profilePictureUrl" [alt]="review.userName + ' avatar'" />
+              } @else {
+              <span>{{ review.userName.charAt(0) }}</span>
+              }
+            </div>
+          </div>
+          <div class="flex-grow">
+            <p class="font-semibold">{{ review.userName }}</p>
+
+            <div class="inline-flex items-center gap-px">
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+              <mat-icon class="!text-yellow-400" style="width: 16px; height: 16px; font-size: 16px;">
+                {{ review.rating >= star ? 'star' : 'star_border' }}
+              </mat-icon>
+              }
+            </div>
+
+          </div>
+          <time class="text-xs text-gray-500 ml-auto flex-shrink-0">{{ review.createdAt | date:'yyyy/MM/dd HH:mm'
+            }}</time>
+        </div>
+        <p class="text-gray-700 whitespace-pre-wrap mt-2">{{ review.comment }}</p>
+
+        @if (review.merchantReply) {
+        <div class="mt-4 pt-4 border-t border-base-200">
+          <div class="flex items-center mb-2">
+            <div class="avatar mr-3">
+              <div class="w-10 rounded">
+                <img [src]="merchant.logoUrl" />
+              </div>
+            </div>
+            <div>
+              <p class.bind="'font-semibold text-info'">店家回覆</p>
+              <time class="text-xs text-gray-500">{{ review.merchantReplyAt | date:'yyyy/MM/dd HH:mm' }}</time>
+            </div>
+          </div>
+          <p class="text-sm text-gray-600 bg-base-200 p-3 rounded-md whitespace-pre-wrap">{{ review.merchantReply }}</p>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    } @else {
+    }
+  </div>
+</div>
+
+</div>
+} @else {
+<div class="flex flex-col justify-center items-center h-screen">
+  <mat-icon fontIcon="error_outline" class="text-7xl text-error"></mat-icon>
+  <h2 class="text-2xl text-error mt-4">找不到店家資料</h2>
+  <p class="mt-2 text-gray-600">請確認網址是否正確，或返回列表重新選擇。</p>
+  <a routerLink="/main" class="btn btn-primary mt-6">返回商品列表</a>
+</div>
+}
+
+@if (selectedProduct) {
+<div class="modal-overlay fixed inset-0 bg-black/60 flex items-center justify-center z-[1000] p-5"
+  (click)="closeProductCard()">
+  <div
+    class="floating-card bg-[#fafbfc] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 animate-slide-up"
+    (click)="stopPropagation($event)">
+    <button
+      class="close-btn absolute top-4 right-4 bg-black/10 rounded-full w-8 h-8 flex items-center justify-center text-lg text-gray-600 transition-all z-[1001] hover:bg-black/20 hover:text-gray-800 hover:scale-110"
+      (click)="closeProductCard()">✕</button>
+    <img class="w-full h-52 object-cover rounded-xl mb-4 bg-gray-200" [src]="selectedProduct.foodItemImageUrl"
+      [alt]="selectedProduct.foodItemName">
+    <h2 class="font-bold text-2xl mb-3">{{ selectedProduct.foodItemName }}</h2>
+    <div class="product-description bg-white rounded-lg p-3 my-4 border-l-4 border-blue-500">
+      <div class="description-title text-sm font-semibold text-gray-800 mb-2">商品描述</div>
+      <div class="description-text text-sm text-gray-600 leading-relaxed break-words">{{
+        selectedProduct.foodItemDescription }}</div>
+    </div>
+    <div class="expanded-details grid gap-3 border-t border-b border-gray-200 py-4 my-4">
+      <div class="detail-row flex justify-between items-center gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">商品分類</span>
+        <span class="product-category detail-value font-medium">{{ selectedProduct.category }}</span>
+      </div>
+      <div class="detail-row flex justify-between items-center gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">原價</span>
+        <span class="detail-value original-price-expanded text-gray-400 line-through">{{ selectedProduct.originalPrice |
+          currency:'TWD':'symbol':'1.0-0' }}</span>
+      </div>
+      <div class="detail-row flex justify-between items-center gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">折扣後售價</span>
+        <span class="detail-value discount-price-expanded text-orange-500 font-semibold">{{
+          selectedProduct.discountedPrice | currency:'TWD':'symbol':'1.0-0' }}</span>
+      </div>
+      @if(selectedProduct.finalPrice && selectedProduct.finalPrice < selectedProduct.discountedPrice){ <div
+        class="detail-row flex justify-between items-center gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">再折扣售價</span>
+        <span class="detail-value final-price text-red-600 text-lg font-bold">{{ selectedProduct.finalPrice |
+          currency:'TWD':'symbol':'1.0-0' }}</span>
+    </div>
+    }
+    <div class="detail-row flex justify-between items-center gap-4">
+      <span class="detail-label whitespace-nowrap text-gray-500">取貨時間</span>
+      <span class="pickup-time detail-value bg-green-100 text-green-800 font-semibold px-3 py-1 rounded-full text-sm">
+        {{ selectedProduct.pickupTime }}</span>
+    </div>
+  </div>
+  <button class="btn bg-[#53bc6f] w-full mt-4 text-lg py-3 h-auto" [disabled]="selectedProduct.isAdded"
+    (click)="addToCart(selectedProduct)">
+    @if(selectedProduct.isAdded){
+    <span class="flex items-center gap-2">
+      <mat-icon>check_circle</mat-icon>
+      <span>已加入購物車</span>
+    </span>
+    } @else {
+    <span class="flex items-center gap-2">
+      <mat-icon>add_shopping_cart</mat-icon>
+      <span>加入購物車</span>
+    </span>
+    }
+  </button>
+</div>
+</div>
+}

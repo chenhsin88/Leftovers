@@ -1,0 +1,28 @@
+<div class="container">
+  <!-- 頁面標題區域 -->
+  <div class="header">
+    <h1>剩食Q&A</h1>
+    <p>關於剩食回收與利用的常見問題</p>
+  </div>
+
+  <!-- Q&A列表區域 -->
+  <div class="qa-list">
+    @for (item of qaItems; track $index){
+    <div class="qa-item" [class.active]="activeIndex === $index">
+
+      <!-- 問題區塊 -->
+      <div class="question" (click)="toggleAnswer($index)">
+        {{ item.question }}
+        <span class="toggle">{{ activeIndex === $index ? '−' : '+' }}</span>
+      </div>
+
+      <!-- 答案區塊，使用 @if 判斷是否顯示 -->
+      @if (activeIndex === $index) {
+      <div class="answer active">
+        {{ item.answer }}
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

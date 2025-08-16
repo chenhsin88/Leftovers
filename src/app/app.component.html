@@ -1,0 +1,243 @@
+@if (isLoadingApp$ | async) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-base-100/80 backdrop-blur-sm">
+  <div class="flex flex-col items-center gap-4">
+    <span class="loading loading-spinner text-primary w-24 h-24"></span>
+    <span class="text-primary text-lg font-bold">應用程式載入中...</span>
+  </div>
+</div>
+}
+@if(isLoggedIn && userRole === 'customer'){
+@if(TitleAndFooterNeed){
+<div class="navbar bg-base-100 shadow-md px-6 py-1 sticky top-0 z-50">
+  <div class="flex-1">
+    <a class="flex items-center text-xl font-bold gap-1 text-base-content cursor-pointer" (click)="navigateToMain()">
+      <img src="/forfront/leftoverGIF.gif" alt="Leftovers Logo" class="h-15 w-auto">
+      <h1 class="text-3xl font-bold whitespace-nowrap cursive-title">Leftovers</h1>
+    </a>
+  </div>
+
+  <div class="flex-grow flex justify-center mx-4" [class.invisible]="!isMainPage">
+    <div class="relative w-full max-w-lg">
+      <label
+        class="input input-bordered flex items-center gap-2 w-full shadow-md bg-white border-gray-200 focus-within:border-blue-400 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+          <path fill-rule="evenodd"
+            d="M9.965 11.023A5.479 5.479 0 1 1 11 9.965l3.52 3.52a.75.75 0 1 1-1.06 1.06l-3.52-3.52ZM10.5 7a3.5 3.5 0 1 0-7 0 3.5 3.5 0 0 0 7 0Z"
+            clip-rule="evenodd" />
+        </svg>
+        <input
+          class="grow placeholder:text-gray-400 text-gray-700 font-semibold text-base focus:outline-none bg-transparent"
+          placeholder="搜尋..." type="text" name="search" autocomplete="off" (keyup.enter)="onSearch()"
+          (focus)="updateSuggestions($event)" (input)="updateSuggestions($event)" (blur)="hideSuggestionsWithDelay()"
+          [value]="currentSearchValue" />
+        @if (currentSearchValue) {
+        <button class="btn btn-ghost btn-circle btn-xs text-gray-500 hover:text-gray-800" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+      </label>
+      @if (showSuggestions && suggestions.length > 0) {
+      <div tabindex="0"
+        class="absolute top-full left-0 right-0 mt-2 z-[999] max-h-80 overflow-auto shadow-xl p-4 text-left bg-base-100/95 backdrop-blur-sm rounded-lg border border-base-content/10"
+        (mousedown)="$event.preventDefault()">
+        @if (hasHistoryItems) {
+        <div class="px-2 pt-2 pb-1 text-xs text-base-content/70 font-bold border-b border-base-content/10 mb-2">
+          搜尋紀錄
+        </div>
+        <ul class="max-h-32 overflow-y-auto">
+          @for (suggestion of historyItems; track suggestion.term) {
+          <li
+            class="flex items-center justify-between gap-3 p-2 cursor-pointer hover:bg-base-200 rounded-md transition duration-200"
+            (click)="applySuggestion(suggestion)">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <mat-icon fontIcon="history" class="text-base-content/60 flex-shrink-0 text-lg"></mat-icon>
+              <span class="truncate text-base-content font-medium text-base">
+                {{ suggestion.term }}
+              </span>
+            </div>
+            <button class="btn btn-ghost btn-circle btn-xs text-base-content/40 hover:text-error hover:bg-base-300"
+              (click)="removeHistoryItem($event, suggestion.term)">
+              <mat-icon fontIcon="close"></mat-icon>
+            </button>
+          </li>
+          }
+        </ul>
+        }
+
+        @if (hasRecommendationItems) {
+        <div class="px-2 pt-4 pb-1 text-xs text-base-content/70 font-bold border-b border-base-content/10 mb-2">
+          推薦搜尋
+        </div>
+        <ul>
+          @for (suggestion of recommendationItems; track suggestion.term) {
+          <li
+            class="flex items-center gap-3 p-2 rounded-md cursor-pointer hover:bg-primary/10 hover:scale-[1.02] transition-transform duration-200"
+            (click)="applySuggestion(suggestion)">
+            <mat-icon fontIcon="search" class="text-primary text-lg"></mat-icon>
+            <span class="text-base-content font-medium text-base">{{ suggestion.term }}</span>
+          </li>
+          }
+        </ul>
+        }
+      </div>
+      }
+    </div>
+  </div>
+  <div class="flex-none flex items-center gap-3">
+    <div class="dropdown dropdown-end tooltip tooltip-bottom" data-tip="推播與通知">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle" (click)="markNotificationsAsRead()">
+        <div class="indicator">
+          <mat-icon>notifications</mat-icon>
+          @if (((unreadCount$ | async) ?? 0) > 0) {
+          <span class="badge badge-sm badge-secondary indicator-item">{{ unreadCount$ | async }}</span>
+          }
+        </div>
+      </div>
+      <div tabindex="0"
+        class="dropdown-content mt-3 z-[99] card card-compact w-80 sm:w-96 bg-base-100 shadow-xl border border-base-content/10">
+        <div class="card-body p-4">
+          <div class="flex justify-between items-center pb-2 border-b border-base-content/10 mb-2">
+            <h3 class="card-title text-base">通知中心</h3>
+            <div class="flex items-center gap-4">
+
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-medium">推播與通知</span>
+                <input type="checkbox" class="toggle toggle-primary toggle-xs" [checked]="isLiveUpdateEnabled"
+                  (change)="toggleLiveUpdates($event)" />
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-medium">彈窗提醒</span>
+                <input type="checkbox" class="toggle toggle-primary toggle-xs" [checked]="showPopups$ | async"
+                  (change)="togglePopupNotifications($event)" />
+              </div>
+
+              @if ((((notifications$ | async)?.length) ?? 0) > 0) {
+              <button class="btn btn-xs btn-ghost text-error" (click)="clearNotifications()">全部清除</button>
+              }
+
+            </div>
+          </div>
+
+          @if (notifications$ | async; as notifications) {
+          @if (notifications.length > 0) {
+          <ul class="max-h-80 overflow-y-auto space-y-2 p-1">
+            @for(notification of notifications; track notification.id) {
+            <li class="p-2 rounded-lg bg-base-200/50">
+              <div class="font-bold text-sm text-primary">{{ notification.title }}</div>
+              <div class="text-xs text-base-content/60 mb-1">
+                {{ notification.receivedAt | date:'yyyy/MM/dd HH:mm' }}
+              </div>
+              <ul class="text-sm list-disc list-inside pl-1 space-y-0.5">
+                @for(item of notification.items; track item.name) {
+                <li>{{ item.name }} - 特價 NT${{ item.price }}</li>
+                }
+              </ul>
+            </li>
+            }
+          </ul>
+          } @else {
+          <div class="text-center py-8 text-base-content/50">
+            <mat-icon>notifications_off</mat-icon>
+            <p class="mt-2">目前沒有任何通知</p>
+          </div>
+          }
+          }
+        </div>
+      </div>
+    </div>
+    <div class="tooltip tooltip-bottom" data-tip="深淺模式切換">
+      <label class="swap swap-rotate btn btn-ghost btn-circle">
+        <input type="checkbox" class="theme-controller" value="business" (click)="LightDarkContolison()" />
+        <svg id="Sun" class="swap-off h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
+        </svg>
+        <svg id="Moon" class="swap-on h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path
+            d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
+        </svg>
+      </label>
+    </div>
+    <!-- <div class="tooltip tooltip-bottom" data-tip="問題中心">
+      <button class="btn btn-ghost btn-circle" (click)="goToFaq()">
+        <mat-icon>help_outline</mat-icon>
+      </button>
+    </div> -->
+    <div class="tooltip tooltip-bottom" data-tip="個人訂單">
+      <button class="btn btn-ghost btn-circle" (click)="goToUserOrders()">
+        <mat-icon>history</mat-icon>
+      </button>
+    </div>
+    <button class="btn btn-ghost btn-circle tooltip tooltip-bottom" data-tip="購物車" (click)="goToCart()">
+      <div class="indicator">
+        <mat-icon>shopping_cart</mat-icon>
+      </div>
+    </button>
+    <div class="dropdown dropdown-end tooltip tooltip-bottom" data-tip="個人中心">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full ring ring-offset-2 ring-offset-base-100 overflow-hidden">
+          @if (avatarUrl) { <img [src]="avatarUrl | safeUrl" alt="avatar" class="w-full h-full object-cover" /> }
+          @else { <img src="assets/images/default-avatar.svg" alt="default avatar"
+            class="w-full h-full object-cover p-1" /> }
+        </div>
+      </div>
+      <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+        <li><a (click)="GoToChange()"><mat-icon>person</mat-icon> 個人資料</a></li>
+        <li><a (click)="logout()"><mat-icon>logout</mat-icon> 登出</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+}
+
+<app-alert></app-alert>
+<router-outlet></router-outlet>
+
+@if(TitleAndFooterNeed){
+<footer class="footer footer-horizontal footer-center bg-base-200 text-base-content rounded p-5">
+  <nav class="grid grid-flow-col gap-4">
+    <a class="link link-hover" routerLink="/aboutUs">平台理念</a>
+    <a class="link link-hover" routerLink="/disclaimer">使用條款 & 免責聲明</a>
+    <a class="link link-hover" routerLink="/privacyPolicy">隱私權政策</a>
+    <a class="link link-hover" routerLink="//faq">問題中心</a>
+  </nav>
+  <nav>
+    <div class="grid grid-flow-col gap-4">
+      <a>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+          <path
+            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z">
+          </path>
+        </svg>
+      </a>
+      <a>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+          <path
+            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z">
+          </path>
+        </svg>
+      </a>
+      <a>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+          <path
+            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z">
+          </path>
+        </svg>
+      </a>
+    </div>
+  </nav>
+  <aside>
+    <p>Copyright © 2025 - All right reserved by Leftovers</p>
+  </aside>
+</footer>
+
+@if (showScrollToTopButton) {
+<button class="scroll-to-top-btn tooltip tooltip-left" data-tip="回到頂部" (click)="scrollToTop()">
+  <mat-icon>arrow_upward</mat-icon>
+</button>
+}
+}
+} @else {
+<app-alert></app-alert>
+<router-outlet></router-outlet>
+}

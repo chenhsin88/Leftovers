@@ -1,0 +1,305 @@
+/* =============================================
+   --- Variables ---
+   ============================================= */
+
+/* Colors */
+$primary-color: #39495b;
+$secondary-color: #6c757d;
+$background-color: #ffffff;
+$surface-color: #f8f9fa;
+$text-color: #212529;
+$light-text-color: #ffffff;
+$ai-message-bg: #e9ecef;
+$user-message-bg: $primary-color;
+$border-color: #dee2e6;
+$icon-color: #495057;
+$button-hover-bg: #f1f1f1;
+$disabled-color: #adb5bd;
+
+/* Sizing & Spacing */
+$chat-window-width: 380px;
+$chat-window-height: 550px;
+$button-size: 56px;
+$icon-size: 24px;
+$icon-sm-size: 20px;
+$border-radius-lg: 16px;
+$border-radius-md: 12px;
+$spacing-unit: 8px;
+
+/* Animation */
+$transition-speed: 0.2s;
+
+/* =============================================
+   --- Main Styles ---
+   ============================================= */
+
+.chat-button {
+  position: fixed;
+  bottom: $spacing-unit * 3;
+  right: $spacing-unit * 3;
+  width: $button-size;
+  height: $button-size;
+  border-radius: 50%;
+  background-color: $primary-color;
+  color: $light-text-color;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform $transition-speed ease, box-shadow $transition-speed ease;
+  z-index: 999;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .icon {
+    width: $icon-size;
+    height: $icon-size;
+  }
+}
+
+.chat-window {
+  position: fixed;
+  bottom: $spacing-unit * 12;
+  right: $spacing-unit * 3;
+  width: $chat-window-width;
+  max-width: 90vw;
+  height: $chat-window-height;
+  max-height: 80vh;
+  background-color: $background-color;
+  border-radius: $border-radius-lg;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform $transition-speed ease, opacity $transition-speed ease, visibility $transition-speed ease;
+  z-index: 1000;
+
+  // This class would be added by your component's TypeScript to show the window
+  &.is-open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ($spacing-unit * 1.5) ($spacing-unit * 2);
+  background-color: $surface-color;
+  border-bottom: 1px solid $border-color;
+  cursor: move; // For the draggable handle
+
+  .chat-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: $text-color;
+  }
+
+  .close-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: $spacing-unit * 0.5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $icon-color;
+
+    &:hover {
+      background-color: $button-hover-bg;
+    }
+
+    .icon-sm {
+      width: $icon-sm-size;
+      height: $icon-sm-size;
+    }
+  }
+}
+
+.chat-body {
+  flex-grow: 1;
+  padding: ($spacing-unit * 2) ($spacing-unit * 2) $spacing-unit;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-unit * 1.5;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $secondary-color;
+  }
+}
+
+.message-container {
+  display: flex;
+  max-width: 85%;
+  align-self: flex-start;
+
+  &.from-ai {
+    .message-bubble {
+      background-color: $ai-message-bg;
+      color: $text-color;
+      border-radius: $border-radius-md $border-radius-md $border-radius-md 0;
+    }
+  }
+
+  &:not(.from-ai) {
+    align-self: flex-end;
+
+    .message-bubble {
+      background-color: $user-message-bg;
+      color: $light-text-color;
+      border-radius: $border-radius-md $border-radius-md 0 $border-radius-md;
+    }
+  }
+}
+
+.message-bubble {
+  padding: ($spacing-unit * 1.25) ($spacing-unit * 1.5);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+
+  // Styles for formatted code within messages
+  pre {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: $spacing-unit;
+    border-radius: $spacing-unit * 0.5;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-size: 0.85rem;
+  }
+
+  code {
+    font-family: monospace;
+  }
+}
+
+/* === FINAL CORRECTED SECTION START === */
+.chat-footer {
+  background-color: $surface-color;
+  border-top: 1px solid $border-color;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // This pushes the button to the right
+  // gap is no longer needed
+  padding: ($spacing-unit * 1.25) ($spacing-unit * 1.5);
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+
+  &:focus-within {
+    box-shadow: none;
+    border: none;
+  }
+}
+
+.chat-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.95rem;
+  color: $text-color;
+  padding: 0;
+  // Add a small margin to the right to ensure there's space before the button
+  margin-right: $spacing-unit * 1.5;
+
+  &::placeholder {
+    color: $secondary-color;
+  }
+
+  &:disabled {
+    background-color: transparent;
+  }
+}
+/* === FINAL CORRECTED SECTION END === */
+
+.send-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: $spacing-unit;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary-color;
+  transition: background-color $transition-speed ease;
+  flex-shrink: 0; // Prevent the button from shrinking
+
+  &:hover {
+    background-color: $button-hover-bg;
+  }
+
+  &:disabled {
+    color: $disabled-color;
+    cursor: not-allowed;
+    background-color: transparent;
+  }
+
+  .icon-sm {
+    width: $icon-sm-size;
+    height: $icon-sm-size;
+  }
+}
+
+/* Loading dots animation */
+.loading-dots {
+  display: flex;
+  align-items: center;
+  gap: $spacing-unit * 0.5;
+  padding: $spacing-unit * 0.5 0;
+
+  span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: $secondary-color;
+    animation: bounce 1.4s infinite ease-in-out both;
+
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1.0);
+  }
+}

@@ -1,0 +1,124 @@
+<!-- confirm -->
+@if (confirmationService.isVisible()) {
+<div class="confirmation-overlay">
+  <div class="confirmation-modal">
+    <div class="confirmation-header">
+      <h3>⚠︎ 請確認操作</h3>
+    </div>
+    <div class="confirmation-body">
+      <p>{{ confirmationService.message() }}</p>
+    </div>
+    <div class="confirmation-actions">
+      <button class="btn btn-secondary" (click)="confirmationService.cancel()">取消</button>
+      <button class="btn btn-primary" (click)="confirmationService.confirm()">確定</button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- 頁面標題 -->
+<div class="header-section">
+  <div class="header-title">
+    <h1>顧客評論管理</h1>
+  </div>
+</div>
+
+@if (isLoading) {
+<!-- 狀態一：載入中 -->
+<div class="placeholder-container">
+  <div class="spinner"></div>
+  <p class="placeholder-text">正在載入評論資料...</p>
+</div>
+} @else if (!hasReviews) {
+<!-- 狀態二：尚無評論 -->
+<div class="placeholder-container">
+  <div class="no-data-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.17 48.17 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+    </svg>
+  </div>
+  <h2 class="placeholder-title">尚無顧客評論</h2>
+  <p class="placeholder-text">目前還沒有任何顧客評論。<br>當顧客留下評論後，您可以在這裡查看並進行回覆。</p>
+</div>
+} @else {
+<!-- 狀態三：有評論 (您原本的內容) -->
+<div class="main-card">
+  <div class="reviews-container">
+    @for (review of reviews; track review.orderId) {
+    <div class="review-card">
+      <!-- ... 您原本的評論卡片 HTML ... -->
+      <div class="user-review">
+        <div class="review-content">
+          <div class="review-header">
+            <div class="user-info">
+              <div class="user-info-top">
+                <h3>{{ review.userName }}</h3>
+                <div class="stars">
+                  @for (star of getStarsArray(review.rating); track $index) {
+                  <span class="star" [class.filled]="star">★</span>
+                  }
+                </div>
+              </div>
+              <div class="order-id">
+                訂單編號：{{ review.orderId }}
+              </div>
+            </div>
+            <span class="date">{{ review.createdAt }}</span>
+          </div>
+          <p class="comment">{{ review.comment }}</p>
+          @if (review.storeReply) {
+          <div class="store-reply">
+            <div class="reply-header">
+              <div class="store-info">
+                <div class="store-badge">店</div>
+                <span class="store-name">{{ review.merchantName }}</span>
+              </div>
+              <span class="reply-date">{{ review.storeReply.merchantReplyAt }}</span>
+            </div>
+            @if (editReplyMode[review.orderId]) {
+            <textarea class="reply-textarea" [(ngModel)]="editedReplies[review.orderId]" rows="3"></textarea>
+            <div class="edit-delete-div">
+              <button class="save-btn" (click)="saveEditedReply(review.orderId)">儲存</button>
+              <button class="cancel-btn" (click)="cancelEditReply(review.orderId)">取消</button>
+            </div>
+            } @else {
+            <p class="reply-text">{{ review.storeReply.merchantReply }}</p>
+            <div class="edit-delete-div">
+              <button class="edit-btn" (click)="editReply(review.orderId)">編輯</button>
+              <button class="delete-btn" (click)="deleteReply(review.orderId)">刪除</button>
+            </div>
+            }
+          </div>
+          }
+          @if (!review.storeReply) {
+          <div class="reply-section">
+            @if (!showReplyForm[review.orderId]) {
+            <button class="reply-btn" (click)="toggleReplyForm(review.orderId)">
+              回覆評論
+            </button>
+            }
+            @if (showReplyForm[review.orderId]) {
+            <div class="reply-form">
+              <textarea placeholder="輸入您的回覆" [(ngModel)]="replyTexts[review.orderId]" class="reply-textarea">
+                </textarea>
+              <div class="form-buttons">
+                <button class="submit-btn" (click)="submitReply(review.orderId)"
+                  [disabled]="!replyTexts[review.orderId]?.trim()">
+                  發送回覆
+                </button>
+                <button class="cancel-btn" (click)="cancelReply(review.orderId)">
+                  取消
+                </button>
+              </div>
+            </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+}

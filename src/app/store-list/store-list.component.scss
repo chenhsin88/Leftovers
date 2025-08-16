@@ -1,0 +1,510 @@
+// 免責聲明樣式
+.disclaimer-content {
+
+  /* Webkit-based browsers (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* 捲動條軌道顏色 */
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #a8a8a8;
+    /* 捲動條本身顏色 */
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* 滑鼠懸停時的顏色 */
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #a8a8a8 #f1f1f1;
+}
+
+/* 默認顏色 */
+.dashboard-container {
+  background-color: #ffffff;
+  color: #000000;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &.dark-theme {
+    background-color: #444;
+    background: #2f2f2f;
+
+    color: #ffffff;
+  }
+
+  &.light-theme {
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+/* 頂部導航欄樣式 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #e5e7eb; // 底部邊框
+  padding: 0px 1.5rem;
+  z-index: 50; // 確保在最上層
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+// ✅ [新增] 設定月亮圖示的初始狀態為隱藏
+#Moon {
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* 登出按鈕樣式 */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  /* 增加一些内边距 */
+  border-radius: 0.5rem;
+  /* 让按钮角更圆润 */
+  background-color: #fff;
+  color: #374151;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 给按钮加一个细小的阴影 */
+
+  .material-icons {
+    font-size: 1.2rem;
+    /* 适当增大图标 */
+  }
+
+  /* 默認的 hover 效果 */
+  &:hover {
+    background-color: #f3f4f6;
+    border-color: #e5e7eb;
+    transform: translateY(-2px);
+    /* 增加悬停时的轻微上升效果 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    /* 加大阴影使按钮浮动感更强 */
+  }
+
+  /* 針對深色模式 */
+  .dark-theme & {
+    background-color: #2f2f2f;
+    color: #e5e7eb;
+    border: 1px solid #4b5563;
+
+    &:hover {
+      background-color: #444;
+      border-color: #6b7280;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      /* 增加阴影对比 */
+    }
+  }
+
+  /* 針對亮色模式 */
+  .light-theme & {
+    background-color: #fff;
+    color: #374151;
+    border: 1px solid #d1d5db;
+
+    &:hover {
+      background-color: #f9fafb;
+      border-color: #e5e7eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+      /* 小阴影增加立体感 */
+    }
+  }
+}
+
+/* Logo 樣式 */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .logo-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+
+    .material-icons {
+      font-size: 2.5rem;
+    }
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.top-title h1 {
+  font-family: 'Stick', cursive, sans-serif;
+}
+
+/* theme-toggle*/
+input[type="checkbox"] {
+  display: inline-block;
+}
+
+input[type="checkbox"]:checked+svg {
+  /* 當選擇框被勾選時，顯示第二個 SVG */
+  opacity: 1;
+}
+
+svg {
+  transition: opacity 0.3s ease;
+}
+
+/* 隱藏原生 checkbox */
+.theme-controller {
+  display: none;
+}
+
+/* 這是自定義的開關外觀 */
+.toggle {
+  position: relative;
+  min-width: 45px;
+  /* 控制開關寬度 */
+  min-height: 24px;
+  /* 控制開關高度 */
+  background-color: #ccc;
+  /* 默認背景顏色 (光明模式) */
+  border-radius: 12px;
+  /* 圓角 */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  /* 背景顏色過渡效果 */
+}
+
+/* 當開關處於選中狀態時，改變背景顏色 */
+.toggle:checked {
+  background-color: rgb(49, 49, 49);
+  /* 當選中時顯示為暗黑模式 */
+}
+
+/* 開關內的圓形塊 */
+.toggle::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  /* 圓形塊顏色 */
+  border-radius: 50%;
+  /* 圓形 */
+  transition: left 0.3s ease;
+  /* 控制圓形塊的滑動過渡效果 */
+}
+
+/* 當開關被選中時，圓形塊移動到右側 */
+.toggle:checked::before {
+  left: 20px;
+  /* 使圓形塊移動 */
+}
+
+/* 明暗模式鈕 */
+label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.5rem;
+}
+
+/* 頁首、頁尾顏色 */
+.dark-theme {
+
+  .header,
+  .footer {
+    background-color: #2f2f2f;
+    /* 深色背景 */
+    color: white;
+  }
+
+  // 定位到個人中心的下拉選單
+  #selficon .dropdown-content {
+
+    // 選單中的 <a> 標籤 (文字部分)
+    li a {
+      color: black !important; // 使用 !important 來強制覆寫 DaisyUI 的樣式
+    }
+
+    // 選單中的 mat-icon (圖示部分)
+    li a mat-icon {
+      color: black !important; // 同樣強制覆寫
+    }
+  }
+}
+
+.light-theme {
+
+  .header,
+  .footer {
+    background-color: #ffffff;
+    /* 淺色背景 */
+    color: black;
+  }
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #e5e7eb; // 底部邊框
+  padding: 3px 1.5rem;
+  z-index: 888; // 確保在最上層
+}
+
+/* 主要佈局 */
+.main-layout {
+  padding-top: 4rem; // 為頂部導航欄留出空間
+  margin: 20px;
+  flex-grow: 1;
+}
+
+/* 標題區域樣式 */
+.header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  // background: white;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.7rem 1.5rem;
+}
+
+.header-title {
+  font-size: 2.25rem;
+  font-weight: bold;
+  // color: #111827;
+  margin: 0;
+}
+
+/* 主容器樣式 */
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  // background: white;
+  border: solid 1px #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+}
+
+/* 頁面標題區域 */
+.header {
+
+  /* 響應式設計 - 手機版 */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+/* 統計資訊樣式 */
+.stats {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.stat-item {
+  background: #e6e6e6;
+  color: #333;
+  padding: 4px 10px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #e9ecef;
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+}
+
+/* 店家卡片網格佈局 */
+.stores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  /* 響應式設計 - 手機版 */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 店家卡片樣式 */
+.store-card {
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  /* 懸停效果 */
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* 店家名稱樣式 */
+.store-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* 店家資訊區域 */
+.store-info {
+  margin-bottom: 15px;
+}
+
+/* 資訊行樣式 */
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+/* 圖示樣式 */
+.info-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  opacity: 0.6;
+}
+
+/* 按鈕基礎樣式 */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
+}
+
+/* 新增店家浮動按鈕 */
+.add-store-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #34495e;
+    transform: scale(1.05);
+  }
+}
+
+好的，這個想法也非常好！讓兩個按鈕並排在右下角，功能上更集中，也是一種很棒的設計。 這個調整非常簡單，我們只需要修改 SCSS 檔案，調整「回到頂部」按鈕的 bottom 和 right 屬性，就能讓它精確地移動到「新增店家」按鈕的左側。 您的 store-list.component.html 和 store-list.component.ts 檔案都不需要再做任何修改。 唯一需要修改的檔案：store-list.component.scss 請打開您的 store-list.component.scss 檔案，找到您剛剛加入的 .scroll-to-top-btn 樣式規則，並將其整個替換為以下新規則： SCSS // 檔案路徑: store-list.component.scss
+
+/* ... 您現有的其他樣式 ... */
+
+/* 新增店家浮動按鈕 (此樣式不動，作為我們計算的基準) */
+.add-store-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  /* ... 其他 ... */
+}
+
+/* ✅ 修改後的「回到頂部」按鈕樣式 (並排在左側) */
+.scroll-to-top-btn {
+  position: fixed;
+  z-index: 1000;
+  background-color: #747474;
+  color: white;
+  bottom: 30px;
+  right: 102px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+
+  &:hover {
+    background-color: #307ef2;
+  }
+}

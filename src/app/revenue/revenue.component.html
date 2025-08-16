@@ -1,0 +1,134 @@
+<div class="header-section">
+  <div class="header-title">
+    <h1>營收統計</h1>
+  </div>
+</div>
+
+@if (isLoading) {
+  <div class="placeholder-container">
+    <div class="spinner"></div>
+    <p class="placeholder-text">正在載入營收資料...</p>
+  </div>
+} @else if (!hasData) {
+  <div class="placeholder-container">
+    <div class="no-data-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+      </svg>
+    </div>
+    <h2 class="placeholder-title">尚無營收資料</h2>
+    <p class="placeholder-text">當您的店家開始有歷史訂單紀錄後，<br>這裡將會顯示詳細的營收分析圖表。</p>
+  </div>
+} @else {
+  <div class="main-card">
+    <div class="dashboard-content">
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="card-header">
+            <span class="card-title">本年度營收</span>
+          </div>
+          <div class="card-content">
+            <div class="metric-value">NT$ {{ formatCurrency(currentYearRevenue) }}</div>
+            <div class="metric-change positive">
+              +{{ growthRate }}% 年增長
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="card-header">
+            <span class="card-title">月平均營收</span>
+          </div>
+          <div class="card-content">
+            <div class="metric-value">NT$ {{ formatCurrency(avgMonthlyRevenue) }}</div>
+            <div class="metric-subtitle">{{ currentYear }}年平均值</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="card-header">
+            <span class="card-title">最高月營收</span>
+          </div>
+          <div class="card-content">
+            <div class="metric-value">NT$ {{ formatCurrency(maxMonthlyRevenue) }}</div>
+            <div class="metric-subtitle">{{ maxRevenueMonth }}</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="card-header">
+            <span class="card-title">年增長率</span>
+          </div>
+          <div class="card-content">
+            <div class="metric-value">{{ growthRate }}%</div>
+            <div class="metric-subtitle">相比去年同期</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">月度營收分析</h3>
+          <p class="chart-description">{{ currentYear }}年各月份營收表現</p>
+        </div>
+        <div class="chart-content">
+          <canvas #monthlyChart></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">年度營收趨勢</h3>
+          <p class="chart-description">{{ yearRange }}年營收變化</p>
+        </div>
+        <div class="chart-content">
+          <canvas #yearlyChart></canvas>
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-header">
+          <h3 class="summary-title">營收摘要</h3>
+        </div>
+        <div class="summary-content">
+          <div class="summary-section">
+            <h4 class="section-title">年度營收</h4>
+            <div class="data-list">
+              @for (item of yearlyData; track item.year) {
+              <div class="data-row">
+                <span class="data-label">{{ item.year }}年</span>
+                <span class="data-value">NT$ {{ formatCurrency(item.revenue) }}</span>
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="summary-section">
+            <h4 class="section-title">{{ currentYear }}年季度營收</h4>
+            <div class="data-list">
+              <div class="data-row">
+                <span class="data-label">第一季</span>
+                <span class="data-value">NT$ {{ formatCurrency(getQuarterRevenue(1)) }}</span>
+              </div>
+              <div class="data-row">
+                <span class="data-label">第二季</span>
+                <span class="data-value">NT$ {{ formatCurrency(getQuarterRevenue(2)) }}</span>
+              </div>
+              <div class="data-row">
+                <span class="data-label">第三季</span>
+                <span class="data-value">NT$ {{ formatCurrency(getQuarterRevenue(3)) }}</span>
+              </div>
+              <div class="data-row">
+                <span class="data-label">第四季</span>
+                <span class="data-value">NT$ {{ formatCurrency(getQuarterRevenue(4)) }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+}

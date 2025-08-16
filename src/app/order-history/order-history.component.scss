@@ -1,0 +1,345 @@
+// ===== 基本變數定義 (保持不變) =====
+$primary-color: #3b82f6;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-700: #374151;
+$gray-900: #111827;
+
+
+// ===== 全域與佈局 =====
+.header-section {
+  /* 保持不變 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.9rem 1.5rem;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .header-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+/* 主要內容卡片 */
+.main-card {
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  // padding: 1rem;
+}
+
+// ===== 主要內容區域 =====
+.main-content {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ===== 搜尋和篩選區域 =====
+.search-filter-card {
+  // background-color: white;
+  border-radius: 0.5rem;
+  border: solid 1px #e5e7eb;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  .search-filter-content {
+    padding: 1.5rem;
+
+    .search-filter-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      @media (min-width: 640px) {
+        flex-direction: row;
+      }
+
+      .search-container {
+        position: relative;
+        flex: 1;
+
+        .search-icon {
+          position: absolute;
+          left: 0.75rem;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1rem;
+          color: $gray-400;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+          border: 1px solid $gray-300;
+          border-radius: 0.375rem;
+          font-size: 16px;
+          transition: border-color 0.2s;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+          }
+
+          &::placeholder {
+            color: #999;
+            font-size: 1.2rem;
+            font-style: italic;
+            opacity: 1;
+            /* 確保在所有瀏覽器中顏色都清晰可見 */
+          }
+        }
+      }
+    }
+  }
+}
+
+// ===== (新) 收合式區塊 =====
+.collapsible-group {
+  border: 1px solid $gray-200;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.collapsible-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  // background-color: #f9fafb;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 600;
+  // color: $gray-700;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $gray-400;
+  }
+
+  .chevron {
+    font-size: 1rem;
+    transition: transform 0.3s ease-in-out;
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.collapsible-content {
+  padding: 1.5rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 20px;
+  // font-weight: bold;
+
+
+  &:hover {
+    background-color: $gray-400;
+    padding: 2px 5px;
+  }
+
+  .back-icon {
+    font-size: 2rem;
+    // color: $gray-700;
+  }
+}
+
+.section-title {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+
+// ===== (新) 簡化版按鈕網格 =====
+.simple-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.month-grid {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+.year-grid {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+.grid-button {
+  padding: 0.75rem;
+  border: 1px solid $gray-300;
+  border-radius: 0.375rem;
+  background-color: white;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $gray-700;
+  transition: all 0.2s;
+  text-decoration: none; // for routerLink
+
+  &:hover {
+    border-color: $primary-color;
+    background-color: lighten($primary-color, 40%);
+    color: $primary-color;
+  }
+}
+
+
+// ===== 搜尋結果與訂單卡片 (複用舊樣式) =====
+.search-results-section .section-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-card {
+  // background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid $gray-200;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  // color: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .order-content {
+    flex-grow: 1;
+
+    .order-header {
+      margin-bottom: 1rem;
+    }
+
+    .order-number {
+      font-family: monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: $gray-900;
+      background-color: $gray-100;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .order-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6rem;
+
+      .info-item {
+        .label {
+          font-size: 1.1rem;
+          // color: $gray-500;
+          margin: 0 0 0.25rem 0;
+        }
+      }
+    }
+  }
+
+  .value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+
+  .arrow-icon {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $gray-400;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .arrow-icon {
+    color: $primary-color;
+    transform: translateX(5px);
+  }
+}
+
+// ===== 空白與訊息狀態 =====
+.no-data-message {
+  padding: 1rem;
+  text-align: center;
+  color: $gray-500;
+}
+
+.empty-state {
+  /* 複用舊樣式 */
+  text-align: center;
+  padding: 4rem 2rem;
+  color: $gray-500;
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $gray-700;
+    margin: 0;
+  }
+
+  .empty-message {
+    margin-top: 0.5rem;
+  }
+}

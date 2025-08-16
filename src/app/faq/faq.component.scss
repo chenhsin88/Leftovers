@@ -1,0 +1,154 @@
+// === 基本重置和變數定義 ===
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// 顏色變數
+$primary-color: #31a662; // 主要綠色
+$primary-hover: #229954; // 懸停時的綠色
+$text-color: #333; // 主要文字顏色
+$text-light: #555; // 較淺的文字顏色
+$text-muted: #7f8c8d; // 靜音文字顏色
+$background-color: #fafafa; // 背景顏色
+$card-background: white; // 卡片背景顏色
+$title-color: #2c3e50; // 標題顏色
+
+// === 主要容器樣式 ===
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  // color: $text-color;
+  // background-color: $background-color;
+  min-height: 100vh; // 確保至少佔滿整個視窗高度
+}
+
+// === 頁面標題區域 ===
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+
+  h1 {
+    font-size: 2.5rem;
+    // color: $title-color;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  p {
+    font-size: 1.1rem;
+    // color: $text-muted;
+  }
+}
+
+// === Q&A項目容器 ===
+.qa-item {
+  // background: $card-background;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease; // 平滑過渡效果
+
+  // 懸停效果
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  // 當項目展開時的樣式
+  &.active {
+    .toggle {
+      transform: rotate(45deg); // 將+號旋轉成×號
+    }
+  }
+}
+
+// === 問題區域樣式 ===
+.question {
+  background: $primary-color;
+  // color: white;
+  padding: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; // ✅ 垂直置中
+  transition: background-color 0.3s ease;
+  width: 100%;
+
+  // 給 span 撐出空間
+  .toggle {
+    display: inline-block;
+    width: 1.5rem; // 或更大，看起來才不會太擠
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1; // 避免高度過大
+    user-select: none; // 防止選取文字
+  }
+
+  &:hover {
+    background: $primary-hover;
+  }
+}
+
+
+// === 答案區域樣式 ===
+.answer {
+  padding: 25px;
+  // color: $text-light;
+  line-height: 1.8;
+  display: none; // 預設隱藏
+  border-bottom: solid 0.1px white;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-size: 1.2rem;
+
+
+  // 當答案展開時顯示
+  &.active {
+    display: block;
+  }
+}
+
+// === 響應式設計 ===
+// 平板和小螢幕
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 15px;
+  }
+
+  .header h1 {
+    font-size: 2.2rem;
+  }
+}
+
+// 手機螢幕
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 15px;
+  }
+
+  .header {
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  .question {
+    padding: 15px;
+    font-size: 1rem;
+  }
+
+  .answer {
+    padding: 20px;
+    font-size: 0.95rem;
+  }
+}

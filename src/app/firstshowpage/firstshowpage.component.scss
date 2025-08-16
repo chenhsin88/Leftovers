@@ -1,0 +1,330 @@
+// SCSS 檔案最頂端 (請確保 DotGothic16 的 @import 已經在最上方)
+@import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive&display=swap'); // 英文字體
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap'); // 英文字體
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap'); // 英文字體
+@import url('https://fonts.googleapis.com/css2?family=Rampart One&display=swap'); // 中文字體
+
+@layer components {
+  .image {
+    -webkit-mask-image: url('/forfront/circle3.png');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: 70% 90%;
+  }
+}
+
+.text-stroke {
+  -webkit-text-fill-color: transparent;
+  -weblit-text-stroke-color: white;
+  -webkit-text-stroke-width: 5px;
+}
+
+.cursive-title h1 {
+  font-family: 'Stick', cursive, sans-serif;
+  font-size: 220px;
+  font-weight: bold;
+  // color: rgb(130, 138, 87);
+}
+
+h2 {
+  font-family: 'Stick', sans-serif;
+  font-size: 2.5rem; // 調整標題大小
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+h3 {
+  font-size: 2.8rem; // 調整標題大小
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-family: 'Rampart One';
+  line-height: 1.4;
+  color: rgb(48, 217, 79);
+  transition: all 0.5s ease;
+  /* 讓所有效果平滑過渡 */
+  position: relative;
+  /* 確保元素不會擠壓其他內容 */
+  z-index: 1;
+  /* 確保元素位於上層 */
+  overflow: hidden;
+  /* 隱藏溢出內容 */
+
+  /* hover 效果 */
+  &:hover {
+    font-size: 3.5rem;
+    color: rgb(255, 87, 34);
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2), 0 0 25px rgba(255, 87, 34, 0.6);
+    /* 加入顏色陰影 */
+    transform: scale(1.1) rotate(-5deg);
+    /* 放大並微旋轉 */
+    cursor: pointer;
+  }
+}
+
+
+.hashtag {
+  text-align: end;
+  margin-left: 55%;
+  width: 400px;
+}
+
+// 內容文字
+p.changefonts {
+  font-size: 1.7rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+  text-justify: inter-word;
+  transition: color 0.3s ease-in-out;
+  letter-spacing: 0.1em;
+}
+
+
+// 整體容器樣式
+.content-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 50px;
+  font-family: 'Stick', sans-serif;
+  font-size: 1.5rem;
+  opacity: 0;
+  transform: translateY(50px) scale(0.8); // 初始時稍微向下移動並縮小
+  background-color: transparent; // 初始背景透明
+  transition: opacity 1s ease-out, transform 1s ease-out, background-color 1s ease-out; // 背景色變化
+
+  /* 動畫效果 */
+  animation: fadeIn 5s ease-out forwards; // 添加動畫，並讓動畫結束後保留最終狀態
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(50px) scale(0.8); // 開始時元素縮小並移動
+    }
+
+    50% {
+      opacity: 0.5;
+      transform: translateY(20px) scale(1); // 動畫過程中，元素稍微回到中心
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1); // 完全顯示且恢復原狀
+    }
+  }
+}
+
+
+.body {
+  font-size: 1.7rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+  text-justify: inter-word; // 文字間距自動調整
+  transition: color 0.3s ease-in-out;
+  letter-spacing: 0.1em;
+
+
+  :hover {
+    background-color: rgb(172, 164, 151);
+    cursor: pointer;
+  }
+}
+
+.content-text.show {
+  opacity: 1;
+  transform: translateY(0) scale(1); // 當元素進入視口後，讓它恢復原狀
+}
+
+
+.custom-container1 {
+  width: 850px;
+  height: 600px;
+  align-items: end;
+  margin-top: 10%;
+  border-top-right-radius: 30%;
+  background-color: #9a958d;
+  // border-top-left-radius: 30%;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 10px;
+  position: relative;
+}
+
+.custom-container1 {
+  h1.transparent-text {
+    position: absolute;
+    top: 77.6%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    font-size: 121px;
+    font-family: Bungee;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 30px;
+  }
+}
+
+.custom-container2 {
+  width: 650px;
+  height: 500px;
+  // margin-left: 610px;
+  position: absolute;
+  margin-top: 15%;
+  margin-left: 5%;
+  align-items: end;
+  border-top-right-radius: 30%;
+  background-color: #566e7b;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container3 {
+  width: 670px;
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 8%;
+  margin-left: 42%;
+  margin-bottom: 10%;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 20%;
+}
+
+.custom-container3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.custom-container4 {
+  width: 600px;
+  height: 700px;
+  align-items: start;
+  position: absolute;
+  margin-top: 10%;
+  border-top-left-radius: 30%;
+  background-color: #9a958d;
+  // border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container4 {
+  h1.transparent-text {
+    position: absolute;
+    top: 15%;
+    left: 8%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    font-size: 121px;
+    font-family: Bungee;
+    // font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 30px;
+  }
+}
+
+.custom-container5 {
+  width: 400px;
+  height: 600px;
+  // margin-left: 610px;
+  position: absolute;
+  margin-top: 52%;
+  margin-left: 10%;
+  align-items: start;
+  background-color: #566e7b;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container6 {
+  width: 450px;
+  height: 600px;
+  position: relative;
+  z-index: 99;
+  overflow: hidden;
+  margin-top: 30%;
+  margin-left: 15%;
+  margin-bottom: 80%;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container6 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-container7 {
+  width: 420px;
+  height: 500px;
+  align-items: start;
+  position: absolute;
+  margin-top: 5%;
+  border-top-left-radius: 30%;
+  background-color: #9a958d;
+  // border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container7 {
+  h1.transparent-text {
+    position: absolute;
+    top: 20%;
+    right: 30%;
+    transform: translate(0, -50%);
+    z-index: 999;
+    font-size: 110px;
+    font-family: Bungee;
+    // font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+  }
+}
+
+.custom-container8 {
+  width: 380px;
+  height: 400px;
+  // margin-left: 610px;
+  position: absolute;
+  margin-top: 49%;
+  margin-left: 15%;
+  align-items: start;
+  background-color: #566e7b;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container9 {
+  width: 280px;
+  height: 350px;
+  position: relative;
+  z-index: 99;
+  overflow: hidden;
+  margin-top: 40%;
+  margin-left: 25%;
+  margin-bottom: 80%;
+  border-top-right-radius: 30%;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30%;
+}
+
+.custom-container9 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,0 +1,20 @@
+<!-- 主要內容區 -->
+<div class="snackbar-content">
+  <!-- 顯示標題，例如 "新推薦：" -->
+  <span class="snackbar-title">{{ data.title }}</span>
+
+  <!-- 商品列表容器 -->
+  <div class="item-list">
+    <!-- 使用 *ngFor 遍歷從 data 傳來的 items 陣列 -->
+    <div class="item" *ngFor="let item of data.items">
+      <span class="item-name">{{ item.name }}</span>
+      <span class="item-price">NT${{ item.price }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- 關閉按鈕 -->
+<!-- 點擊時，呼叫 snackBarRef 的 dismiss() 方法來關閉這個通知 -->
+<button class="close-btn" (click)="snackBarRef.dismiss()" aria-label="關閉通知">
+  &times; <!-- 這是一個漂亮的乘號 "×" -->
+</button>

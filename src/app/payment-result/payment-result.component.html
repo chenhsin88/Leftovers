@@ -1,0 +1,36 @@
+@if (paymentStatus && paymentStatus.toLowerCase().startsWith('success')) {
+<div class="page-container">
+  @for (item of confettiItems; track i; let i = $index) {
+    <div class="confetti"
+       [style.left.%]="item.left"
+       [style.animation-delay.s]="item.delay">
+  </div>
+  }
+
+  <div class="success-container">
+    <div class="success-icon">
+      <div class="checkmark"></div>
+    </div>
+
+    <h1 class="success-title">訂購成功！</h1>
+
+    <p class="success-message">
+      感謝您的購買！您的訂單已成功處理，<br>
+      若為信用卡付款，刷卡確認郵件將發送到您的信箱。
+    </p>
+
+    <button class="continue-shopping" (click)="continueShopping()" type="button">
+      繼續購物
+    </button>
+  </div>
+</div>
+} @else if (paymentStatus === 'fail') {
+<div class="page-container">
+  <div class="fail-container">
+    <h1>訂購失敗</h1>
+    <p>很抱歉，您的訂單處理失敗，款項將不會被扣除。</p>
+    <p>原因：伺服器發生未預期的錯誤。</p>
+    <button class="continue-shopping" (click)="continueShopping()">返回首頁</button>
+  </div>
+</div>
+}

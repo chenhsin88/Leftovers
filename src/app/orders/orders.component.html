@@ -1,0 +1,182 @@
+<!-- 頁面標題區域 -->
+<div class="header-section">
+  <!-- 標題和統計資訊 -->
+  <div class="header-content">
+    <h1 class="header-title">訂單管理</h1>
+    <!-- 桌面版統計標籤 -->
+    <div class="stats-desktop">
+      <div class="stat-item pending">
+        <div class="stat-dot"></div>
+        <span class="stat-text">{{ getStats().pending }} 待付款</span>
+      </div>
+      <div class="stat-item picked-up">
+        <div class="stat-dot"></div>
+        <span class="stat-text">{{ getStats().pickedUp }} 待取餐</span>
+      </div>
+      <div class="stat-item cancelled_by_user">
+        <div class="stat-dot"></div>
+        <span class="stat-text">{{ getStats().cancelledByUser }} 待取消</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 訂單列表頁面容器 -->
+<div class="main-card">
+
+  <!-- 主要內容區域 -->
+  <div class="main-content">
+
+    <!-- 搜尋和篩選區域 -->
+    <div class="search-filter-card">
+      <div class="search-filter-content">
+        <div class="search-filter-row">
+          <!-- 搜尋框 -->
+          <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="搜尋訂單編號、用戶名稱或取餐碼" [(ngModel)]="searchTerm" />
+          </div>
+
+          <!-- 狀態篩選下拉選單 -->
+          <div class="filter-container">
+            <span class="filter-icon">📋</span>
+            <select class="filter-select" [(ngModel)]="statusFilter">
+              <option value="all">全部狀態</option>
+              <option value="pending">待付款</option>
+              <option value="picked_up">待取餐</option>
+              <option value="cancelled-by-user">待取消</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 訂單列表卡片 -->
+    <div class="order-list-card">
+
+      <!-- 桌面版表格標題 -->
+      <div class="table-header">
+        <div class="table-header-row">
+          <div class="col-order-info">訂單資訊</div>
+          <div class="col-customer">用戶名稱</div>
+          <div class="col-status">狀態</div>
+          <div class="col-amount">金額</div>
+          <div class="col-pickup">取餐碼</div>
+          <div class="col-action">操作</div>
+        </div>
+      </div>
+
+      <!-- 訂單列表內容 -->
+      <div class="order-list-content">
+        <!-- 空狀態顯示 -->
+        @if (filteredOrders.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <h3 class="empty-title">沒有找到訂單</h3>
+          <p class="empty-description">請調整搜尋條件或篩選設定</p>
+          <button class="btn-reset" (click)="resetFilters()">重置篩選</button>
+        </div>
+        }
+
+        <!-- 訂單列表項目 -->
+        @for (order of filteredOrders; track order.orderNumber) {
+        <div class="order-item">
+
+          <!-- 桌面版佈局 -->
+          <div class="order-item-desktop">
+            <!-- 訂單資訊欄 -->
+            <div class="col-order-info">
+              <div class="order-info">
+                <span class="order-number">{{ order.orderNumber }}</span>
+                <span class="order-time">
+                  <span class="time-icon">🕐</span>
+                  {{ order.orderTime }}
+                </span>
+              </div>
+            </div>
+
+            <!-- 用戶名稱欄 -->
+            <div class="col-customer">
+              <div class="customer-info">
+                <span class="customer-name">{{ order.customerName }}</span>
+              </div>
+            </div>
+
+            <!-- 狀態欄 -->
+            <div class="col-status">
+              <span [class]="getStatusClass(order.status)">
+                {{ getStatusText(order.status) }}
+              </span>
+            </div>
+
+            <!-- 金額欄 -->
+            <div class="col-amount">
+              <div class="amount-info">
+                <span class="amount">NT$ {{ order.totalAmount }}</span>
+              </div>
+            </div>
+
+            <!-- 取餐碼欄 -->
+            <div class="col-pickup">
+              <span class="pickup-code">{{ order.pickupCode }}</span>
+            </div>
+
+            <!-- 操作按鈕欄 - 修正點擊事件 -->
+            <div class="col-action">
+              <button class="btn-view" (click)="viewOrderDetail(order.orderNumber)" title="查看訂單詳情">
+                <span>🔎</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 手機版佈局 -->
+          <div class="order-item-mobile" (click)="viewOrderDetail(order.orderNumber)">
+            <!-- 第一行：訂單編號和狀態 -->
+            <div class="mobile-row-1">
+              <div class="mobile-order-info">
+                <div class="order-number">{{ order.orderNumber }}</div>
+                <div class="customer-info">
+                  <span class="user-icon">👤</span>
+                  <span>{{ order.customerName }}</span>
+                </div>
+              </div>
+              <span [class]="getStatusClass(order.status)">
+                {{ getStatusText(order.status) }}
+              </span>
+            </div>
+
+            <!-- 第二行：金額、取餐碼和操作按鈕 -->
+            <div class="mobile-row-2">
+              <div class="mobile-details">
+                <div class="amount">NT$ {{ order.totalAmount }}</div>
+                <div class="pickup-code">{{ order.pickupCode }}</div>
+              </div>
+              <button class="btn-view" (click)="viewOrderDetail(order.orderNumber); $event.stopPropagation()"
+                title="查看訂單詳情">
+                <span>👁️</span>
+              </button>
+            </div>
+
+            <!-- 第三行：時間資訊 -->
+            <div class="mobile-row-3">
+              <span class="time-icon">🕐</span>
+              <span class="order-time">{{ order.orderTime }}</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- 總計資訊 -->
+    @if (filteredOrders.length > 0) {
+    <div class="total-card">
+      <div class="total-content">
+        <span class="total-label">本頁總計 {{ filteredOrders.length }} 筆訂單</span>
+        <span class="total-amount">NT$ {{ getFilteredTotal() }}</span>
+      </div>
+    </div>
+    }
+  </div>
+</div>

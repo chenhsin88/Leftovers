@@ -1,0 +1,95 @@
+<!-- 頁面標題 -->
+<div class="header-section">
+  <div class="header-title">
+    <h1>推播管理</h1>
+  </div>
+</div>
+
+<div class="main-card">
+  <!-- 商品卡片網格 -->
+  <div class="products-grid">
+    <!-- 使用 @for 迴圈顯示每個商品 -->
+    @for (product of products; track $index) {
+    <div class="product-card">
+      <!-- 商品圖片區域 -->
+      <div class="image-container">
+        <img [src]="product.imageUrl" [alt]="product.name" />
+        <!-- 推播狀態標籤 -->
+        <div class="status-badge" [class.active]="product.pushNotifications">
+          {{ product.pushNotifications ? '已推播' : '未推播' }}
+        </div>
+      </div>
+
+      <!-- 商品資訊區域 -->
+      <div class="card-content">
+        <!-- 商品名稱 -->
+        <h3>{{ product.name }}</h3>
+
+        <!-- 價格資訊 -->
+        <div class="price-section">
+          <!-- 原價 -->
+          <div class="price-row">
+            <span class="label">原價</span>
+            <span class="original-price">NT$ {{ product.originalPrice }}</span>
+          </div>
+
+          <!-- 折扣後售價 -->
+          <div class="price-row">
+            <span class="label">折扣後售價</span>
+            <span class="discount-price">NT$ {{ product.discountedPrice }}</span>
+          </div>
+
+          <!-- 再折扣售價 (可編輯) -->
+          <div class="price-row">
+            <span class="label final-price-label">再折扣售價</span>
+            <div class="price-input-group">
+              <span>NT$</span>
+              <input type="number" [value]="product.newPrice"
+                (input)="updateFinalDiscountPrice(product.foodItemId!, $event)" min="1" class="price-input" />
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 取貨時間 -->
+        <div class="pickup-time">
+          <span class="time-icon">🕒</span>
+          <span>取貨截止</span>
+          <span class="time-value">{{ formatDate(product.pickupEndTime) }}</span>
+        </div>
+
+        <!-- 推播設定區域 -->
+        <div class="push-settings">
+          <!-- 推播開關 -->
+          <div class="setting-row">
+            <div class="switch-group">
+              <label class="switch">
+                <input type="checkbox" [checked]="product.pushNotifications"
+                  (change)="togglePushNotification(product.foodItemId!)" />
+                <span class="slider"></span>
+              </label>
+              <span class="switch-label">
+                {{ product.pushNotifications ? '推播已啟用' : '推播已關閉' }}
+              </span>
+            </div>
+            <!-- 推播圖示 -->
+            <span class="bell-icon" [class.active]="product.pushNotifications">
+              {{ product.pushNotifications ? '🔔' : '🔕' }}
+            </span>
+          </div>
+
+          <!-- 推播提前時間 (可編輯) -->
+          <div class="setting-row">
+            <span class="label">推播提前時間</span>
+            <div class="time-input-group">
+              <input type="number" [value]="product.defaultHours"
+                (input)="updatePushNotificationHours(product.foodItemId!, $event)" min="1" max="24" class="time-input" />
+              <span>小時</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

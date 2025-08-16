@@ -1,0 +1,99 @@
+<!-- location.component.html -->
+<div class="location-container min-h-screen w-full flex items-center justify-center p-4 font-sans relative" data-theme="winter">
+  <div class="dynamic-background fixed top-0 left-0 w-full h-full -z-10"
+       style="background: linear-gradient(160deg, hsl(var(--b1)) 0%, hsl(var(--b2)) 100%);"></div>
+
+  <div #glassCard class="card bg-base-100/80 backdrop-blur-xl shadow-2xl w-full max-w-md z-10 rounded-box transition-all duration-500 hover:shadow-primary/30 hover:-translate-y-2 border border-base-200/50">
+    <div class="card-body p-8">
+      <div class="flex justify-center mb-3">
+        <div class="avatar">
+  <div class="w-20 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 transition-all duration-300"
+       [class.animate-pulse]="isLocating">
+    <div class="w-full h-full bg-primary/90 flex items-center justify-center">
+      <span class="material-symbols-outlined text-4xl text-primary-content align-middle">
+        {{ isLocating ? 'gps_fixed' : 'travel_explore' }}
+      </span>
+    </div>
+  </div>
+</div>
+
+      </div>
+
+      <div class="text-center mb-2">
+        <h1 class="main-title text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-wider">
+          <span *ngFor="let ch of titleWords" #titleWord class="title-word">{{ ch }}</span>
+        </h1>
+        <p class="subtitle text-base-content/70">根據定位推薦周圍商家</p>
+      </div>
+
+      <button (click)="getUserLocation()"
+              class="btn btn-primary btn-lg w-full gap-2"
+              [disabled]="isLocating">
+        @if(isLocating){
+            <span class="loading loading-spinner"></span>
+        }@else {
+            <span class="material-symbols-outlined">my_location</span>
+        }
+        <span>{{ isLocating ? '正在定位中...' : '自動偵測位置' }}</span>
+      </button>
+
+      <div class="divider text-base-content/50 my-6">或</div>
+
+      <div class="form-control w-full space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="label"><span class="label-text">城市</span></label>
+            <input type="text" class="input input-bordered w-full adress-input"
+                   [(ngModel)]="city" required
+                   (focus)="onInputFocus()" (blur)="onInputBlur()"
+                   placeholder="高雄市" />
+          </div>
+          <div>
+            <label class="label"><span class="label-text">行政區</span></label>
+            <input type="text" class="input input-bordered adress-input"
+                   [(ngModel)]="district" required
+                   (focus)="onInputFocus()" (blur)="onInputBlur()"
+                   placeholder="鎮北里" />
+          </div>
+          <div>
+            <label class="label"><span class="label-text">路名</span></label>
+            <input type="text" class="input input-bordered w- adress-input"
+                   [(ngModel)]="road" required
+                   (focus)="onInputFocus()" (blur)="onInputBlur()"
+                   placeholder="復興四路" />
+          </div>
+          <div>
+            <label class="label"><span class="label-text">門牌號碼</span></label>
+            <input type="text" class="input input-bordered w- adress-input"
+                   [(ngModel)]="houseNumber" required
+                   (focus)="onInputFocus()" (blur)="onInputBlur()"
+                   placeholder="2-10" />
+          </div>
+        </div>
+        <button (click)="confirmLocation()"
+                class="btn btn-secondary w-full gap-2"
+                [disabled]="!city || !district || !road || !houseNumber || isLocating">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span>確認地址</span>
+        </button>
+      </div>
+
+      <div *ngIf="statusMessage" class="status-panel mt-4">
+        <div role="alert" class="alert"
+             [ngClass]="{
+               'alert-success': confirmedCoordinates,
+               'alert-error': !confirmedCoordinates && (statusMessage.includes('失敗')||statusMessage.includes('出錯')),
+               'alert-info': !confirmedCoordinates && !(statusMessage.includes('失敗')||statusMessage.includes('出錯'))
+             }">
+          <span class="material-symbols-outlined">
+            {{ confirmedCoordinates ? 'verified_user' : 'error' }}
+          </span>
+          <div class="flex flex-col">
+            <span>{{ statusMessage }}</span>
+            <progress *ngIf="isLocating" class="progress progress-primary w-74 mt-1"></progress>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

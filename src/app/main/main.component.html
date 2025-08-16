@@ -1,0 +1,449 @@
+@if (showDisclaimer) {
+<div class="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] p-4" (cdkObserveContent)="preventBodyScroll()">
+  <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+    <header class="p-4 border-b">
+      <h2 class="text-xl font-bold text-gray-800 text-center">� 免責聲明與平台使用條款</h2>
+    </header>
+
+    <main class="p-6 overflow-y-auto text-gray-700 leading-relaxed space-y-4 disclaimer-content">
+      <p class="font-semibold">本平台致力於提供一個促進食物資源再利用的媒合服務，幫助商家將可食用但即將過期或剩餘的食品提供給需要的用戶。請您在使用本平台服務前詳閱以下免責聲明：</p>
+
+      <div>
+        <h3 class="font-bold text-lg mb-2 text-gray-800">一、一般聲明</h3>
+        <ul class="list-disc list-inside space-y-1 pl-2 text-sm">
+          <li>本平台僅為資訊媒合平台，不參與實際交易、食品製作或配送，亦無法全面驗證所有商品內容的真實性、品質或安全性。</li>
+          <li>用戶與商家間的交易，為雙方自願行為，平台僅提供工具與技術支持，不負責交易結果或任何衍生糾紛。</li>
+          <li>所有商品圖片與說明皆由商家提供，若有錯誤、疏漏或引起誤解，本平台概不負責。</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-lg mb-2 text-gray-800">二、用戶端（消費者）特別聲明</h3>
+        <ul class="list-disc list-inside space-y-1 pl-2 text-sm">
+          <li><strong>食品風險認知：</strong>本平台上的食品可能為即期、保存期限將近或經適當處理後可再利用的食品，請用戶自行判斷是否接受相關風險。</li>
+          <li><strong>食安責任：</strong>用戶應於取餐或收貨時確認食品狀況，如有疑慮應即時拒收。平台對因食品品質、過敏反應、食用後產生之健康問題不負任何責任。</li>
+          <li><strong>資訊依據：</strong>食品成分、過敏原、保存方式等資訊由商家提供，平台不保證其完整或正確性。</li>
+          <li><strong>訂單取消政策：</strong>若消費者欲取消訂單，請於完成下單後20分鐘內提出取消申請，逾時恕不接受取消。僅限選擇「現金付款」之訂單可進行取消，使用信用卡付款之訂單恕無法取消。敬請下單前務必確認商品與付款方式，以免造成不便。</li>
+          <li class="text-red-600 font-semibold"><strong>取餐義務與停權機制：</strong>用戶一旦完成預訂，即視為同意前往指定地點於指定時間取餐。若無故未取餐且被商家註記達兩次，平台將停用該帳號的使用權限，不另行通知。</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-lg mb-2 text-gray-800">三、商家端（供應商）特別聲明</h3>
+        <ul class="list-disc list-inside space-y-1 pl-2 text-sm">
+          <li>商家應確保所提供食品符合當地食品安全法規，不得販售腐敗、過期、含有危害物質或其他違法食品。</li>
+          <li>商家對其上架商品的內容、圖片、描述與標示資訊負全責，若因不實資訊或食品安全問題導致爭議，平台不承擔任何法律或賠償責任。</li>
+          <li>商家應誠實揭露食品來源、保存期限與保存條件，不得誤導用戶。</li>
+        </ul>
+      </div>
+
+       <div>
+        <h3 class="font-bold text-lg mb-2 text-gray-800">四、法律責任</h3>
+        <ul class="list-disc list-inside space-y-1 pl-2 text-sm">
+          <li>平台保留依據法律、用戶行為或其他合理原因，刪除內容、暫停帳號或終止服務的權利。</li>
+          <li>若用戶或商家行為違反本免責聲明、使用條款或相關法律，將自負法律責任，平台得依法協助相關單位進行調查。</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer class="p-4 border-t bg-gray-50 rounded-b-lg">
+      <div class="form-control mb-4">
+        <label class="label cursor-pointer justify-start items-center gap-3">
+          <input type="checkbox" class="checkbox checkbox-primary" [(ngModel)]="disclaimerAccepted" />
+          <span class="label-text font-semibold">我已詳細閱讀、理解並同意平台的使用條款與上述所有免責聲明。</span>
+        </label>
+      </div>
+      <button class="btn btn-primary w-full" [disabled]="!disclaimerAccepted" (click)="agreeToDisclaimer()">
+        同意並繼續
+      </button>
+    </footer>
+  </div>
+</div>
+}
+@if (isLoading && !showDisclaimer) {
+<div class="fixed inset-0 z-1200 flex items-center justify-center bg-black/50">
+  <span class="loading loading-spinner w-40 h-40 text-white"></span>
+</div>
+}
+  <app-ai-chat></app-ai-chat>
+<div class="w-full">
+
+  <div class="relative z-10 p-6 mt-3">
+    <div class="flex justify-between items-center mb-6 px-4">
+      <div class="font-extrabold text-2xl text-base-content border-b-2 border-blue-200 pb-2 flex-grow">
+        <span>🛒 商品推播</span>
+      </div>
+      <div class="autoplay-controls flex items-center gap-4 flex-shrink-0 ml-4">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm text-gray-600">自動輪播</span>
+          <input type="checkbox" class="toggle toggle-sm toggle-primary" [checked]="isAutoplayOn"
+            (change)="toggleAutoplay()" />
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="navigation-arrows nav-left absolute top-1/2 -translate-y-1/2 bg-white/90 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer text-lg text-base-content transition z-10 hover:bg-white hover:shadow-lg left-4"
+      (click)="scrollProducts(-1)">‹</button>
+    <button
+      class="navigation-arrows nav-right absolute top-1/2 -translate-y-1/2 bg-white/90 border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer text-lg text-base-content transition z-10 hover:bg-white hover:shadow-lg right-4"
+      (click)="scrollProducts(1)">›</button>
+
+    <div class="products-slider flex overflow-x-auto gap-4 py-5 scroll-smooth scrollbar-hide px-4" #productsSlider
+      (mouseenter)="stopAutoplay()" (mouseleave)="resumeAutoplay()">
+
+      @for (product of displayNotifications; track $index) {
+<div
+  class="product-card flex-none w-[300px] bg-base-200 rounded-lg overflow-hidden cursor-pointer shadow-md transition-transform duration-200 ease-in-out border border-base-content/10 hover:scale-105"
+  (click)="openProductCard(product, $event)">
+  <div
+    class="product-image-container relative w-[200px] h-[200px] bg-base-100 flex items-center justify-center rounded-full mx-auto my-5 overflow-hidden border border-base-content/10">
+    @if (product.subcategory) {
+    <div
+      class="subcategory-badge absolute top-3 left-1/2 -translate-x-1/2 bg-base-300/80 text-base-content py-0.5 px-3 rounded-full text-[10px] font-normal whitespace-nowrap z-20 border border-base-content/10">
+      【{{ product.subcategory }}】</div>
+    }
+    <img class="product-image w-full h-full object-cover" [src]="product.foodItemImageUrl"
+      alt="{{ product.foodItemName }}">
+  </div>
+  <div class="product-info px-4 pb-4 text-center">
+    <p class="text-base text-base-content mb-1">{{ product.foodItemName }}</p>
+    <div class="price-display flex items-center justify-center gap-2 mb-2">
+      <span class="price-main text-2xl font-bold text-base-content"> NT${{ formatPrice(product.finalPrice)
+        }}</span>
+      <span class="text-xs text-base-content/50">原價 NT${{ formatPrice(product.originalPrice) }}</span>
+    </div>
+    <div class="product-details mt-3 pt-3 border-t border-base-content/10 text-xs text-base-content/70">
+      <div class="detail-item flex justify-between mb-1">
+        <span class="detail-label font-medium">分類</span>
+        <span class="detail-value text-base-content">{{ product.category }}</span>
+      </div>
+      <div class="detail-item flex justify-between mb-1">
+        <span class="detail-label font-medium">取貨時間</span>
+        <span class="detail-value text-base-content">{{ product.pickupTime }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+}
+    </div>
+  </div>
+
+
+  <div class="p-6 pt-3 mx-auto" id="searchResultsContainer">
+    <div class="flex justify-between items-center mb-6 px-4">
+      <div class="header font-extrabold text-2xl text-base-content border-b-2 border-blue-200 pb-4 flex-grow">
+        <span>🔍 搜尋結果</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full mb-4 px-4 gap-4">
+      <div class="flex flex-wrap gap-2 py-2 flex-grow">
+        @for (item of category; track $index) {
+          <button [routerLink]="[]" [queryParams]="{ category: item === '全部' ? null : item }" queryParamsHandling="merge"
+
+            [ngClass]="{'btn-primary': selectedCategory === item}"
+
+            class="btn rounded-full"> {{ item }}
+          </button>
+        }
+      </div>
+
+      <div class="flex-none">
+        <ul
+          class="menu menu-horizontal bg-base-200 rounded-box shadow-sm flex items-center gap-2 p-2 text-sm">
+          <li><a [routerLink]="[]" [queryParams]="{ sort: 'store' }" queryParamsHandling="merge"
+              [class.active]="currentFilters.sortBy === 'store'" class="hover:bg-gray-100 rounded-md py-2 px-3">依店家</a>
+          </li>
+          <li><a [routerLink]="[]" [queryParams]="{ sort: 'food' }" queryParamsHandling="merge"
+              [class.active]="currentFilters.sortBy === 'food'" class="hover:bg-gray-100 rounded-md py-2 px-3">依食物</a>
+          </li>
+          <li>
+            <a (click)="togglePriceSort()" [class.active]="currentFilters.sortBy === 'price'"
+              class="hover:bg-gray-100 rounded-md py-2 px-3 flex items-center gap-1">
+              價格由{{ ShowByPricechange ? '低到高': '高到低' }}
+              <mat-icon class="text-base">{{ ShowByPricechange ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            </a>
+          </li>
+          <li class="dropdown dropdown-end">
+            <a tabindex="0" class="focus:outline-none hover:bg-gray-100 rounded-md py-2 px-3 flex items-center gap-1"
+              #dropdownTrigger>
+              <span>顯示範圍</span>
+              <mat-icon class="text-base">edit_location_alt</mat-icon>
+            </a>
+            <div tabindex="0"
+              class="dropdown-content absolute z-[9999] card card-compact w-48 p-4 shadow bg-base-100 rounded-box flex flex-col justify-around"
+              style="bottom: auto; top: 100%; left: auto; right: 0;">
+              <div class="text-center">
+                <h1 class="text-base font-bold mb-2">選擇範圍</h1>
+              </div>
+              <div class="text-center mb-4">
+                <span class="text-4xl font-bold text-blue-600">{{ distance() }}</span><span
+                  class="text-lg ml-1">km</span>
+              </div>
+              <div class="w-full px-2">
+                <mat-slider min="1" max="50" step="1" discrete="true" class="w-full">
+                  <input matSliderThumb [value]="distance()" (input)="updateDisplayValue($event)"
+                    (dragEnd)="onDragEnd($event)">
+                </mat-slider>
+                <div class="w-full flex justify-between text-xs px-1 text-gray-500"><span>1 公里</span><span>50 公里</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a [routerLink]="[]"
+              [queryParams]="{ sort: 'showby', priceshowtype: ShowByMap ? 'list' : 'Map' }"
+              queryParamsHandling="merge"
+              class="hover:bg-gray-100 rounded-md py-2 px-3 flex items-center gap-1"> 依{{ ShowByMap ? '列表' : '地圖' }}顯示
+              <mat-icon class="text-base">{{ ShowByMap ? 'ballot' : 'location_on' }}</mat-icon>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    @if (isLoading) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (item of skeletons; track $index) {
+      <div class="flex flex-col gap-4 w-full">
+        <div class="skeleton h-40 w-full"></div>
+        <div class="skeleton h-4 w-28"></div>
+        <div class="skeleton h-4 w-full"></div>
+        <div class="skeleton h-4 w-full"></div>
+      </div>
+      }
+    </div>
+    } @else {
+  @if (ShowByMap) {
+
+    <app-carto-map
+  [merchants]="filteredMerchants"
+  [userLocation]="mylocation"
+  (merchantClicked)="onMapPinClicked($event)"> </app-carto-map>
+
+  } @else {
+
+    @if (currentFilters.sortBy === 'store') {
+    @if (filteredMerchants.length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 px-4">
+      @for (merchant of filteredMerchants; track merchant.merchantsId) {
+      <div
+        class="product-card-vertical w-full bg-base-200 rounded-lg shadow-sm overflow-hidden cursor-pointer transition-transform duration-200 ease-in-out hover:scale-[1.01]"
+        (click)="viewStore(merchant)">
+
+        <figure class="w-full h-60 overflow-hidden bg-base-300">
+          <img class="w-full h-full object-cover" [src]="merchant.logoUrl" [alt]="merchant.name">
+
+        </figure>
+
+        <div class="p-4 flex flex-col flex-grow justify-between">
+          <div>
+            <h2 class="font-semibold text-base-content text-lg mb-1 line-clamp-2">{{ merchant.name }}</h2>
+            <p class="text-xs text-base-content/70 flex items-start">
+              <mat-icon fontIcon="location_on" class="text-sm mr-1 flex-shrink-0"></mat-icon>
+              <span class="line-clamp-2">{{ merchant.addressText }}</span>
+            </p>
+          </div>
+
+          <div class="mt-auto pt-4 flex justify-end">
+            <button class="btn btn-primary btn-sm" (click)="$event.stopPropagation(); viewStore(merchant)">查看店家</button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="h-96 flex flex-col justify-center items-center">
+      <mat-icon fontIcon="search_off" class="text-7xl text-base-content/30"></mat-icon>
+      <p class="text-xl text-base-content/60 mt-4">找不到符合條件的店家</p>
+      <p class="text-base-content/40">試試看調整篩選條件或搜尋關鍵字吧！</p>
+    </div>
+    }
+    }  @else {
+    @if (filteredItems.length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 px-4">
+
+      @for (item of filteredItems; track item.id) {
+      <div
+        class="product-card-vertical relative w-full bg-base-200 rounded-lg shadow-sm overflow-hidden cursor-pointer transition-transform duration-200 ease-in-out hover:scale-[1.01]"
+        (click)="openFoodItemDetails(item)">
+
+        <figure class="w-full h-40 overflow-hidden bg-base-300 rounded-t-lg">
+          <img class="w-full h-full object-cover" [src]="item.imageUrl" alt="{{ item.name }}">
+        </figure>
+
+        @if (item.quantityAvailable !== null && item.quantityAvailable !== undefined) {
+        <div class="quantity-badge absolute top-2 right-2 bg-primary text-primary-content text-xs font-semibold px-2 py-1 rounded-full shadow-lg z-10">
+          剩餘: {{ item.quantityAvailable }}
+        </div>
+        }
+
+        <div class="p-4 flex flex-col justify-between">
+          <div>
+            <h3 class="font-semibold text-base-content text-lg mb-1 line-clamp-2">{{ item.name }}</h3>
+            <p class="text-xs text-base-content/70 overflow-hidden h-9 line-clamp-3 mb-2">{{ item.description }}</p>
+          </div>
+          <div class="flex justify-between items-center mt-2 pt-2 border-t border-base-content/10">
+            <span class="text-error font-bold text-base">{{ item.discountedPrice | currency:'TWD':'symbol':'1.0-0' }}</span>
+            @if (item.originalPrice && item.originalPrice > item.discountedPrice) {
+            <span class="line-through text-base-content/40 text-xs">{{ item.originalPrice | currency:'TWD':'symbol':'1.0-0'
+              }}</span>
+            }
+          </div>
+        </div>
+      </div>
+      }
+      </div>
+    } @else {
+    <div class="h-96 flex flex-col justify-center items-center">
+      <mat-icon fontIcon="search_off" class="text-7xl text-base-content/30"></mat-icon>
+      <p class="text-xl text-base-content/60 mt-4">找不到符合條件的商品</p>
+      <p class="text-base-content/40">試試看調整篩選條件或搜尋關鍵字吧！</p>
+    </div>
+    }
+}}
+    }
+  </div>
+</div>
+
+<!-- ⭐ 核心修改: 以下是 Modal (彈出視窗) 的部分，它們不屬於重複的內容 -->
+@if (selectedProduct) {
+<div class="modal-overlay fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-5 animate-fade-in"
+  (click)="closeProductCard()">
+  <div
+    class="floating-card bg-[#fafbfc] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl relative p-5 animate-slide-up"
+    (click)="stopPropagation($event)">
+    <button
+      class="close-btn absolute top-4 right-4 bg-black/10 rounded-full w-7 h-7 flex items-center justify-center cursor-pointer text-base text-gray-500 transition-all z-[1001] hover:bg-black/20 hover:text-base-content hover:scale-110"
+      (click)="closeProductCard()">✕</button>
+
+    <img class="product-image w-full h-52 object-cover rounded-xl mb-4 bg-gray-200"
+      [src]="selectedProduct.foodItemImageUrl" alt="{{ selectedProduct.foodItemName }}">
+
+    <div class="expanded-details">
+      <div class="detail-row price-breakdown flex justify-between items-start gap-4 mb-2">
+        <span class="detail-label whitespace-nowrap text-gray-500">商品名稱</span>
+        <span class="detail-value flex-1 text-right min-w-0 break-all font-bold text-lg">{{ selectedProduct.foodItemName
+          }}</span>
+      </div>
+    </div>
+
+    <div class="product-description bg-white rounded-lg p-3 my-4 border-l-4 border-blue-500">
+      <div class="description-title text-sm font-semibold text-base-content mb-2">商品描述</div>
+      <div class="description-text text-sm text-gray-600 leading-relaxed break-words">{{
+        selectedProduct.foodItemDescription }}</div>
+    </div>
+
+    <div class="expanded-details grid gap-3">
+      <div class="detail-row flex justify-between items-start gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">商品分類</span>
+        <span class="product-category detail-value flex-1 text-right min-w-0 break-all">{{ selectedProduct.category
+          }}</span>
+      </div>
+      <div class="detail-row price-breakdown flex justify-between items-start gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">原價</span>
+        <span
+          class="detail-value original-price-expanded flex-1 text-right min-w-0 break-all text-gray-400 line-through">NT$
+          {{ formatPrice(selectedProduct.originalPrice) }}</span>
+      </div>
+      <div class="detail-row price-breakdown flex justify-between items-start gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">折扣後售價</span>
+        <span class="detail-value discount-price-expanded flex-1 text-right min-w-0 break-all text-orange-500">NT$
+          {{ formatPrice(selectedProduct.discountedPrice) }}</span>
+      </div>
+      @if (selectedProduct.isPushNotification) {
+      <div class="detail-row price-breakdown flex justify-between items-start gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">再折扣售價</span>
+        <span class="detail-value final-price flex-1 text-right min-w-0 break-all text-red-600 text-lg font-bold">
+          NT$ {{ formatPrice(selectedProduct.finalPrice) }}
+        </span>
+      </div>
+      }
+
+      <div class="detail-row flex justify-between items-start gap-4">
+        <span class="detail-label whitespace-nowrap text-gray-500">取貨時間</span>
+        <span
+          class="pickup-time detail-value text-right min-w-0 bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-none inline-block whitespace-nowrap">
+          {{ selectedProduct.pickupTime }}</span>
+      </div>
+    </div>
+
+    <div class="merchant-info bg-white rounded-lg p-3 mt-4">
+      <div class="merchant-name text-base font-semibold text-base-content mb-1.5">{{ selectedProduct.merchantName }}</div>
+      <div class="merchant-address text-sm text-gray-500 leading-snug">{{ selectedProduct.merchantAddress }}</div>
+    </div>
+
+    <button
+      class="cursor-pointer flex justify-center add-to-cart-btn w-full bg-[#53bc6f] text-white border-none py-3 rounded-sm text-base font-semibold mt-4 transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none"
+      (click)="addToCart(selectedProduct)" [disabled]="selectedProduct.isAdded">
+      @if (selectedProduct.isAdded) {
+      <span class="flex items-center gap-2">
+        <mat-icon>check_circle</mat-icon>
+        <span>已加入購物車</span>
+      </span>
+      } @else {
+      <span class="flex items-center gap-2">
+        <mat-icon>add_shopping_cart</mat-icon>
+        <span>加入購物車</span>
+      </span>
+      }
+    </button>
+  </div>
+</div>
+}
+@if (merchantForFoodModal) {
+  <div class="modal-overlay fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-5 animate-fade-in"
+    (click)="closeFoodListModal()">
+    <div
+      class="bg-base-100 rounded-2xl max-w-3xl w-full max-h-[90vh] shadow-2xl relative animate-slide-up flex flex-col"
+      (click)="$event.stopPropagation()">
+
+      <div class="p-4 border-b border-base-content/10 flex justify-between items-center flex-shrink-0">
+        <h2 class="text-xl font-bold">{{ merchantForFoodModal.name }}</h2>
+
+        <div class="flex items-center gap-2">
+          <button class="btn btn-outline btn-primary btn-sm" (click)="viewStore(merchantForFoodModal); $event.stopPropagation();">
+              <mat-icon>storefront</mat-icon>
+              查看店家
+          </button>
+          <button
+            class="btn btn-sm btn-circle btn-ghost"
+            (click)="closeFoodListModal()">✕</button>
+        </div>
+      </div>
+
+      <div class="p-4 overflow-y-auto">
+        <ul class="space-y-3">
+          @for (food of merchantForFoodModal.foodList; track food.id) {
+            <li class="p-3 bg-base-200 rounded-lg flex items-center gap-4 transition-all hover:bg-base-300">
+              <img [src]="food.imageUrl" [alt]="food.name" class="w-16 h-16 rounded-md object-cover flex-shrink-0">
+
+              <div class="flex-grow">
+                <p class="font-semibold">{{ food.name }}</p>
+                <p class="text-sm text-base-content/70 line-clamp-2">{{ food.description }}</p>
+              </div>
+
+              <div class="text-right flex-shrink-0 mr-2">
+                <p class="font-bold text-lg text-primary">NT${{ food.discountedPrice }}</p>
+                @if(food.originalPrice > food.discountedPrice){
+                  <p class="text-xs line-through text-base-content/50">NT${{ food.originalPrice }}</p>
+                }
+              </div>
+
+              <div class="flex-shrink-0">
+              <button class="btn btn-primary btn-sm btn-circle transition-all duration-300"
+                      (click)="addToCart(food); $event.stopPropagation();">
+
+                  @if (food.showCheckmark) {
+                      <mat-icon>check</mat-icon> } @else {
+                      <mat-icon>add_shopping_cart</mat-icon> }
+              </button>
+          </div>
+            </li>
+          }
+        </ul>
+      </div>
+
+    </div>
+  </div>
+}
